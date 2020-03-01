@@ -1,8 +1,11 @@
 id					([a-z]|[A-Z])([a-z]|[A-Z]|[0-9]|"$"|"_")*
 intlit				[0-9]+
 /* falta os _ no intlit */
-reallit				([0-9]+"."[0-9]*)|([0-9]*"."[0-9]+)
-sinal				[+-]
+real				([0-9]+"."[0-9]*)|([0-9]*"."[0-9]+)
+expint				[0-9]+[eE][+-][1-9]+
+expreal				([0-9]+"."[0-9]*)|([0-9]*"."[0-9]+)[eE][+-][1-9]+
+strlit				\"[^(\"\n)]*\"
+
 bools				"true"|"false"
 and					"&&"
 assign				"="
@@ -52,9 +55,9 @@ reserved			"++"|"--"|"null"|"Integer"|"System"
 
 {intlit}								{printf("INTLIT\n");}
 
-{reallit}								{printf("REALLIT\n");}
-{intlit}e|E{sinal}{intlit}				{printf("REALLIT\n");}
-{intlit}"."{intlit}e|E{sinal}{intlit}	{printf("REALLIT\n");}
+{real}|{expint}|{expreal}				{printf("REALLIT\n");}
+
+{strlit}								{printf("STRLIT\n");}
 
 {bools}									{printf("BOOLLIT\n");}
 {and}									{printf("AND\n");}
