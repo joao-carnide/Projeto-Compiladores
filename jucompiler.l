@@ -1,5 +1,5 @@
 id					([a-z]|[A-Z])([a-z]|[A-Z]|[0-9]|"$"|"_")*
-intlit				[0-9]+
+intlit				0|[1-9]+[0-9]*|"_"
 bools				"true"|"false"
 and					"&&"
 assign				"="
@@ -96,7 +96,7 @@ reserved			"++"|"--"|"null"|"Integer"|"System"
 {id}								{printf("ID(%s)\n",yytext);}
 {intlit}							{printf("INTLIT\n");}
 
-.									{printf("");}
+.|"\n"								{printf("");}
 
 %%
 
