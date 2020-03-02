@@ -1,6 +1,6 @@
-id					([a-z]|[A-Z])([a-z]|[A-Z]|[0-9]|"$"|"_")*
-intlit				[0-9]+
-/* falta os _ no intlit */
+id					"_"|"$"|("_"|"$"|[a-z]|[A-Z])([a-z]|[A-Z]|[0-9]|"$"|"_")*
+
+intlit				[0-9]+("_"[0-9]|[0-9])*
 real				([0-9]+"."[0-9]*)|([0-9]*"."[0-9]+)
 expint				[0-9]+[eE][+-][1-9]+
 expreal				([0-9]+"."[0-9]*)|([0-9]*"."[0-9]+)[eE][+-][1-9]+
@@ -49,17 +49,17 @@ static				"static"
 string				"String"
 void				"void"
 while				"while"
-reserved			"++"|"--"|"null"|"Integer"|"System"
+reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"switch"|"assert"|"default"|"package"|"synchronized"|"do"|"goto"|"private"
  
 %%
 
-{intlit}								{printf("INTLIT\n");}
+{intlit}								{printf("INTLIT(%s)\n",yytext);}
 
-{real}|{expint}|{expreal}				{printf("REALLIT\n");}
+{real}|{expint}|{expreal}				{printf("REALLIT(%s)\n",yytext);}
 
-{strlit}								{printf("STRLIT\n");}
+{strlit}								{printf("STRLIT(%s)\n",yytext);}
 
-{bools}									{printf("BOOLLIT\n");}
+{bools}									{printf("BOOLLIT(%s)\n",yytext);}
 {and}									{printf("AND\n");}
 {assign}								{printf("ASSIGN\n");}
 {star}									{printf("STAR\n");}
@@ -103,7 +103,7 @@ reserved			"++"|"--"|"null"|"Integer"|"System"
 {void}									{printf("VOID\n");}
 {while}									{printf("WHILE\n");}
 
-{reserved}								{printf("RESERVED\n");}
+{reserved}								{printf("RESERVED(%s)\n",yytext);}
 
 {id}									{printf("ID(%s)\n",yytext);}
 
