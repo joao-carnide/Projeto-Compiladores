@@ -75,6 +75,7 @@ reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"swit
 <MLCOMMENT>"*/"							{BEGIN 0;}
 <MLCOMMENT>\n|\r|(\r\n)					;
 <MLCOMMENT>.							;
+<MLCOMMENT><<EOF>>						{printf("Line %d, col %d: unterminated comment\n",auxlinha,auxcoluna);BEGIN 0;}
 
 {intlit}								{printf("INTLIT(%s)\n",yytext);}
 
