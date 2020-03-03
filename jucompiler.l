@@ -1,6 +1,6 @@
 id					"_"|"$"|("_"|"$"|[a-z]|[A-Z])([a-z]|[A-Z]|[0-9]|"$"|"_")*
 
-intlit				[0-9]+("_"[0-9]|[0-9])*
+intlit				[0-9]+("_"*[0-9]|[0-9])*
 real				([0-9]+"."[0-9]*)|([0-9]*"."[0-9]+)
 expint				[0-9]+[eE][+-][1-9]+
 expreal				([0-9]+"."[0-9]*)|([0-9]*"."[0-9]+)[eE][+-][1-9]+
@@ -49,8 +49,8 @@ static				"static"
 string				"String"
 void				"void"
 while				"while"
-reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"switch"|"assert"|"default"|"package"|"synchronized"|"do"|"goto"|"private"
- 
+reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"switch"|"assert"|"default"|"package"|"synchronized"|"do"|"goto"|"private"|"this"|"break"|"implements"|"protected"|"throw"|"byte"|"import"|"throws"|"case"|"enum"|"instanceof"|"transient"|"catch"|"extends"|"short"|"try"|"char"|"final"|"interface"|"finally"|"long"|"strictfp"|"volatile"|"const"|"float"|"native"|"super"
+
 %%
 
 {intlit}								{printf("INTLIT(%s)\n",yytext);}
