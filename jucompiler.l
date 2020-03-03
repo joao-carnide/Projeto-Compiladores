@@ -7,8 +7,8 @@ expreal				([0-9]+("_"*[0-9]|[0-9])*"."([0-9]*("_"*[0-9]|[0-9])*)*)|([0-9]*("_"*
 strlit				\"[^(\"\n)]*\"
 
 comment1			"//".*
-comment2			"/*".*"*/"
-comment3			"/**".*"*/"
+comment2			"/*"
+comment3			"/**"
 
 bools				"true"|"false"
 and					"&&"
@@ -55,7 +55,20 @@ void				"void"
 while				"while"
 reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"switch"|"assert"|"default"|"package"|"synchronized"|"do"|"goto"|"private"|"this"|"break"|"implements"|"protected"|"throw"|"byte"|"import"|"throws"|"case"|"enum"|"instanceof"|"transient"|"catch"|"extends"|"short"|"try"|"char"|"final"|"interface"|"finally"|"long"|"strictfp"|"volatile"|"const"|"float"|"native"|"super"|"for"
 
+%X	MLCOMMENT JAVADOC
+
 %%
+{comment1}								{ ;}
+
+{comment2}								{BEGIN MLCOMMENT;}
+<MLCOMMENT>"*/"							{BEGIN 0;}
+<MLCOMMENT>\n							;
+<MLCOMMENT>.							;
+
+{comment3}								{BEGIN JAVADOC;}
+<JAVADOC>"*/"							{BEGIN 0; printf("\n");}
+<JAVADOC>\n								;
+<JAVADOC>.								;
 
 {intlit}								{printf("INTLIT(%s)\n",yytext);}
 
@@ -113,7 +126,7 @@ reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"swit
 
 {id}									{printf("ID(%s)\n",yytext);}
 
-.|"\n"									{printf("");}
+.|"\n"									{ ;}
 
 %%
 
