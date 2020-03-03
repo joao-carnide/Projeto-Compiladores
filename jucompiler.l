@@ -6,9 +6,7 @@ expint				[0-9]+("_"*[0-9]|[0-9])*[eE][+-]*[0-9]+("_"*[0-9]|[0-9])*
 expreal				([0-9]+("_"*[0-9]|[0-9])*"."([0-9]*("_"*[0-9]|[0-9])*)*)|([0-9]*("_"*[0-9]|[0-9])*"."([0-9]+("_"*[0-9]|[0-9])*)*)[eE][+-]*[0-9]+("_"*[0-9]|[0-9])*
 strlit				\"[^(\"\n)]*\"
 
-comment1			"//".*
-comment2			"/*"
-comment3			"/**"
+comment				"//".*
 
 bools				"true"|"false"
 and					"&&"
@@ -55,17 +53,17 @@ void				"void"
 while				"while"
 reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"switch"|"assert"|"default"|"package"|"synchronized"|"do"|"goto"|"private"|"this"|"break"|"implements"|"protected"|"throw"|"byte"|"import"|"throws"|"case"|"enum"|"instanceof"|"transient"|"catch"|"extends"|"short"|"try"|"char"|"final"|"interface"|"finally"|"long"|"strictfp"|"volatile"|"const"|"float"|"native"|"super"|"for"
 
-%X	MLCOMMENT JAVADOC
+%X	COMMENT MLCOMMENT JAVADOC
 
 %%
-{comment1}								{ ;}
+{comment}								{ ;}
 
-{comment2}								{BEGIN MLCOMMENT;}
+"/*"									{BEGIN MLCOMMENT;}
 <MLCOMMENT>"*/"							{BEGIN 0;}
 <MLCOMMENT>\n							;
 <MLCOMMENT>.							;
 
-{comment3}								{BEGIN JAVADOC;}
+"/**"									{BEGIN JAVADOC;}
 <JAVADOC>"*/"							{BEGIN 0; printf("\n");}
 <JAVADOC>\n								;
 <JAVADOC>.								;
@@ -75,8 +73,6 @@ reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"swit
 {real}|{expint}|{expreal}				{printf("REALLIT(%s)\n",yytext);}
 
 {strlit}								{printf("STRLIT(%s)\n",yytext);}
-
-{comment1}|{comment2}|{comment3}		{printf("");}
 
 {bools}									{printf("BOOLLIT(%s)\n",yytext);}
 {and}									{printf("AND\n");}
