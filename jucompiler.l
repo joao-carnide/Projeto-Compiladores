@@ -1,12 +1,23 @@
+%{
+	#include <stdio.h>
+	#include <stdlib.h>
+
+	int linha = 1;
+	int coluna = 1;
+	int auxlinha = 1;
+	int auxcoluna = 1;
+	int flag = 0;
+%}
+
 id					"_"|"$"|("_"|"$"|[a-z]|[A-Z])([a-z]|[A-Z]|[0-9]|"$"|"_")*
 
-intlit				[0-9]+("_"*[0-9]|[0-9])*
+intlit				0|([1-9]+("_"*[0-9]|[0-9])*)
 real				([0-9]+("_"*[0-9]|[0-9])*"."[0-9]*("_"*[0-9]|[0-9])*)|([0-9]*("_"*[0-9]|[0-9])*"."[0-9]+("_"*[0-9]|[0-9])*)
 expint				[0-9]+("_"*[0-9]|[0-9])*[eE][+-]*[0-9]+("_"*[0-9]|[0-9])*
 expreal				([0-9]+("_"*[0-9]|[0-9])*"."([0-9]*("_"*[0-9]|[0-9])*)*)|([0-9]*("_"*[0-9]|[0-9])*"."([0-9]+("_"*[0-9]|[0-9])*)*)[eE][+-]*[0-9]+("_"*[0-9]|[0-9])*
-strlit				\"[^(\"\n)]*\"
+strlit				\"[^(\"\n\r)]*\"
 
-comment				"//".*
+
 
 bools				"true"|"false"
 and					"&&"
@@ -53,20 +64,17 @@ void				"void"
 while				"while"
 reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"switch"|"assert"|"default"|"package"|"synchronized"|"do"|"goto"|"private"|"this"|"break"|"implements"|"protected"|"throw"|"byte"|"import"|"throws"|"case"|"enum"|"instanceof"|"transient"|"catch"|"extends"|"short"|"try"|"char"|"final"|"interface"|"finally"|"long"|"strictfp"|"volatile"|"const"|"float"|"native"|"super"|"for"
 
-%X	COMMENT MLCOMMENT JAVADOC
+%X COMMENT MLCOMMENT
 
 %%
-{comment}								{ ;}
+"//"									{BEGIN COMMENT;}
+<COMMENT>\n|\r|(\r\n)					{BEGIN 0;}
+<COMMENT>.
 
 "/*"									{BEGIN MLCOMMENT;}
 <MLCOMMENT>"*/"							{BEGIN 0;}
-<MLCOMMENT>\n							;
+<MLCOMMENT>\n|\r|(\r\n)					;
 <MLCOMMENT>.							;
-
-"/**"									{BEGIN JAVADOC;}
-<JAVADOC>"*/"							{BEGIN 0; printf("\n");}
-<JAVADOC>\n								;
-<JAVADOC>.								;
 
 {intlit}								{printf("INTLIT(%s)\n",yytext);}
 
@@ -122,7 +130,7 @@ reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"swit
 
 {id}									{printf("ID(%s)\n",yytext);}
 
-.|"\n"									{ ;}
+.|\n									{ ;}
 
 %%
 
