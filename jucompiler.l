@@ -5,10 +5,10 @@
 
 	int linha = 1;
 	int coluna = 1;
-	int auxlinha = 1;
-	int auxcoluna = 1;
+	int linha_coluna[2];
 	int flag = 0;
-	int erro = 0;
+	int string = 0;
+	char * strlit;
 	char guarda[256];
 %}
 
@@ -127,22 +127,22 @@ reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"swit
 "\t"									{coluna+=yyleng;}
 " "										{coluna+=yyleng;}
 
-\"										{BEGIN STRLIT; strcat(guarda,yytext); auxlinha = linha; auxcoluna = coluna; coluna += yyleng; erro = 0;}
-<STRLIT>{strlit}						{coluna+=yyleng; strcat(guarda,yytext);}
-<STRLIT>\\(.?)							{printf("Line %d, col %d: invalid escape sequence (%s)\n",linha,coluna,yytext); coluna += yyleng;erro = 1;}
-<STRLIT>\n|\r|(\r\n)					{BEGIN 0; guarda[0] = 0; printf("Line %d, col %d: unterminated string literal\n",auxlinha,auxcoluna); linha++; coluna = 1;}
-<STRLIT>\"								{BEGIN 0; strcat(guarda, yytext); if(erro == 0)printf("STRLIT(%s)\n",guarda);coluna+=yyleng; guarda[0]=0;}
-<STRLIT><<EOF>>							{BEGIN 0; guarda[0] = 0; printf("Line %d, col %d: unterminated string literal\n",auxlinha,auxcoluna); linha++;coluna = 1;}
+\"										{BEGIN STRLIT; string = 1; strlit = yytext; coluna+=yyleng; linha_coluna[0]=linha; linha_coluna[1]=coluna-1;}
+<STRLIT>{strlit}						{coluna+=yyleng;}
+<STRLIT>\\(.?)							{printf("Line %d, col %d: invalid escape sequence (%s)\n",linha,coluna,yytext); coluna += yyleng;string = 0;}
+<STRLIT>\n|\r|(\r\n)					{linha++; coluna= 1; printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]);BEGIN 0;}
+<STRLIT>\"								{if(flag==1&&string==1)printf("STRLIT(%s)\n",strlit);coluna+=yyleng; BEGIN 0;}
+<STRLIT><<EOF>>							{printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]); coluna+=yyleng; BEGIN 0;}
 
 "//"									{BEGIN COMMENT; coluna+=yyleng;}
 <COMMENT>\n|\r|(\r\n)					{BEGIN 0; linha++; coluna=1;}
 <COMMENT>.								{coluna+=yyleng;}
 
-"/*"									{BEGIN MLCOMMENT; auxlinha=linha;auxcoluna=coluna;coluna+=yyleng;}
+"/*"									{BEGIN MLCOMMENT; linha_coluna[0]=linha;linha_coluna[1]=coluna;coluna+=yyleng;}
 <MLCOMMENT>"*/"							{BEGIN 0;coluna+=yyleng;}
 <MLCOMMENT>\n|\r|(\r\n)					{linha++;coluna=1;}
 <MLCOMMENT>.							{coluna+=yyleng;}
-<MLCOMMENT><<EOF>>						{BEGIN 0;printf("Line %d, col %d: unterminated comment\n",auxlinha,auxcoluna);}
+<MLCOMMENT><<EOF>>						{printf("Line %d, col %d: unterminated comment\n",linha_coluna[0],linha_coluna[1]); coluna+=yyleng; BEGIN 0;}
 
 .										{printf("Line %d, col %d: illegal character (%s)\n", linha, coluna, yytext); coluna+=yyleng;}
 
