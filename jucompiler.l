@@ -1,6 +1,7 @@
 %{
 	#include <stdio.h>
 	#include <stdlib.h>
+	#include <string.h>
 
 	int linha = 1;
 	int coluna = 1;
@@ -67,26 +68,11 @@ reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"swit
 %X COMMENT MLCOMMENT STRLIT
 
 %%
-"//"									{BEGIN COMMENT; coluna+=yyleng;}
-<COMMENT>\n|\r|(\r\n)					{BEGIN 0; linha++; coluna+=yyleng;}
-<COMMENT>.								{coluna+=yyleng;}
 
-"/*"									{BEGIN MLCOMMENT; auxlinha=linha;auxcoluna=coluna;coluna+=yyleng;}
-<MLCOMMENT>"*/"							{BEGIN 0;coluna+=yyleng;}
-<MLCOMMENT>\n|\r|(\r\n)					{linha++;coluna=1;}
-<MLCOMMENT>.							{coluna+=yyleng;}
-<MLCOMMENT><<EOF>>						{BEGIN 0;printf("Line %d, col %d: unterminated comment\n",auxlinha,auxcoluna);}
 
 {intlit}								{if(flag == 1)printf("INTLIT(%s)\n",yytext);coluna+=yyleng;}
 
 {real}|{expint}|{expreal}				{if(flag == 1)printf("REALLIT(%s)\n",yytext);coluna+=yyleng;}
-
-\"										{BEGIN STRLIT; strcat(guarda,yytext); auxlinha = linha; auxcoluna = coluna; coluna += yyleng; erro = 0;}
-<STRLIT>{strlit}						{coluna+=yyleng; strcat(guarda,yytext);}
-<STRLIT>\\(.?)							{printf("Line %d, col %d: invalid escape sequence (%s)\n",linha,coluna,yytext); coluna += yyleng;erro = 1;}
-<STRLIT>\n|\r|(\r\n)					{BEGIN 0; guarda[0] = 0; printf("Line %d, col %d: unterminated string literal\n",auxlinha,auxcoluna); linha++; coluna = 1;}
-<STRLIT>\"								{BEGIN 0; strcat(guarda, yytext); if(erro == 0)printf("STRLIT(%s)\n",yytext);coluna+=yyleng; guarda[0]=0;}
-<STRLIT><<EOF>>							{BEGIN 0; guarda[0] = 0; printf("Line %d, col %d: unterminated string literal\n",auxlinha,auxcoluna); linha++;coluna = 1;}
 
 {bools}									{if(flag == 1)printf("BOOLLIT(%s)\n",yytext);coluna+=yyleng;}
 {and}									{if(flag == 1)printf("AND\n");coluna+=yyleng;}
@@ -140,6 +126,23 @@ reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"swit
 \n|\r|(\r\n)							{linha++; coluna = 1;}
 "\t"									{coluna+=yyleng;}
 " "										{coluna+=yyleng;}
+
+\"										{BEGIN STRLIT; strcat(guarda,yytext); auxlinha = linha; auxcoluna = coluna; coluna += yyleng; erro = 0;}
+<STRLIT>{strlit}						{coluna+=yyleng; strcat(guarda,yytext);}
+<STRLIT>\\(.?)							{printf("Line %d, col %d: invalid escape sequence (%s)\n",linha,coluna,yytext); coluna += yyleng;erro = 1;}
+<STRLIT>\n|\r|(\r\n)					{BEGIN 0; guarda[0] = 0; printf("Line %d, col %d: unterminated string literal\n",auxlinha,auxcoluna); linha++; coluna = 1;}
+<STRLIT>\"								{BEGIN 0; strcat(guarda, yytext); if(erro == 0)printf("STRLIT(%s)\n",guarda);coluna+=yyleng; guarda[0]=0;}
+<STRLIT><<EOF>>							{BEGIN 0; guarda[0] = 0; printf("Line %d, col %d: unterminated string literal\n",auxlinha,auxcoluna); linha++;coluna = 1;}
+
+"//"									{BEGIN COMMENT; coluna+=yyleng;}
+<COMMENT>\n|\r|(\r\n)					{BEGIN 0; linha++; coluna=1;}
+<COMMENT>.								{coluna+=yyleng;}
+
+"/*"									{BEGIN MLCOMMENT; auxlinha=linha;auxcoluna=coluna;coluna+=yyleng;}
+<MLCOMMENT>"*/"							{BEGIN 0;coluna+=yyleng;}
+<MLCOMMENT>\n|\r|(\r\n)					{linha++;coluna=1;}
+<MLCOMMENT>.							{coluna+=yyleng;}
+<MLCOMMENT><<EOF>>						{BEGIN 0;printf("Line %d, col %d: unterminated comment\n",auxlinha,auxcoluna);}
 
 .										{printf("Line %d, col %d: illegal character (%s)\n", linha, coluna, yytext); coluna+=yyleng;}
 
