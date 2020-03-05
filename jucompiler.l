@@ -5,11 +5,10 @@
 
 	int linha = 1;
 	int coluna = 1;
-	int linha_coluna[2];
-	int flag = 0;
-	int string = 0;
+	int linha_coluna[2];  //array auxiliar para linhas e colunas
+	int flag = 0; //0 - detetar erros (nada ou -e1), 1 - detetar tudo (-l)
+	int string = 0;  //flag para detetar string
 	char * strlit;
-	char guarda[256];
 %}
 
 id					"_"|"$"|("_"|"$"|[a-z]|[A-Z])([a-z]|[A-Z]|[0-9]|"$"|"_")*
