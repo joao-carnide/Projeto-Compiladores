@@ -4,7 +4,7 @@
 		João Filipe Carnide de Jesus Nunes		2017247442
 	*/
 	
-	
+	#include "y.tab.h"
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <string.h>
@@ -80,7 +80,7 @@ reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"swit
 
 {real}|{expint}|{expreal}				{if(flag == 1)printf("REALLIT(%s)\n",yytext);coluna+=yyleng;
 										yylval.id = strdup(yytext);
-										return REALLIT}
+										return REALLIT;}
 
 {bools}									{if(flag == 1)printf("BOOLLIT(%s)\n",yytext);coluna+=yyleng;
 										yylval.id = strdup(yytext);

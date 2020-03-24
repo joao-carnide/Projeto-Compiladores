@@ -703,6 +703,12 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "jucompiler.l"
 #line 2 "jucompiler.l"
+	/*
+		Gonçalo Manuel Oliveira e Sousa			2016244072
+		João Filipe Carnide de Jesus Nunes		2017247442
+	*/
+	
+	#include "y.tab.h"
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <string.h>
@@ -713,9 +719,9 @@ char *yytext;
 	int flag = 0; //0 - detetar erros (nada ou -e1), 1 - detetar tudo (-l)
 	int string = 0;  //flag para detetar string
 	char * strlit;
-#line 717 "lex.yy.c"
+#line 723 "lex.yy.c"
 
-#line 719 "lex.yy.c"
+#line 725 "lex.yy.c"
 
 #define INITIAL 0
 #define COMMENT 1
@@ -935,11 +941,10 @@ YY_DECL
 		}
 
 	{
-#line 69 "jucompiler.l"
+#line 75 "jucompiler.l"
 
 
-
-#line 943 "lex.yy.c"
+#line 948 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -998,342 +1003,395 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 72 "jucompiler.l"
-{if(flag == 1)printf("INTLIT(%s)\n",yytext);coluna+=yyleng;}
+#line 77 "jucompiler.l"
+{if(flag == 1)printf("INTLIT(%s)\n",yytext);coluna+=yyleng;
+										yylval.id = strdup(yytext);
+										return INTLIT;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 74 "jucompiler.l"
-{if(flag == 1)printf("REALLIT(%s)\n",yytext);coluna+=yyleng;}
+#line 81 "jucompiler.l"
+{if(flag == 1)printf("REALLIT(%s)\n",yytext);coluna+=yyleng;
+										yylval.id = strdup(yytext);
+										return REALLIT;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 76 "jucompiler.l"
-{if(flag == 1)printf("BOOLLIT(%s)\n",yytext);coluna+=yyleng;}
+#line 85 "jucompiler.l"
+{if(flag == 1)printf("BOOLLIT(%s)\n",yytext);coluna+=yyleng;
+										yylval.id = strdup(yytext);
+										return BOOLLIT;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 77 "jucompiler.l"
-{if(flag == 1)printf("AND\n");coluna+=yyleng;}
+#line 88 "jucompiler.l"
+{if(flag == 1)printf("AND\n");coluna+=yyleng;
+										return AND;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 78 "jucompiler.l"
-{if(flag == 1)printf("ASSIGN\n");coluna+=yyleng;}
+#line 90 "jucompiler.l"
+{if(flag == 1)printf("ASSIGN\n");coluna+=yyleng;
+										return ASSIGN;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 79 "jucompiler.l"
-{if(flag == 1)printf("STAR\n");coluna+=yyleng;}
+#line 92 "jucompiler.l"
+{if(flag == 1)printf("STAR\n");coluna+=yyleng;
+										return STAR;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 80 "jucompiler.l"
-{if(flag == 1)printf("COMMA\n");coluna+=yyleng;}
+#line 94 "jucompiler.l"
+{if(flag == 1)printf("COMMA\n");coluna+=yyleng;
+										return COMMA;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 81 "jucompiler.l"
-{if(flag == 1)printf("DIV\n");coluna+=yyleng;}
+#line 96 "jucompiler.l"
+{if(flag == 1)printf("DIV\n");coluna+=yyleng;
+										return DIV;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 82 "jucompiler.l"
-{if(flag == 1)printf("EQ\n");coluna+=yyleng;}
+#line 98 "jucompiler.l"
+{if(flag == 1)printf("EQ\n");coluna+=yyleng;
+										return EQ;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 83 "jucompiler.l"
-{if(flag == 1)printf("GE\n");coluna+=yyleng;}
+#line 100 "jucompiler.l"
+{if(flag == 1)printf("GE\n");coluna+=yyleng;
+										return GE;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 84 "jucompiler.l"
-{if(flag == 1)printf("GT\n");coluna+=yyleng;}
+#line 102 "jucompiler.l"
+{if(flag == 1)printf("GT\n");coluna+=yyleng;
+										return GT;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 85 "jucompiler.l"
-{if(flag == 1)printf("LBRACE\n");coluna+=yyleng;}
+#line 104 "jucompiler.l"
+{if(flag == 1)printf("LBRACE\n");coluna+=yyleng;
+										return LBRACE;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 86 "jucompiler.l"
-{if(flag == 1)printf("LE\n");coluna+=yyleng;}
+#line 106 "jucompiler.l"
+{if(flag == 1)printf("LE\n");coluna+=yyleng;
+										return LE;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 87 "jucompiler.l"
-{if(flag == 1)printf("LPAR\n");coluna+=yyleng;}
+#line 108 "jucompiler.l"
+{if(flag == 1)printf("LPAR\n");coluna+=yyleng;
+										return LPAR;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 88 "jucompiler.l"
-{if(flag == 1)printf("LSQ\n");coluna+=yyleng;}
+#line 110 "jucompiler.l"
+{if(flag == 1)printf("LSQ\n");coluna+=yyleng;
+										return LSQ;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 89 "jucompiler.l"
-{if(flag == 1)printf("LT\n");coluna+=yyleng;}
+#line 112 "jucompiler.l"
+{if(flag == 1)printf("LT\n");coluna+=yyleng;
+										return LT;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 90 "jucompiler.l"
-{if(flag == 1)printf("MINUS\n");coluna+=yyleng;}
+#line 114 "jucompiler.l"
+{if(flag == 1)printf("MINUS\n");coluna+=yyleng;
+										return MINUS;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 91 "jucompiler.l"
-{if(flag == 1)printf("MOD\n");coluna+=yyleng;}
+#line 116 "jucompiler.l"
+{if(flag == 1)printf("MOD\n");coluna+=yyleng;
+										return MOD;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 92 "jucompiler.l"
-{if(flag == 1)printf("NE\n");coluna+=yyleng;}
+#line 118 "jucompiler.l"
+{if(flag == 1)printf("NE\n");coluna+=yyleng;
+										return NE;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 93 "jucompiler.l"
-{if(flag == 1)printf("NOT\n");coluna+=yyleng;}
+#line 120 "jucompiler.l"
+{if(flag == 1)printf("NOT\n");coluna+=yyleng;
+										return NOT;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 94 "jucompiler.l"
-{if(flag == 1)printf("OR\n");coluna+=yyleng;}
+#line 122 "jucompiler.l"
+{if(flag == 1)printf("OR\n");coluna+=yyleng;
+										return OR;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 95 "jucompiler.l"
-{if(flag == 1)printf("PLUS\n");coluna+=yyleng;}
+#line 124 "jucompiler.l"
+{if(flag == 1)printf("PLUS\n");coluna+=yyleng;
+										return PLUS;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 96 "jucompiler.l"
-{if(flag == 1)printf("RBRACE\n");coluna+=yyleng;}
+#line 126 "jucompiler.l"
+{if(flag == 1)printf("RBRACE\n");coluna+=yyleng;
+										return RBRACE;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 97 "jucompiler.l"
-{if(flag == 1)printf("RPAR\n");coluna+=yyleng;}
+#line 128 "jucompiler.l"
+{if(flag == 1)printf("RPAR\n");coluna+=yyleng;
+										return RPAR;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 98 "jucompiler.l"
-{if(flag == 1)printf("RSQ\n");coluna+=yyleng;}
+#line 130 "jucompiler.l"
+{if(flag == 1)printf("RSQ\n");coluna+=yyleng;
+										return RSQ;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 99 "jucompiler.l"
-{if(flag == 1)printf("SEMICOLON\n");coluna+=yyleng;}
+#line 132 "jucompiler.l"
+{if(flag == 1)printf("SEMICOLON\n");coluna+=yyleng;
+										return SEMICOLON;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 100 "jucompiler.l"
-{if(flag == 1)printf("ARROW\n");coluna+=yyleng;}
+#line 134 "jucompiler.l"
+{if(flag == 1)printf("ARROW\n");coluna+=yyleng;
+										return ARROW;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 101 "jucompiler.l"
-{if(flag == 1)printf("LSHIFT\n");coluna+=yyleng;}
+#line 136 "jucompiler.l"
+{if(flag == 1)printf("LSHIFT\n");coluna+=yyleng;
+										return LSHIFT;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 102 "jucompiler.l"
-{if(flag == 1)printf("RSHIFT\n");coluna+=yyleng;}
+#line 138 "jucompiler.l"
+{if(flag == 1)printf("RSHIFT\n");coluna+=yyleng;
+										return RSHIFT;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 103 "jucompiler.l"
-{if(flag == 1)printf("XOR\n");coluna+=yyleng;}
+#line 140 "jucompiler.l"
+{if(flag == 1)printf("XOR\n");coluna+=yyleng;
+										return XOR;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 104 "jucompiler.l"
-{if(flag == 1)printf("BOOL\n");coluna+=yyleng;}
+#line 142 "jucompiler.l"
+{if(flag == 1)printf("BOOL\n");coluna+=yyleng;
+										return BOOL;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 105 "jucompiler.l"
-{if(flag == 1)printf("CLASS\n");coluna+=yyleng;}
+#line 144 "jucompiler.l"
+{if(flag == 1)printf("CLASS\n");coluna+=yyleng;
+										return CLASS;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 106 "jucompiler.l"
-{if(flag == 1)printf("DOTLENGTH\n");coluna+=yyleng;}
+#line 146 "jucompiler.l"
+{if(flag == 1)printf("DOTLENGTH\n");coluna+=yyleng;
+										return DOTLENGTH;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 107 "jucompiler.l"
-{if(flag == 1)printf("DOUBLE\n");coluna+=yyleng;}
+#line 148 "jucompiler.l"
+{if(flag == 1)printf("DOUBLE\n");coluna+=yyleng;
+										return DOUBLE;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 108 "jucompiler.l"
-{if(flag == 1)printf("ELSE\n");coluna+=yyleng;}
+#line 150 "jucompiler.l"
+{if(flag == 1)printf("ELSE\n");coluna+=yyleng;
+										return ELSE;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 109 "jucompiler.l"
-{if(flag == 1)printf("IF\n");coluna+=yyleng;}
+#line 152 "jucompiler.l"
+{if(flag == 1)printf("IF\n");coluna+=yyleng;
+										return IF;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 110 "jucompiler.l"
-{if(flag == 1)printf("INT\n");coluna+=yyleng;}
+#line 154 "jucompiler.l"
+{if(flag == 1)printf("INT\n");coluna+=yyleng;
+										return INT;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 111 "jucompiler.l"
-{if(flag == 1)printf("PRINT\n");coluna+=yyleng;}
+#line 156 "jucompiler.l"
+{if(flag == 1)printf("PRINT\n");coluna+=yyleng;
+										return PRINT;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 112 "jucompiler.l"
-{if(flag == 1)printf("PARSEINT\n");coluna+=yyleng;}
+#line 158 "jucompiler.l"
+{if(flag == 1)printf("PARSEINT\n");coluna+=yyleng;
+										return PARSEINT;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 113 "jucompiler.l"
-{if(flag == 1)printf("PUBLIC\n");coluna+=yyleng;}
+#line 160 "jucompiler.l"
+{if(flag == 1)printf("PUBLIC\n");coluna+=yyleng;
+										return PUBLIC;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 114 "jucompiler.l"
-{if(flag == 1)printf("RETURN\n");coluna+=yyleng;}
+#line 162 "jucompiler.l"
+{if(flag == 1)printf("RETURN\n");coluna+=yyleng;
+										return RETURN;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 115 "jucompiler.l"
-{if(flag == 1)printf("STATIC\n");coluna+=yyleng;}
+#line 164 "jucompiler.l"
+{if(flag == 1)printf("STATIC\n");coluna+=yyleng;
+										return STATIC;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 116 "jucompiler.l"
-{if(flag == 1)printf("STRING\n");coluna+=yyleng;}
+#line 166 "jucompiler.l"
+{if(flag == 1)printf("STRING\n");coluna+=yyleng;
+										return STRING;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 117 "jucompiler.l"
-{if(flag == 1)printf("VOID\n");coluna+=yyleng;}
+#line 168 "jucompiler.l"
+{if(flag == 1)printf("VOID\n");coluna+=yyleng;
+										return VOID;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 118 "jucompiler.l"
-{if(flag == 1)printf("WHILE\n");coluna+=yyleng;}
+#line 170 "jucompiler.l"
+{if(flag == 1)printf("WHILE\n");coluna+=yyleng;
+										return WHILE;}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 120 "jucompiler.l"
-{if(flag == 1)printf("RESERVED(%s)\n",yytext);coluna+=yyleng;}
+#line 173 "jucompiler.l"
+{if(flag == 1)printf("RESERVED(%s)\n",yytext);coluna+=yyleng;
+										return RESERVED;}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 122 "jucompiler.l"
-{if(flag == 1)printf("ID(%s)\n",yytext);coluna+=yyleng;}
+#line 176 "jucompiler.l"
+{if(flag == 1)printf("ID(%s)\n",yytext);coluna+=yyleng;
+										yylval.id = strdup(yytext);
+										return ID;}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 124 "jucompiler.l"
+#line 180 "jucompiler.l"
 {coluna+=yyleng;}
 	YY_BREAK
 case 49:
 /* rule 49 can match eol */
 YY_RULE_SETUP
-#line 125 "jucompiler.l"
+#line 181 "jucompiler.l"
 {linha++; coluna = 1;}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 126 "jucompiler.l"
+#line 182 "jucompiler.l"
 {coluna+=yyleng;}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 127 "jucompiler.l"
+#line 183 "jucompiler.l"
 {coluna+=yyleng;}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 129 "jucompiler.l"
+#line 185 "jucompiler.l"
 {BEGIN STRLIT; string = 1; strlit = yytext; coluna+=yyleng; linha_coluna[0]=linha; linha_coluna[1]=coluna-1;}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 130 "jucompiler.l"
+#line 186 "jucompiler.l"
 {coluna+=yyleng;}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 131 "jucompiler.l"
+#line 187 "jucompiler.l"
 {printf("Line %d, col %d: invalid escape sequence (%s)\n",linha,coluna,yytext); coluna += yyleng;string = 0;}
 	YY_BREAK
 case 55:
 /* rule 55 can match eol */
 YY_RULE_SETUP
-#line 132 "jucompiler.l"
+#line 188 "jucompiler.l"
 {linha++; coluna= 1; printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]);BEGIN 0;}
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 133 "jucompiler.l"
-{if(flag==1&&string==1)printf("STRLIT(%s)\n",strlit);coluna+=yyleng; BEGIN 0;}
+#line 189 "jucompiler.l"
+{if(flag==1&&string==1)printf("STRLIT(%s)\n",strlit);coluna+=yyleng; BEGIN 0;
+										yylval.id = strdup(yytext);
+										return STRLIT;}
 	YY_BREAK
 case YY_STATE_EOF(STRLIT):
-#line 134 "jucompiler.l"
+#line 192 "jucompiler.l"
 {printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]); coluna+=yyleng; BEGIN 0;}
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 136 "jucompiler.l"
+#line 194 "jucompiler.l"
 {BEGIN COMMENT; coluna+=yyleng;}
 	YY_BREAK
 case 58:
 /* rule 58 can match eol */
 YY_RULE_SETUP
-#line 137 "jucompiler.l"
+#line 195 "jucompiler.l"
 {BEGIN 0; linha++; coluna=1;}
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 138 "jucompiler.l"
+#line 196 "jucompiler.l"
 {coluna+=yyleng;}
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 140 "jucompiler.l"
+#line 198 "jucompiler.l"
 {BEGIN MLCOMMENT; linha_coluna[0]=linha;linha_coluna[1]=coluna;coluna+=yyleng;}
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 141 "jucompiler.l"
+#line 199 "jucompiler.l"
 {BEGIN 0;coluna+=yyleng;}
 	YY_BREAK
 case 62:
 /* rule 62 can match eol */
 YY_RULE_SETUP
-#line 142 "jucompiler.l"
+#line 200 "jucompiler.l"
 {linha++;coluna=1;}
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 143 "jucompiler.l"
+#line 201 "jucompiler.l"
 {coluna+=yyleng;}
 	YY_BREAK
 case YY_STATE_EOF(MLCOMMENT):
-#line 144 "jucompiler.l"
+#line 202 "jucompiler.l"
 {printf("Line %d, col %d: unterminated comment\n",linha_coluna[0],linha_coluna[1]); coluna+=yyleng; BEGIN 0;}
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 146 "jucompiler.l"
+#line 204 "jucompiler.l"
 {printf("Line %d, col %d: illegal character (%s)\n", linha, coluna, yytext); coluna+=yyleng;}
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 148 "jucompiler.l"
+#line 206 "jucompiler.l"
 ECHO;
 	YY_BREAK
-#line 1337 "lex.yy.c"
+#line 1395 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMMENT):
 	yyterminate();
@@ -2339,7 +2397,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 148 "jucompiler.l"
+#line 206 "jucompiler.l"
 
 
 int main(int argc, char *argv[])
