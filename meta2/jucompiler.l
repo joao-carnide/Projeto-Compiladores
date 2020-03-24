@@ -8,6 +8,7 @@
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <string.h>
+	#include <stdarg.h>
 
 	int linha = 1;
 	int coluna = 1;
@@ -70,7 +71,7 @@ void				"void"
 while				"while"
 reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"switch"|"assert"|"default"|"package"|"synchronized"|"do"|"goto"|"private"|"this"|"break"|"implements"|"protected"|"throw"|"byte"|"import"|"throws"|"case"|"enum"|"instanceof"|"transient"|"catch"|"extends"|"short"|"try"|"char"|"final"|"interface"|"finally"|"long"|"strictfp"|"volatile"|"const"|"float"|"native"|"super"|"for"
 
-%X COMMENT MLCOMMENT STRLIT
+%X COMMENT MLCOMMENT STRINGLIT
 
 %%
 
@@ -182,14 +183,14 @@ reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"swit
 "\t"									{coluna+=yyleng;}
 " "										{coluna+=yyleng;}
 
-\"										{BEGIN STRLIT; string = 1; strlit = yytext; coluna+=yyleng; linha_coluna[0]=linha; linha_coluna[1]=coluna-1;}
-<STRLIT>{strlit}						{coluna+=yyleng;}
-<STRLIT>\\(.?)							{printf("Line %d, col %d: invalid escape sequence (%s)\n",linha,coluna,yytext); coluna += yyleng;string = 0;}
-<STRLIT>\n|\r|(\r\n)					{linha++; coluna= 1; printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]);BEGIN 0;}
-<STRLIT>\"								{if(flag==1&&string==1)printf("STRLIT(%s)\n",strlit);coluna+=yyleng; BEGIN 0;
+\"										{BEGIN STRINGLIT; string = 1; strlit = yytext; coluna+=yyleng; linha_coluna[0]=linha; linha_coluna[1]=coluna-1;}
+<STRINGLIT>{strlit}						{coluna+=yyleng;}
+<STRINGLIT>\\(.?)						{printf("Line %d, col %d: invalid escape sequence (%s)\n",linha,coluna,yytext); coluna += yyleng;string = 0;}
+<STRINGLIT>\n|\r|(\r\n)					{linha++; coluna= 1; printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]);BEGIN 0;}
+<STRINGLIT>\"							{if(flag==1&&string==1)printf("STRLIT(%s)\n",strlit);coluna+=yyleng; BEGIN 0;
 										yylval.id = strdup(yytext);
 										return STRLIT;}
-<STRLIT><<EOF>>							{printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]); coluna+=yyleng; BEGIN 0;}
+<STRINGLIT><<EOF>>						{printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]); coluna+=yyleng; BEGIN 0;}
 
 "//"									{BEGIN COMMENT; coluna+=yyleng;}
 <COMMENT>\n|\r|(\r\n)					{BEGIN 0; linha++; coluna=1;}
@@ -210,5 +211,24 @@ int yywrap() {
 }
 
 void yyerror (const char *s) { 
-     printf ("%s: %s\n", s, yytext);
+     printf ("Line %d, col %d: %s: %s\n", linha, (int)(coluna-strlen(yytext)), s, yytext);
+}
+
+int main(int argc, char *argv[])
+{
+	if (argc > 1) {
+		if (strcmp(argv[1],"-l") == 0) {
+			flag = 1;
+		}
+		else if(strcmp(argv[1],"-e1") == 0) {
+			flag = 0;
+		}
+	}
+	else if (argc == 1){
+		flag = 0;
+	}
+	yylex();
+
+	yyparse();
+	return 0;
 }

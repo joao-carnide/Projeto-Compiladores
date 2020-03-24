@@ -7,11 +7,14 @@
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <string.h>
+	#include <stdarg.h>
+
+	int error_flag = 0;
+	extern int flag;
 
 	int yylex(void);
     void yyerror (const char *s);
 
-	int flag = 0; //0 - detetar erros (nada ou -e1), 1 - detetar tudo (-l)
 %}
 
 %union {
@@ -42,6 +45,7 @@
 %type <node> VarDecl
 %type <node> VarDecl2
 %type <node> Statement
+%type <node> StatementError
 %type <node> Statement2
 %type <node> ExprReturn
 %type <node> Statement3
@@ -56,174 +60,165 @@
 %type <node> Expr2
 %type <node> ExprLit
 
+%left COMMA
 %right ASSIGN
 %left OR
 %left AND
+%left XOR
 %left EQ NE
 %left GE GT LE LT
 %left LSHIFT RSHIFT
 %left PLUS MINUS
 %left STAR DIV MOD
 %right NOT
-%right LPAR
-%left RPAR
-%right ELSE
+%left LPAR RPAR
+%nonassoc ELSE
 
 
 %%
-Program:	CLASS ID LBRACE ProgramScript RBRACE			{;}
+Program:	CLASS ID LBRACE ProgramScript RBRACE					{;}
 		;
 
-ProgramScript: 	%empty									{$$ = NULL;}
-			|	MethodDecl ProgramScript				{$$ = $1;}
-			|	FieldDecl ProgramScript					{$$ = $1;}
-			|	SEMICOLON ProgramScript					{$$ = $2;}
+ProgramScript: 	%empty												{$$ = NULL;}
+			|	MethodDecl ProgramScript							{$$ = $1;}
+			|	FieldDecl ProgramScript								{$$ = $1;}
+			|	SEMICOLON ProgramScript								{$$ = $2;}
 			;
 
-MethodDecl:	PUBLIC STATIC MethodHeader MethodBody		{;}
+MethodDecl:	PUBLIC STATIC MethodHeader MethodBody					{;}
 		;
 
-FieldDecl:	PUBLIC STATIC Type ID FieldDecl2 SEMICOLON	{;}
+FieldDecl:	PUBLIC STATIC Type ID FieldDecl2 SEMICOLON				{;}
+		|	error SEMICOLON											{$$ = NULL; error_flag = 1;}
 		;
 
-FieldDecl2:	%empty										{$$ = NULL;}
-		|	COMMA ID FieldDecl2							{;}
+FieldDecl2:	%empty													{$$ = NULL;}
+		|	COMMA ID FieldDecl2										{;}
 		;
 
-Type:	BOOL											{;}
-	|	INT												{;}
-	|	DOUBLE											{;}
+Type:	BOOL														{;}
+	|	INT															{;}
+	|	DOUBLE														{;}
 	;
 
-MethodHeader:	Type ID LPAR MethodHeader2 RPAR			{;}
-			|	VOID ID LPAR MethodHeader2 RPAR			{;}
+MethodHeader:	Type ID LPAR MethodHeader2 RPAR						{;}
+			|	VOID ID LPAR MethodHeader2 RPAR						{;}
 			;
 
-MethodHeader2:	%empty									{$$ = NULL;}
-			|	FormalParams							{$$ = $1;}
+MethodHeader2:	%empty												{$$ = NULL;}
+			|	FormalParams										{$$ = $1;}
 			;
 
-FormalParams:	Type ID FormalParams2					{;}
-			|	STRING LSQ RSQ ID						{;}
+FormalParams:	Type ID FormalParams2								{;}
+			|	STRING LSQ RSQ ID									{;}
 			;
 
-FormalParams2:	%empty									{$$ = NULL;}
-			|	COMMA Type ID							{;}
+FormalParams2:	%empty												{$$ = NULL;}
+			|	COMMA Type ID										{;}
 			;
 
-MethodBody:	LBRACE MethodBody2 RBRACE					{;}
+MethodBody:	LBRACE MethodBody2 RBRACE								{;}
 		;
 
-MethodBody2: 	%empty									{$$ = NULL;}
-			|	Statement MethodBody2					{$$ = $1;}
-			|	VarDecl MethodBody2						{if ($1 != NULL){$$ = $1;}else{$$ = $2;};}
+MethodBody2: 	%empty												{$$ = NULL;}
+			|	Statement MethodBody2								{$$ = $1;}
+			|	VarDecl MethodBody2									{if ($1 != NULL){$$ = $1;}else{$$ = $2;};}
 			;
 
-VarDecl:	Type ID VarDecl2 SEMICOLON					{;}
+VarDecl:	Type ID VarDecl2 SEMICOLON								{;}
 		;
 
-VarDecl2:	%empty										{$$ = NULL;}
-		|	COMMA ID VarDecl2							{;}
+VarDecl2:	%empty													{$$ = NULL;}
+		|	COMMA ID VarDecl2										{;}
 		;
 
-Statement:	LBRACE Statement2 RBRACE					{;}
-		|	IF LPAR Expr RPAR Statement %prec ELSE		{;}
-		|	IF LPAR Expr RPAR Statement ELSE Statement	{;}
-		|	WHILE LPAR Expr RPAR Statement				{;}
-		|	RETURN ExprReturn SEMICOLON					{;}
-		|	Statement3 SEMICOLON						{$$ = $1;}
-		|	PRINT LPAR StatementPrint RPAR SEMICOLON	{;}
+Statement:	LBRACE Statement2 RBRACE								{;}
+		|	IF LPAR Expr RPAR StatementError						{;}
+		|	IF LPAR Expr RPAR StatementError ELSE StatementError	{;}
+		|	WHILE LPAR Expr RPAR StatementError						{;}
+		|	RETURN ExprReturn SEMICOLON								{;}
+		|	Statement3 SEMICOLON									{$$ = $1;}
+		|	PRINT LPAR StatementPrint RPAR SEMICOLON				{;}
 		;
 
-Statement2:	%empty										{$$ = NULL;}
-		|	Statement Statement2						{if ($1 != NULL){$$ = $1;}else{$$ = $2;}}
-		;
-
-ExprReturn:	%empty										{$$ = NULL;}
-		|	Expr										{$$ = $1;}
-		;
-
-Statement3:	%empty										{$$ = NULL;}
-		|	MethodInvocation							{$$ = $1;}
-		|	Assignment									{$$ = $1;}
-		|	ParseArgs									{$$ = $1;}
-		;
-
-StatementPrint:	Expr									{$$ = $1;}
-			|	STRLIT									{;}
+StatementError:	Statement											{$$ = $1;}
+			|	error SEMICOLON										{error_flag = 1;}
 			;
 
-MethodInvocation:	ID LPAR MethodInvocation2 RPAR		{;}
+Statement2:	%empty													{$$ = NULL;}
+		|	StatementError Statement2								{if ($1 != NULL){$$ = $1;}else{$$ = $2;}}
+		;
+
+ExprReturn:	%empty													{$$ = NULL;}
+		|	Expr													{$$ = $1;}
+		;
+
+Statement3:	%empty													{$$ = NULL;}
+		|	MethodInvocation										{$$ = $1;}
+		|	Assignment												{$$ = $1;}
+		|	ParseArgs												{$$ = $1;}
+		;
+
+StatementPrint:	Expr												{$$ = $1;}
+			|	STRLIT												{;}
+			;
+
+MethodInvocation:	ID LPAR MethodInvocation2 RPAR					{;}
+				|	ID LPAR error RPAR								{$$ = NULL;}
 				;
 
-MethodInvocation2:	%empty								{$$ = NULL;}
-				|	Expr MethodInvocationExpr			{$$ = $1;}
+MethodInvocation2:	%empty											{$$ = NULL;}
+				|	Expr MethodInvocationExpr						{$$ = $1;}
 				;
 
-MethodInvocationExpr:	%empty							{$$ = NULL;}
-					|	COMMA Expr MethodInvocationExpr	{if($2!=NULL){$$=$2;}else{$$=$2;}}
+MethodInvocationExpr:	%empty										{$$ = NULL;}
+					|	COMMA Expr MethodInvocationExpr				{if($2!=NULL){$$=$2;}else{$$=$2;}}
 					;
 
-Assignment:	ID ASSIGN Expr								{;}
+Assignment:	ID ASSIGN Expr											{;}
 		;
 
-ParseArgs:	PARSEINT LPAR ID LSQ Expr RSQ LPAR			{;}
+ParseArgs:	PARSEINT LPAR ID LSQ Expr RSQ LPAR						{;}
+		|	PARSEINT LPAR error RPAR								{$$ = NULL; error_flag = 1;}
 		;
 
-Expr:	Assignment										{$$ = $1;}	
-	|	ExprOperations									{$$ = $1;}
+Expr:	Assignment													{$$ = $1;}	
+	|	ExprOperations												{$$ = $1;}
 	;
 
-ExprOperations:	ExprOperations PLUS ExprOperations				{;}
-			|	ExprOperations MINUS ExprOperations				{;}
-			|	ExprOperations STAR	ExprOperations				{;}
-			|	ExprOperations DIV ExprOperations				{;}
-			|	ExprOperations MOD ExprOperations				{;}
-			|	ExprOperations AND ExprOperations				{;}
-			|	ExprOperations OR ExprOperations				{;}
-			|	ExprOperations XOR ExprOperations				{;}
-			|	ExprOperations LSHIFT ExprOperations			{;}
-			|	ExprOperations RSHIFT ExprOperations			{;}
-			|	ExprOperations EQ ExprOperations				{;}
-			|	ExprOperations GE ExprOperations				{;}
-			|	ExprOperations GT ExprOperations				{;}
-			|	ExprOperations LE ExprOperations				{;}
-			|	ExprOperations LT ExprOperations				{;}
-			|	ExprOperations NE ExprOperations				{;}
-			|	PLUS ExprOperations %prec NOT					{;}
-			|	MINUS ExprOperations %prec NOT					{;}
-			|	NOT ExprOperations								{;}
-			|	LPAR ExprOperations RPAR						{$$ = $2;}
-			|	Expr2											{$$ = $1;}
-			|	ID												{;}
-			|	ID DOTLENGTH									{;}
-			|	ExprLit											{$$ = $1;}
+ExprOperations:	ExprOperations PLUS ExprOperations					{;}
+			|	ExprOperations MINUS ExprOperations					{;}
+			|	ExprOperations STAR	ExprOperations					{;}
+			|	ExprOperations DIV ExprOperations					{;}
+			|	ExprOperations MOD ExprOperations					{;}
+			|	ExprOperations AND ExprOperations					{;}
+			|	ExprOperations OR ExprOperations					{;}
+			|	ExprOperations XOR ExprOperations					{;}
+			|	ExprOperations LSHIFT ExprOperations				{;}
+			|	ExprOperations RSHIFT ExprOperations				{;}
+			|	ExprOperations EQ ExprOperations					{;}
+			|	ExprOperations GE ExprOperations					{;}
+			|	ExprOperations GT ExprOperations					{;}
+			|	ExprOperations LE ExprOperations					{;}
+			|	ExprOperations LT ExprOperations					{;}
+			|	ExprOperations NE ExprOperations					{;}
+			|	PLUS ExprOperations %prec NOT						{;}
+			|	MINUS ExprOperations %prec NOT						{;}
+			|	NOT ExprOperations									{;}
+			|	LPAR ExprOperations RPAR							{$$ = $2;}
+			|	LPAR error RPAR										{$$ = NULL; error_flag = 1;}
+			|	Expr2												{$$ = $1;}
+			|	ID													{;}
+			|	ID DOTLENGTH										{;}
+			|	ExprLit												{$$ = $1;}
 			;
 
-Expr2:	MethodInvocation										{$$ = $1;}
-	|	ParseArgs												{$$ = $1;}
+Expr2:	MethodInvocation											{$$ = $1;}
+	|	ParseArgs													{$$ = $1;}
 	;
 
-ExprLit:	INTLIT												{;}
-		|	REALLIT												{;}
-		|	BOOLLIT												{;}
+ExprLit:	INTLIT													{;}
+		|	REALLIT													{;}
+		|	BOOLLIT													{;}
 
 %%
-
-int main(int argc, char *argv[])
-{
-	if (argc > 1) {
-		if (strcmp(argv[1],"-l") == 0) {
-			flag = 1;
-		}
-		else if(strcmp(argv[1],"-e1") == 0) {
-			flag = 0;
-		}
-	}
-	else if (argc == 1){
-		flag = 0;
-	}
-	yylex();
-	yyparse();
-	return 0;
-}
