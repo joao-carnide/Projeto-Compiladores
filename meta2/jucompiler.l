@@ -13,9 +13,10 @@
 	int linha = 1;
 	int coluna = 1;
 	int linha_coluna[2];  //array auxiliar para linhas e colunas
-	int flag = 0; //0 - detetar erros (nada ou -e1), 1 - detetar tudo (-l)
+	int flag = 0;
 	int string = 0;  //flag para detetar string
 	char * strlit;
+	extern int error_flag;
 %}
 
 id					"_"|"$"|("_"|"$"|[a-z]|[A-Z])([a-z]|[A-Z]|[0-9]|"$"|"_")*
@@ -221,9 +222,17 @@ int main(int argc, char *argv[])
 			flag = 1;
 			yylex();
 		}
-		else if(strcmp(argv[1],"-e1") == 0) {
+		else if (strcmp(argv[1],"-e1") == 0) {
 			flag = 0;
 			yylex();
+		}
+		else if (strcmp(argv[1],"-e2") == 0) {
+			flag = 0;
+			error_flag = 1;
+			yylex();
+		}
+		else if (strcmp(argv[1],"-t") == 0) {
+			flag = 2;
 		}
 	}
 	else if (argc == 1){
