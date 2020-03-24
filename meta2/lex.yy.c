@@ -2400,23 +2400,11 @@ void yyfree (void * ptr )
 #line 206 "jucompiler.l"
 
 
-int main(int argc, char *argv[])
-{
-	if (argc > 1) {
-		if (strcmp(argv[1],"-l") == 0) {
-			flag = 1;
-		}
-		else if(strcmp(argv[1],"-e1") == 0) {
-			flag = 0;
-		}
-	}
-	else if (argc == 1){
-		flag = 0;
-	}
-	yylex();
-	return 0;
-}
-
 int yywrap() {
 	return 1;
 }
+
+void yyerror (const char *s) { 
+     printf ("%s: %s\n", s, yytext);
+}
+

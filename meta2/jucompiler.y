@@ -11,6 +11,7 @@
 	int yylex(void);
     void yyerror (const char *s);
 
+	int flag = 0; //0 - detetar erros (nada ou -e1), 1 - detetar tudo (-l)
 %}
 
 %union {
@@ -58,9 +59,9 @@
 %right ASSIGN
 %left OR
 %left AND
-%left LSHIFT RSHIFT
 %left EQ NE
 %left GE GT LE LT
+%left LSHIFT RSHIFT
 %left PLUS MINUS
 %left STAR DIV MOD
 %right NOT
@@ -206,4 +207,23 @@ Expr2:	MethodInvocation										{$$ = $1;}
 ExprLit:	INTLIT												{;}
 		|	REALLIT												{;}
 		|	BOOLLIT												{;}
+
 %%
+
+int main(int argc, char *argv[])
+{
+	if (argc > 1) {
+		if (strcmp(argv[1],"-l") == 0) {
+			flag = 1;
+		}
+		else if(strcmp(argv[1],"-e1") == 0) {
+			flag = 0;
+		}
+	}
+	else if (argc == 1){
+		flag = 0;
+	}
+	yylex();
+	yyparse();
+	return 0;
+}

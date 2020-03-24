@@ -2043,16 +2043,18 @@ State 135
    68               | ExprOperations . LT ExprOperations
    69               | ExprOperations . NE ExprOperations
 
-    STAR   shift, and go to state 104
-    DIV    shift, and go to state 105
-    GE     shift, and go to state 107
-    GT     shift, and go to state 108
-    LE     shift, and go to state 109
-    LT     shift, and go to state 110
-    MINUS  shift, and go to state 111
-    MOD    shift, and go to state 112
-    PLUS   shift, and go to state 115
-    XOR    shift, and go to state 118
+    STAR    shift, and go to state 104
+    DIV     shift, and go to state 105
+    GE      shift, and go to state 107
+    GT      shift, and go to state 108
+    LE      shift, and go to state 109
+    LT      shift, and go to state 110
+    MINUS   shift, and go to state 111
+    MOD     shift, and go to state 112
+    PLUS    shift, and go to state 115
+    LSHIFT  shift, and go to state 116
+    RSHIFT  shift, and go to state 117
+    XOR     shift, and go to state 118
 
     XOR       [reduce using rule 64 (ExprOperations)]
     $default  reduce using rule 64 (ExprOperations)
@@ -2078,12 +2080,14 @@ State 136
    68               | ExprOperations . LT ExprOperations
    69               | ExprOperations . NE ExprOperations
 
-    STAR   shift, and go to state 104
-    DIV    shift, and go to state 105
-    MINUS  shift, and go to state 111
-    MOD    shift, and go to state 112
-    PLUS   shift, and go to state 115
-    XOR    shift, and go to state 118
+    STAR    shift, and go to state 104
+    DIV     shift, and go to state 105
+    MINUS   shift, and go to state 111
+    MOD     shift, and go to state 112
+    PLUS    shift, and go to state 115
+    LSHIFT  shift, and go to state 116
+    RSHIFT  shift, and go to state 117
+    XOR     shift, and go to state 118
 
     XOR       [reduce using rule 65 (ExprOperations)]
     $default  reduce using rule 65 (ExprOperations)
@@ -2109,12 +2113,14 @@ State 137
    68               | ExprOperations . LT ExprOperations
    69               | ExprOperations . NE ExprOperations
 
-    STAR   shift, and go to state 104
-    DIV    shift, and go to state 105
-    MINUS  shift, and go to state 111
-    MOD    shift, and go to state 112
-    PLUS   shift, and go to state 115
-    XOR    shift, and go to state 118
+    STAR    shift, and go to state 104
+    DIV     shift, and go to state 105
+    MINUS   shift, and go to state 111
+    MOD     shift, and go to state 112
+    PLUS    shift, and go to state 115
+    LSHIFT  shift, and go to state 116
+    RSHIFT  shift, and go to state 117
+    XOR     shift, and go to state 118
 
     XOR       [reduce using rule 66 (ExprOperations)]
     $default  reduce using rule 66 (ExprOperations)
@@ -2140,12 +2146,14 @@ State 138
    68               | ExprOperations . LT ExprOperations
    69               | ExprOperations . NE ExprOperations
 
-    STAR   shift, and go to state 104
-    DIV    shift, and go to state 105
-    MINUS  shift, and go to state 111
-    MOD    shift, and go to state 112
-    PLUS   shift, and go to state 115
-    XOR    shift, and go to state 118
+    STAR    shift, and go to state 104
+    DIV     shift, and go to state 105
+    MINUS   shift, and go to state 111
+    MOD     shift, and go to state 112
+    PLUS    shift, and go to state 115
+    LSHIFT  shift, and go to state 116
+    RSHIFT  shift, and go to state 117
+    XOR     shift, and go to state 118
 
     XOR       [reduce using rule 67 (ExprOperations)]
     $default  reduce using rule 67 (ExprOperations)
@@ -2171,12 +2179,14 @@ State 139
    68               | ExprOperations LT ExprOperations .
    69               | ExprOperations . NE ExprOperations
 
-    STAR   shift, and go to state 104
-    DIV    shift, and go to state 105
-    MINUS  shift, and go to state 111
-    MOD    shift, and go to state 112
-    PLUS   shift, and go to state 115
-    XOR    shift, and go to state 118
+    STAR    shift, and go to state 104
+    DIV     shift, and go to state 105
+    MINUS   shift, and go to state 111
+    MOD     shift, and go to state 112
+    PLUS    shift, and go to state 115
+    LSHIFT  shift, and go to state 116
+    RSHIFT  shift, and go to state 117
+    XOR     shift, and go to state 118
 
     XOR       [reduce using rule 68 (ExprOperations)]
     $default  reduce using rule 68 (ExprOperations)
@@ -2257,16 +2267,18 @@ State 142
    69               | ExprOperations . NE ExprOperations
    69               | ExprOperations NE ExprOperations .
 
-    STAR   shift, and go to state 104
-    DIV    shift, and go to state 105
-    GE     shift, and go to state 107
-    GT     shift, and go to state 108
-    LE     shift, and go to state 109
-    LT     shift, and go to state 110
-    MINUS  shift, and go to state 111
-    MOD    shift, and go to state 112
-    PLUS   shift, and go to state 115
-    XOR    shift, and go to state 118
+    STAR    shift, and go to state 104
+    DIV     shift, and go to state 105
+    GE      shift, and go to state 107
+    GT      shift, and go to state 108
+    LE      shift, and go to state 109
+    LT      shift, and go to state 110
+    MINUS   shift, and go to state 111
+    MOD     shift, and go to state 112
+    PLUS    shift, and go to state 115
+    LSHIFT  shift, and go to state 116
+    RSHIFT  shift, and go to state 117
+    XOR     shift, and go to state 118
 
     XOR       [reduce using rule 69 (ExprOperations)]
     $default  reduce using rule 69 (ExprOperations)
@@ -2363,14 +2375,8 @@ State 145
 
     STAR   shift, and go to state 104
     DIV    shift, and go to state 105
-    EQ     shift, and go to state 106
-    GE     shift, and go to state 107
-    GT     shift, and go to state 108
-    LE     shift, and go to state 109
-    LT     shift, and go to state 110
     MINUS  shift, and go to state 111
     MOD    shift, and go to state 112
-    NE     shift, and go to state 113
     PLUS   shift, and go to state 115
     XOR    shift, and go to state 118
 
@@ -2400,14 +2406,8 @@ State 146
 
     STAR   shift, and go to state 104
     DIV    shift, and go to state 105
-    EQ     shift, and go to state 106
-    GE     shift, and go to state 107
-    GT     shift, and go to state 108
-    LE     shift, and go to state 109
-    LT     shift, and go to state 110
     MINUS  shift, and go to state 111
     MOD    shift, and go to state 112
-    NE     shift, and go to state 113
     PLUS   shift, and go to state 115
     XOR    shift, and go to state 118
 
