@@ -16,7 +16,6 @@
 	int flag = 0;
 	int string = 0;  //flag para detetar string
 	char * strlit;
-	extern int error_flag;
 %}
 
 id					"_"|"$"|("_"|"$"|[a-z]|[A-Z])([a-z]|[A-Z]|[0-9]|"$"|"_")*
@@ -211,33 +210,6 @@ int yywrap() {
 	return 1;
 }
 
-void yyerror (const char *s) { 
+void yyerror(const char *s) { 
      printf ("Line %d, col %d: %s: %s\n", linha, (int)(coluna-strlen(yytext)), s, yytext);
-}
-
-int main(int argc, char *argv[])
-{
-	if (argc > 1) {
-		if (strcmp(argv[1],"-l") == 0) {
-			flag = 1;
-			yylex();
-		}
-		else if (strcmp(argv[1],"-e1") == 0) {
-			flag = 0;
-			yylex();
-		}
-		else if (strcmp(argv[1],"-e2") == 0) {
-			flag = 0;
-			error_flag = 1;
-			yylex();
-		}
-		else if (strcmp(argv[1],"-t") == 0) {
-			flag = 2;
-		}
-	}
-	else if (argc == 1){
-		flag = 0;
-	}
-	yyparse();
-	return 0;
 }
