@@ -103,6 +103,7 @@
 
 	int yylex(void);
     void yyerror (const char *s);
+	int yylex_destroy();
 
 	no cria_node(node_type type, char * valor, char * s_type) {
 		no novo = malloc(sizeof(node));
@@ -205,7 +206,7 @@
 		}
 	}
 
-#line 209 "y.tab.c" /* yacc.c:339  */
+#line 210 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -345,12 +346,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 144 "jucompiler.y" /* yacc.c:355  */
+#line 145 "jucompiler.y" /* yacc.c:355  */
 
 	char * id;
 	struct node * node;
 
-#line 354 "y.tab.c" /* yacc.c:355  */
+#line 355 "y.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -367,7 +368,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 371 "y.tab.c" /* yacc.c:358  */
+#line 372 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -669,15 +670,15 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   203,   203,   209,   210,   212,   214,   217,   222,   237,
-     240,   241,   245,   246,   247,   250,   251,   254,   255,   258,
-     259,   262,   263,   266,   269,   270,   271,   274,   277,   278,
-     281,   282,   283,   284,   285,   286,   287,   290,   291,   294,
-     295,   298,   299,   302,   303,   304,   305,   308,   309,   312,
-     313,   316,   317,   320,   321,   324,   327,   328,   331,   332,
-     335,   336,   337,   338,   339,   340,   341,   342,   343,   344,
-     345,   346,   347,   348,   349,   350,   351,   352,   353,   354,
-     355,   356,   357,   358,   359,   362,   363,   366,   367,   368
+       0,   204,   204,   210,   211,   213,   215,   218,   223,   238,
+     241,   242,   246,   247,   248,   251,   257,   266,   267,   270,
+     275,   281,   282,   289,   293,   294,   296,   305,   322,   323,
+     327,   335,   347,   372,   382,   384,   385,   389,   390,   394,
+     395,   404,   405,   408,   409,   410,   411,   414,   415,   418,
+     422,   426,   427,   431,   432,   441,   447,   451,   455,   456,
+     459,   462,   465,   468,   471,   474,   477,   480,   483,   486,
+     489,   492,   495,   498,   501,   504,   507,   509,   511,   513,
+     514,   516,   517,   518,   520,   523,   524,   527,   528,   529
 };
 #endif
 
@@ -747,7 +748,7 @@ static const yytype_int16 yypact[] =
      209,  -116,  -116,   331,  -116,  -116,   380,   393,   393,   393,
      393,    33,  -116,   380,   306,    33,    37,    37,   356,   102,
      129,  -116,  -116,   181,   141,   150,  -116,   157,  -116,  -116,
-    -116,  -116,   102,   169,  -116,  -116
+    -116,  -116,   102,   159,  -116,  -116
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -861,7 +862,7 @@ static const yytype_int16 yycheck[] =
       30,    49,    11,    29,    28,    35,    28,     3,    38,    28,
       40,    41,    42,    43,    28,    45,    19,    28,     1,    49,
        3,     4,     5,     6,    28,    30,    28,     1,     3,     3,
-       4,     5,     6,    30,     3,    18,    29,    18,    21,    39,
+       4,     5,     6,    30,     3,    18,    29,    28,    21,    39,
       30,    24,   160,    26,    18,    28,    -1,    21,    58,    -1,
       24,    -1,    26,     3,     4,     5,     6,     7,   164,    51,
       43,    -1,     3,     4,     5,     6,    -1,    -1,    18,    43,
@@ -909,7 +910,7 @@ static const yytype_uint8 yystos[] =
       19,    28,    28,    78,    78,    78,    78,    78,    78,    78,
       78,    78,    78,    78,    78,    78,    78,    78,    78,    28,
        3,    30,     3,    57,    77,    67,    30,    77,    67,    65,
-       3,    74,    39,    29,    67,    18
+       3,    74,    39,    29,    67,    28
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
@@ -1614,50 +1615,50 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 203 "jucompiler.y" /* yacc.c:1646  */
+#line 204 "jucompiler.y" /* yacc.c:1646  */
     {raiz = cria_node(node_raiz, "", "Program");
 																	aux = cria_node(node_id, (yyvsp[-3].id), "Id");
 																	adicionar_node(raiz, aux);
 																	(yyval.node) = raiz;}
-#line 1623 "y.tab.c" /* yacc.c:1646  */
+#line 1624 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 209 "jucompiler.y" /* yacc.c:1646  */
+#line 210 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = NULL;}
-#line 1629 "y.tab.c" /* yacc.c:1646  */
+#line 1630 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 210 "jucompiler.y" /* yacc.c:1646  */
+#line 211 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = (yyvsp[-1].node);
 																	adicionar_irmao((yyval.node), (yyvsp[0].node));}
-#line 1636 "y.tab.c" /* yacc.c:1646  */
+#line 1637 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 212 "jucompiler.y" /* yacc.c:1646  */
+#line 213 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = (yyvsp[-1].node);
 																	adicionar_irmao((yyval.node), (yyvsp[0].node));}
-#line 1643 "y.tab.c" /* yacc.c:1646  */
+#line 1644 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 214 "jucompiler.y" /* yacc.c:1646  */
+#line 215 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = (yyvsp[0].node);}
-#line 1649 "y.tab.c" /* yacc.c:1646  */
+#line 1650 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 217 "jucompiler.y" /* yacc.c:1646  */
+#line 218 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = cria_node(node_metodos, "", "MethodDecl");
 																	adicionar_node((yyval.node), (yyvsp[-1].node));
 																	adicionar_irmao((yyval.node), (yyvsp[0].node));}
-#line 1657 "y.tab.c" /* yacc.c:1646  */
+#line 1658 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 222 "jucompiler.y" /* yacc.c:1646  */
+#line 223 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = cria_node(node_var, "", "FieldDecl");
 																	adicionar_node((yyval.node), (yyvsp[-3].node));
 																	adicionar_irmao((yyvsp[-3].node), cria_node(node_id, (yyvsp[-2].id), "Id"));
@@ -1673,498 +1674,658 @@ yyreduce:
 																		}
 																		free(aux);
 																	}}
-#line 1677 "y.tab.c" /* yacc.c:1646  */
+#line 1678 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 237 "jucompiler.y" /* yacc.c:1646  */
+#line 238 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = NULL; flag_erro = 1;}
-#line 1683 "y.tab.c" /* yacc.c:1646  */
+#line 1684 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 240 "jucompiler.y" /* yacc.c:1646  */
+#line 241 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = NULL;}
-#line 1689 "y.tab.c" /* yacc.c:1646  */
+#line 1690 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 241 "jucompiler.y" /* yacc.c:1646  */
+#line 242 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = cria_node(node_id, (yyvsp[-1].id), "Id");
 																	adicionar_irmao((yyval.node), (yyvsp[0].node));}
-#line 1696 "y.tab.c" /* yacc.c:1646  */
+#line 1697 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 245 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 1702 "y.tab.c" /* yacc.c:1646  */
+#line 246 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_terminais, "", "Bool");}
+#line 1703 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 246 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 1708 "y.tab.c" /* yacc.c:1646  */
+#line 247 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_terminais, "", "Int");}
+#line 1709 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 247 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 1714 "y.tab.c" /* yacc.c:1646  */
+#line 248 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_terminais, "", "Double");}
+#line 1715 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 250 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 1720 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 16:
 #line 251 "jucompiler.y" /* yacc.c:1646  */
-    {;}
+    {(yyval.node) = cria_node(node_metodos, "", "MethodHeader");
+																	adicionar_node((yyval.node),(yyvsp[-4].node));
+																	adicionar_irmao((yyvsp[-4].node), cria_node(node_id, (yyvsp[-3].id), "Id"));
+																	aux = cria_node(node_metodos, "", "MethodParams");
+																	adicionar_irmao((yyvsp[-4].node), aux);
+																	adicionar_node(aux, (yyvsp[-1].node));}
 #line 1726 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 17:
-#line 254 "jucompiler.y" /* yacc.c:1646  */
-    {(yyval.node) = NULL;}
-#line 1732 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 18:
-#line 255 "jucompiler.y" /* yacc.c:1646  */
-    {(yyval.node) = (yyvsp[0].node);}
+  case 16:
+#line 257 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_metodos, "", "MethodHeader");
+																	aux = cria_node(node_terminais, "", "Void");
+																	adicionar_node((yyval.node), aux);
+																	adicionar_irmao(aux, cria_node(node_id, (yyvsp[-3].id), "Id"));
+																	no aux2 = cria_node(node_metodos, "", "MethodParams");
+																	adicionar_irmao(aux, aux2);
+																	adicionar_node(aux2, (yyvsp[-1].node));}
 #line 1738 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 19:
-#line 258 "jucompiler.y" /* yacc.c:1646  */
-    {;}
+  case 17:
+#line 266 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = NULL;}
 #line 1744 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 20:
-#line 259 "jucompiler.y" /* yacc.c:1646  */
-    {;}
+  case 18:
+#line 267 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = (yyvsp[0].node);}
 #line 1750 "y.tab.c" /* yacc.c:1646  */
     break;
 
+  case 19:
+#line 270 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_metodos, "", "ParamDecl");
+																	adicionar_node((yyval.node), (yyvsp[-2].node));
+																	aux = cria_node(node_id, (yyvsp[-1].id), "Id");
+																	adicionar_irmao((yyvsp[-2].node), aux);
+																	adicionar_irmao((yyval.node), (yyvsp[0].node));}
+#line 1760 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 20:
+#line 275 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_metodos, "", "ParamDecl");
+																	aux = cria_node(node_metodos, "", "StringArray");
+																	adicionar_node((yyval.node), aux);
+																	adicionar_irmao(aux, cria_node(node_id, (yyvsp[0].id), "Id"));}
+#line 1769 "y.tab.c" /* yacc.c:1646  */
+    break;
+
   case 21:
-#line 262 "jucompiler.y" /* yacc.c:1646  */
+#line 281 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = NULL;}
-#line 1756 "y.tab.c" /* yacc.c:1646  */
+#line 1775 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 263 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 1762 "y.tab.c" /* yacc.c:1646  */
+#line 282 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_metodos, "", "ParamDecl");
+																	aux = cria_node(node_id, (yyvsp[0].id), "Id");
+																	adicionar_node((yyval.node), (yyvsp[-1].node));
+																	adicionar_irmao((yyvsp[-1].node), aux);
+																	/*adicionar_irmao($$, $4);*/}
+#line 1785 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 266 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 1768 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 24:
-#line 269 "jucompiler.y" /* yacc.c:1646  */
-    {(yyval.node) = NULL;}
-#line 1774 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 25:
-#line 270 "jucompiler.y" /* yacc.c:1646  */
-    {(yyval.node) = (yyvsp[-1].node);}
-#line 1780 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 26:
-#line 271 "jucompiler.y" /* yacc.c:1646  */
-    {if ((yyvsp[-1].node) != NULL){(yyval.node) = (yyvsp[-1].node);}else{(yyval.node) = (yyvsp[0].node);};}
-#line 1786 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 27:
-#line 274 "jucompiler.y" /* yacc.c:1646  */
-    {;}
+#line 289 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_metodos, "", "MethodBody");
+																	adicionar_node((yyval.node), (yyvsp[-1].node));}
 #line 1792 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 28:
-#line 277 "jucompiler.y" /* yacc.c:1646  */
+  case 24:
+#line 293 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = NULL;}
 #line 1798 "y.tab.c" /* yacc.c:1646  */
     break;
 
+  case 25:
+#line 294 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = (yyvsp[-1].node);
+																	adicionar_irmao((yyval.node), (yyvsp[0].node));}
+#line 1805 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 26:
+#line 296 "jucompiler.y" /* yacc.c:1646  */
+    {if ((yyvsp[-1].node) != NULL){
+																		(yyval.node) = (yyvsp[-1].node);
+																		adicionar_irmao((yyval.node), (yyvsp[0].node));
+																		}
+																	else {
+																		(yyval.node) = (yyvsp[0].node);
+																	}}
+#line 1817 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 27:
+#line 305 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_metodos, "", "VarDecl");
+																	adicionar_node((yyval.node), (yyvsp[-3].node));
+																	adicionar_irmao((yyvsp[-3].node), cria_node(node_id, (yyvsp[-2].id), "Id"));
+																	if ((yyvsp[-1].node) != NULL){
+																		aux = (yyvsp[-1].node);
+																		while (aux != NULL) {
+																			no aux1 = cria_node(node_metodos, "", "VarDecl");
+																			no aux2 = cria_node((yyvsp[-3].node)->type, (yyvsp[-3].node)->valor, (yyvsp[-3].node)->s_type);
+																			adicionar_node(aux1, aux2);
+																			adicionar_irmao(aux2, cria_node(node_id, aux->valor, "Id"));
+																			adicionar_irmao((yyval.node), aux1);
+																			aux = aux->irmao;
+																		}
+																		free(aux);
+																	}}
+#line 1837 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 28:
+#line 322 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = NULL;}
+#line 1843 "y.tab.c" /* yacc.c:1646  */
+    break;
+
   case 29:
-#line 278 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 1804 "y.tab.c" /* yacc.c:1646  */
+#line 323 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_id, (yyvsp[-1].id), "Id");
+																	adicionar_irmao((yyval.node), (yyvsp[0].node));}
+#line 1850 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 281 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 1810 "y.tab.c" /* yacc.c:1646  */
+#line 327 "jucompiler.y" /* yacc.c:1646  */
+    {if (conta_irmaos((yyvsp[-1].node)) > 1) {
+																		aux = cria_node(node_statements, "", "Block");
+																		(yyval.node) = aux;
+																		adicionar_node(aux, (yyvsp[-1].node));
+																	}
+																	else {
+																		(yyval.node) = (yyvsp[-1].node);
+																	}}
+#line 1863 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 282 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 1816 "y.tab.c" /* yacc.c:1646  */
+#line 335 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_statements, "", "If");
+																	adicionar_node((yyval.node),(yyvsp[-2].node));
+																	aux = cria_node(node_statements, "", "Block");
+																	if (conta_irmaos((yyvsp[0].node)) == 1 && (yyvsp[0].node) != NULL) {
+																		adicionar_irmao((yyvsp[-2].node), (yyvsp[0].node));
+																		adicionar_irmao((yyvsp[0].node), aux);
+																	}
+																	else {
+																		adicionar_irmao((yyvsp[-2].node), aux);
+																		adicionar_node(aux, (yyvsp[0].node));
+																		adicionar_irmao(aux, cria_node(node_statements, "", "Block"));
+																	}}
+#line 1880 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 283 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 1822 "y.tab.c" /* yacc.c:1646  */
+#line 347 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_statements, "", "If");
+																	adicionar_node((yyval.node),(yyvsp[-4].node));
+																	aux = cria_node(node_statements, "", "Block");
+																	if (conta_irmaos((yyvsp[-2].node)) == 1 && (yyvsp[-2].node) != NULL) {
+																		adicionar_irmao((yyvsp[-4].node), (yyvsp[-2].node));
+																		if (conta_irmaos((yyvsp[0].node)) == 1 && (yyvsp[0].node) != NULL) {
+																			adicionar_irmao((yyvsp[-2].node), (yyvsp[0].node));
+																		}
+																		else {
+																			adicionar_irmao((yyvsp[-2].node), aux);
+																			adicionar_node(aux, (yyvsp[0].node));
+																		}
+																	}
+																	else {
+																		adicionar_irmao((yyvsp[-4].node), aux);
+																		adicionar_node(aux, (yyvsp[-2].node));
+																		if (conta_irmaos((yyvsp[0].node)) == 1 && (yyvsp[0].node) != NULL) {
+																			adicionar_irmao(aux, (yyvsp[0].node));
+																		}
+																		else {
+																			no aux2 = cria_node(node_statements, "", "Block");
+																			adicionar_irmao(aux, aux2);
+																			adicionar_node(aux2, (yyvsp[0].node));
+																		}
+																	}}
+#line 1910 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 284 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 1828 "y.tab.c" /* yacc.c:1646  */
+#line 372 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_statements, "", "While");
+																	adicionar_node((yyval.node), (yyvsp[-2].node));
+																	if (conta_irmaos((yyvsp[0].node)) == 1 && (yyvsp[0].node) != NULL) {
+																		adicionar_irmao((yyvsp[-2].node), (yyvsp[0].node));
+																	}
+																	else {
+																		aux = cria_node(node_statements, "", "Block");
+																		adicionar_irmao((yyvsp[-2].node), aux);
+																		adicionar_node(aux, (yyvsp[0].node));
+																	}}
+#line 1925 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 285 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 1834 "y.tab.c" /* yacc.c:1646  */
+#line 382 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_statements, "", "Return");
+																	adicionar_node((yyval.node), (yyvsp[-1].node));}
+#line 1932 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 286 "jucompiler.y" /* yacc.c:1646  */
+#line 384 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = (yyvsp[-1].node);}
-#line 1840 "y.tab.c" /* yacc.c:1646  */
+#line 1938 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 287 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 1846 "y.tab.c" /* yacc.c:1646  */
+#line 385 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_statements, "", "Print");
+																	adicionar_node((yyval.node), (yyvsp[-2].node));}
+#line 1945 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 290 "jucompiler.y" /* yacc.c:1646  */
+#line 389 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = (yyvsp[0].node);}
-#line 1852 "y.tab.c" /* yacc.c:1646  */
+#line 1951 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 291 "jucompiler.y" /* yacc.c:1646  */
-    {error_flag = 1;}
-#line 1858 "y.tab.c" /* yacc.c:1646  */
+#line 390 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = NULL; 
+																	flag_erro = 1;}
+#line 1958 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 294 "jucompiler.y" /* yacc.c:1646  */
+#line 394 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = NULL;}
-#line 1864 "y.tab.c" /* yacc.c:1646  */
+#line 1964 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 295 "jucompiler.y" /* yacc.c:1646  */
-    {if ((yyvsp[-1].node) != NULL){(yyval.node) = (yyvsp[-1].node);}else{(yyval.node) = (yyvsp[0].node);}}
-#line 1870 "y.tab.c" /* yacc.c:1646  */
+#line 395 "jucompiler.y" /* yacc.c:1646  */
+    {if ((yyvsp[-1].node) != NULL) {
+																		(yyval.node) = (yyvsp[-1].node);
+																		adicionar_irmao((yyval.node), (yyvsp[0].node));
+																	}
+																	else {
+																		(yyval.node) = (yyvsp[0].node);
+																	}}
+#line 1976 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 298 "jucompiler.y" /* yacc.c:1646  */
+#line 404 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = NULL;}
-#line 1876 "y.tab.c" /* yacc.c:1646  */
+#line 1982 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 299 "jucompiler.y" /* yacc.c:1646  */
+#line 405 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = (yyvsp[0].node);}
-#line 1882 "y.tab.c" /* yacc.c:1646  */
+#line 1988 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 302 "jucompiler.y" /* yacc.c:1646  */
+#line 408 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = NULL;}
-#line 1888 "y.tab.c" /* yacc.c:1646  */
+#line 1994 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 303 "jucompiler.y" /* yacc.c:1646  */
+#line 409 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = (yyvsp[0].node);}
-#line 1894 "y.tab.c" /* yacc.c:1646  */
+#line 2000 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 304 "jucompiler.y" /* yacc.c:1646  */
+#line 410 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = (yyvsp[0].node);}
-#line 1900 "y.tab.c" /* yacc.c:1646  */
+#line 2006 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 305 "jucompiler.y" /* yacc.c:1646  */
+#line 411 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = (yyvsp[0].node);}
-#line 1906 "y.tab.c" /* yacc.c:1646  */
+#line 2012 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 308 "jucompiler.y" /* yacc.c:1646  */
+#line 414 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = (yyvsp[0].node);}
-#line 1912 "y.tab.c" /* yacc.c:1646  */
+#line 2018 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 309 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 1918 "y.tab.c" /* yacc.c:1646  */
+#line 415 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_terminais, (yyvsp[0].id), "StrLit");}
+#line 2024 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 312 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 1924 "y.tab.c" /* yacc.c:1646  */
+#line 418 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Assign");
+																	aux = cria_node(node_id, (yyvsp[-3].id), "Id");
+																	adicionar_node((yyval.node), aux);
+																	adicionar_irmao(aux, (yyvsp[-1].node));}
+#line 2033 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 313 "jucompiler.y" /* yacc.c:1646  */
-    {(yyval.node) = NULL;}
-#line 1930 "y.tab.c" /* yacc.c:1646  */
+#line 422 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = NULL;
+																	flag_erro = 1;}
+#line 2040 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 316 "jucompiler.y" /* yacc.c:1646  */
+#line 426 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = NULL;}
-#line 1936 "y.tab.c" /* yacc.c:1646  */
+#line 2046 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 317 "jucompiler.y" /* yacc.c:1646  */
-    {(yyval.node) = (yyvsp[-1].node);}
-#line 1942 "y.tab.c" /* yacc.c:1646  */
+#line 427 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = (yyvsp[-1].node);
+																	adicionar_irmao((yyval.node), (yyvsp[0].node));}
+#line 2053 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 320 "jucompiler.y" /* yacc.c:1646  */
+#line 431 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = NULL;}
-#line 1948 "y.tab.c" /* yacc.c:1646  */
+#line 2059 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 321 "jucompiler.y" /* yacc.c:1646  */
-    {if((yyvsp[-1].node)!=NULL){(yyval.node)=(yyvsp[-1].node);}else{(yyval.node)=(yyvsp[-1].node);}}
-#line 1954 "y.tab.c" /* yacc.c:1646  */
+#line 432 "jucompiler.y" /* yacc.c:1646  */
+    {if((yyvsp[-1].node)!=NULL) {
+																		(yyval.node)=(yyvsp[-1].node);
+																		adicionar_irmao((yyval.node), (yyvsp[0].node));
+																	}
+																	else {
+																		(yyval.node)=(yyvsp[-1].node);
+																	}}
+#line 2071 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 324 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 1960 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 56:
-#line 327 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 1966 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 57:
-#line 328 "jucompiler.y" /* yacc.c:1646  */
-    {(yyval.node) = NULL; error_flag = 1;}
-#line 1972 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 58:
-#line 331 "jucompiler.y" /* yacc.c:1646  */
-    {(yyval.node) = (yyvsp[0].node);}
-#line 1978 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 59:
-#line 332 "jucompiler.y" /* yacc.c:1646  */
-    {(yyval.node) = (yyvsp[0].node);}
-#line 1984 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 60:
-#line 335 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 1990 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 61:
-#line 336 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 1996 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 62:
-#line 337 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 2002 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 63:
-#line 338 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 2008 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 64:
-#line 339 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 2014 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 65:
-#line 340 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 2020 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 66:
-#line 341 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 2026 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 67:
-#line 342 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 2032 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 68:
-#line 343 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 2038 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 69:
-#line 344 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 2044 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 70:
-#line 345 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 2050 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 71:
-#line 346 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 2056 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 72:
-#line 347 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 2062 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 73:
-#line 348 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 2068 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 74:
-#line 349 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 2074 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 75:
-#line 350 "jucompiler.y" /* yacc.c:1646  */
-    {;}
+#line 441 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Assign");
+																	aux = cria_node(node_id, (yyvsp[-2].id), "Id");
+																	adicionar_node((yyval.node), aux);
+																	adicionar_irmao(aux, (yyvsp[0].node));}
 #line 2080 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 76:
-#line 351 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 2086 "y.tab.c" /* yacc.c:1646  */
+  case 56:
+#line 447 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "ParseArgs");
+																	aux = cria_node(node_id, (yyvsp[-4].id), "Id");
+																	adicionar_node((yyval.node), aux);
+																	adicionar_irmao(aux, (yyvsp[-2].node));}
+#line 2089 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 77:
-#line 352 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 2092 "y.tab.c" /* yacc.c:1646  */
+  case 57:
+#line 451 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = NULL;
+																	flag_erro = 1;}
+#line 2096 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 78:
-#line 353 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 2098 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 79:
-#line 354 "jucompiler.y" /* yacc.c:1646  */
-    {(yyval.node) = (yyvsp[-1].node);}
-#line 2104 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 80:
-#line 355 "jucompiler.y" /* yacc.c:1646  */
-    {(yyval.node) = NULL; error_flag = 1;}
-#line 2110 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 81:
-#line 356 "jucompiler.y" /* yacc.c:1646  */
+  case 58:
+#line 455 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = (yyvsp[0].node);}
+#line 2102 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 59:
+#line 456 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = (yyvsp[0].node);}
+#line 2108 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 60:
+#line 459 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Add");
+																	adicionar_node((yyval.node), (yyvsp[-2].node));
+																	adicionar_irmao((yyvsp[-2].node), (yyvsp[0].node));}
 #line 2116 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 82:
-#line 357 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 2122 "y.tab.c" /* yacc.c:1646  */
+  case 61:
+#line 462 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Sub");
+																	adicionar_node((yyval.node), (yyvsp[-2].node));
+																	adicionar_irmao((yyvsp[-2].node), (yyvsp[0].node));}
+#line 2124 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 83:
-#line 358 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 2128 "y.tab.c" /* yacc.c:1646  */
+  case 62:
+#line 465 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Mul");
+																	adicionar_node((yyval.node), (yyvsp[-2].node));
+																	adicionar_irmao((yyvsp[-2].node), (yyvsp[0].node));}
+#line 2132 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 84:
-#line 359 "jucompiler.y" /* yacc.c:1646  */
-    {(yyval.node) = (yyvsp[0].node);}
-#line 2134 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 85:
-#line 362 "jucompiler.y" /* yacc.c:1646  */
-    {(yyval.node) = (yyvsp[0].node);}
+  case 63:
+#line 468 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Div");
+																	adicionar_node((yyval.node), (yyvsp[-2].node));
+																	adicionar_irmao((yyvsp[-2].node), (yyvsp[0].node));}
 #line 2140 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 86:
-#line 363 "jucompiler.y" /* yacc.c:1646  */
-    {(yyval.node) = (yyvsp[0].node);}
-#line 2146 "y.tab.c" /* yacc.c:1646  */
+  case 64:
+#line 471 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Mod");
+																	adicionar_node((yyval.node), (yyvsp[-2].node));
+																	adicionar_irmao((yyvsp[-2].node), (yyvsp[0].node));}
+#line 2148 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 87:
-#line 366 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 2152 "y.tab.c" /* yacc.c:1646  */
+  case 65:
+#line 474 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "And");
+																	adicionar_node((yyval.node), (yyvsp[-2].node));
+																	adicionar_irmao((yyvsp[-2].node), (yyvsp[0].node));}
+#line 2156 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 88:
-#line 367 "jucompiler.y" /* yacc.c:1646  */
-    {;}
-#line 2158 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 89:
-#line 368 "jucompiler.y" /* yacc.c:1646  */
-    {;}
+  case 66:
+#line 477 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Or");
+																	adicionar_node((yyval.node), (yyvsp[-2].node));
+																	adicionar_irmao((yyvsp[-2].node), (yyvsp[0].node));}
 #line 2164 "y.tab.c" /* yacc.c:1646  */
     break;
 
+  case 67:
+#line 480 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Xor");
+																	adicionar_node((yyval.node), (yyvsp[-2].node));
+																	adicionar_irmao((yyvsp[-2].node), (yyvsp[0].node));}
+#line 2172 "y.tab.c" /* yacc.c:1646  */
+    break;
 
-#line 2168 "y.tab.c" /* yacc.c:1646  */
+  case 68:
+#line 483 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Lshift");
+																	adicionar_node((yyval.node), (yyvsp[-2].node));
+																	adicionar_irmao((yyvsp[-2].node), (yyvsp[0].node));}
+#line 2180 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 69:
+#line 486 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Rshift");
+																	adicionar_node((yyval.node), (yyvsp[-2].node));
+																	adicionar_irmao((yyvsp[-2].node), (yyvsp[0].node));}
+#line 2188 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 70:
+#line 489 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Eq");
+																	adicionar_node((yyval.node), (yyvsp[-2].node));
+																	adicionar_irmao((yyvsp[-2].node), (yyvsp[0].node));}
+#line 2196 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 71:
+#line 492 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Ge");
+																	adicionar_node((yyval.node), (yyvsp[-2].node));
+																	adicionar_irmao((yyvsp[-2].node), (yyvsp[0].node));}
+#line 2204 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 72:
+#line 495 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Gt");
+																	adicionar_node((yyval.node), (yyvsp[-2].node));
+																	adicionar_irmao((yyvsp[-2].node), (yyvsp[0].node));}
+#line 2212 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 73:
+#line 498 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Le");
+																	adicionar_node((yyval.node), (yyvsp[-2].node));
+																	adicionar_irmao((yyvsp[-2].node), (yyvsp[0].node));}
+#line 2220 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 74:
+#line 501 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Lt");
+																	adicionar_node((yyval.node), (yyvsp[-2].node));
+																	adicionar_irmao((yyvsp[-2].node), (yyvsp[0].node));}
+#line 2228 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 75:
+#line 504 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Ne");
+																	adicionar_node((yyval.node), (yyvsp[-2].node));
+																	adicionar_irmao((yyvsp[-2].node), (yyvsp[0].node));}
+#line 2236 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 76:
+#line 507 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Plus");
+																	adicionar_node((yyval.node), (yyvsp[0].node));}
+#line 2243 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 77:
+#line 509 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Minus");
+																	adicionar_node((yyval.node), (yyvsp[0].node));}
+#line 2250 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 78:
+#line 511 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Not");
+																	adicionar_node((yyval.node), (yyvsp[0].node));}
+#line 2257 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 79:
+#line 513 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = (yyvsp[-1].node);}
+#line 2263 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 80:
+#line 514 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = NULL;
+																	flag_erro = 1;}
+#line 2270 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 81:
+#line 516 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = (yyvsp[0].node);}
+#line 2276 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 82:
+#line 517 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_id, "", "Id");}
+#line 2282 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 83:
+#line 518 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_operators, "", "Length");
+																	adicionar_node((yyval.node), cria_node(node_id, "", "Id"));}
+#line 2289 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 84:
+#line 520 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = (yyvsp[0].node);}
+#line 2295 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 85:
+#line 523 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = (yyvsp[0].node);}
+#line 2301 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 86:
+#line 524 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = (yyvsp[0].node);}
+#line 2307 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 87:
+#line 527 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_terminais, (yyvsp[0].id), "IntLit");}
+#line 2313 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 88:
+#line 528 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_terminais, (yyvsp[0].id), "RealLit");}
+#line 2319 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 89:
+#line 529 "jucompiler.y" /* yacc.c:1646  */
+    {(yyval.node) = cria_node(node_terminais, (yyvsp[0].id), "BollLit");}
+#line 2325 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+
+#line 2329 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2392,9 +2553,43 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 370 "jucompiler.y" /* yacc.c:1906  */
+#line 531 "jucompiler.y" /* yacc.c:1906  */
 
 
+int main(int argc, char *argv[]) {
+	if (argc > 1) {
+		if (strcmp(argv[1], "-l") == 0) {
+			flag = 1;
+			yylex();
+		}
+		else if (strcmp(argv[1],"-t") == 0) {
+			flag = 2;
+			yyparse();
+			yylex_destroy();
+			if (!flag_erro) {
+				arvore(raiz, 0);
+			}
+		}
+		else if (strcmp(argv[1], "-e1") == 0) {
+			flag = 0;
+			yylex();
+		}
+		else if (strcmp(argv[1], "-e2") == 0) {
+			flag = 0;
+			flag_erro = 1;
+			yylex();
+			yyparse();
+		}
+	}
+	else {
+		flag = 0;
+		flag_erro = 1;
+		yyparse();
+		yylex_destroy();
+	}
+}
+
+/*
 int main(int argc, char *argv[]) {
 	if (argc > 1) {
 		if (strcmp(argv[1],"-l") == 0) {
@@ -2407,7 +2602,7 @@ int main(int argc, char *argv[]) {
 		}
 		else if (strcmp(argv[1],"-e2") == 0) {
 			flag = 0;
-			error_flag = 1;
+			flag_erro = 1;
 			yylex();
 		}
 		else if (strcmp(argv[1],"-t") == 0) {
@@ -2420,3 +2615,4 @@ int main(int argc, char *argv[]) {
 	yyparse();
 	return 0;
 }
+*/

@@ -86,7 +86,7 @@ Grammar
 
    54 Assignment: ID ASSIGN Expr
 
-   55 ParseArgs: PARSEINT LPAR ID LSQ Expr RSQ LPAR
+   55 ParseArgs: PARSEINT LPAR ID LSQ Expr RSQ RPAR
    56          | PARSEINT LPAR error RPAR
 
    57 Expr: Assignment
@@ -155,7 +155,7 @@ NOT (279) 77
 OR (280) 65
 PLUS (281) 59 75
 RBRACE (282) 1 22 29
-RPAR (283) 14 15 30 31 32 35 48 49 56 78 79
+RPAR (283) 14 15 30 31 32 35 48 49 55 56 78 79
 RSQ (284) 19 55
 SEMICOLON (285) 5 7 8 26 33 34 35 37
 ARROW (286)
@@ -612,7 +612,7 @@ State 35
 
 State 36
 
-   55 ParseArgs: PARSEINT . LPAR ID LSQ Expr RSQ LPAR
+   55 ParseArgs: PARSEINT . LPAR ID LSQ Expr RSQ RPAR
    56          | PARSEINT . LPAR error RPAR
 
     LPAR  shift, and go to state 62
@@ -950,7 +950,7 @@ State 61
 
 State 62
 
-   55 ParseArgs: PARSEINT LPAR . ID LSQ Expr RSQ LPAR
+   55 ParseArgs: PARSEINT LPAR . ID LSQ Expr RSQ RPAR
    56          | PARSEINT LPAR . error RPAR
 
     error  shift, and go to state 101
@@ -1360,7 +1360,7 @@ State 101
 
 State 102
 
-   55 ParseArgs: PARSEINT LPAR ID . LSQ Expr RSQ LPAR
+   55 ParseArgs: PARSEINT LPAR ID . LSQ Expr RSQ RPAR
 
     LSQ  shift, and go to state 140
 
@@ -1973,7 +1973,7 @@ State 139
 
 State 140
 
-   55 ParseArgs: PARSEINT LPAR ID LSQ . Expr RSQ LPAR
+   55 ParseArgs: PARSEINT LPAR ID LSQ . Expr RSQ RPAR
 
     ID        shift, and go to state 63
     INTLIT    shift, and go to state 64
@@ -2582,7 +2582,7 @@ State 166
 
 State 167
 
-   55 ParseArgs: PARSEINT LPAR ID LSQ Expr . RSQ LPAR
+   55 ParseArgs: PARSEINT LPAR ID LSQ Expr . RSQ RPAR
 
     RSQ  shift, and go to state 173
 
@@ -2640,9 +2640,9 @@ State 172
 
 State 173
 
-   55 ParseArgs: PARSEINT LPAR ID LSQ Expr RSQ . LPAR
+   55 ParseArgs: PARSEINT LPAR ID LSQ Expr RSQ . RPAR
 
-    LPAR  shift, and go to state 175
+    RPAR  shift, and go to state 175
 
 
 State 174
@@ -2654,6 +2654,6 @@ State 174
 
 State 175
 
-   55 ParseArgs: PARSEINT LPAR ID LSQ Expr RSQ LPAR .
+   55 ParseArgs: PARSEINT LPAR ID LSQ Expr RSQ RPAR .
 
     $default  reduce using rule 55 (ParseArgs)

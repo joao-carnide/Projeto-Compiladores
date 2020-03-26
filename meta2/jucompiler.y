@@ -38,6 +38,7 @@
 
 	int yylex(void);
     void yyerror (const char *s);
+	int yylex_destroy();
 
 	no cria_node(node_type type, char * valor, char * s_type) {
 		no novo = malloc(sizeof(node));
@@ -142,7 +143,6 @@
 %}
 
 %union {
-	int numero;
 	char * id;
 	struct node * node;
 }
@@ -255,12 +255,12 @@ MethodHeader:	Type ID LPAR MethodHeader2 RPAR						{$$ = cria_node(node_metodos,
 																	adicionar_irmao($1, aux);
 																	adicionar_node(aux, $4);}
 			|	VOID ID LPAR MethodHeader2 RPAR						{$$ = cria_node(node_metodos, "", "MethodHeader");
-																	$1 = cria_node(node_terminais, "", "Void");
-																	adicionar_node($$, $1);
-																	adicionar_irmao($1, cria_node(node_id, $2, "Id"));
-																	aux = cria_node(node_metodos, "", "MethodParams");
-																	adicionar_irmao($1, aux);
-																	adicionar_node(aux, $4);}
+																	aux = cria_node(node_terminais, "", "Void");
+																	adicionar_node($$, aux);
+																	adicionar_irmao(aux, cria_node(node_id, $2, "Id"));
+																	no aux2 = cria_node(node_metodos, "", "MethodParams");
+																	adicionar_irmao(aux, aux2);
+																	adicionar_node(aux2, $4);}
 			;
 
 MethodHeader2:	%empty												{$$ = NULL;}
@@ -282,8 +282,8 @@ FormalParams2:	%empty												{$$ = NULL;}
 			|	COMMA Type ID										{$$ = cria_node(node_metodos, "", "ParamDecl");
 																	aux = cria_node(node_id, $3, "Id");
 																	adicionar_node($$, $2);
-																	adicionar_irmao($2,aux);
-																	adicionar_irmao($$,$4);}
+																	adicionar_irmao($2, aux);
+																	/*adicionar_irmao($$, $4);*/}
 			;
 
 MethodBody:	LBRACE MethodBody2 RBRACE								{$$ = cria_node(node_metodos, "", "MethodBody");
@@ -324,21 +324,81 @@ VarDecl2:	%empty													{$$ = NULL;}
 																	adicionar_irmao($$, $3);}
 		;
 
-Statement:	LBRACE Statement2 RBRACE								{;}
-		|	IF LPAR Expr RPAR StatementError						{;}
-		|	IF LPAR Expr RPAR StatementError ELSE StatementError	{;}
-		|	WHILE LPAR Expr RPAR StatementError						{;}
-		|	RETURN ExprReturn SEMICOLON								{;}
+Statement:	LBRACE Statement2 RBRACE								{if (conta_irmaos($2) > 1) {
+																		aux = cria_node(node_statements, "", "Block");
+																		$$ = aux;
+																		adicionar_node(aux, $2);
+																	}
+																	else {
+																		$$ = $2;
+																	}}
+		|	IF LPAR Expr RPAR StatementError						{$$ = cria_node(node_statements, "", "If");
+																	adicionar_node($$,$3);
+																	aux = cria_node(node_statements, "", "Block");
+																	if (conta_irmaos($5) == 1 && $5 != NULL) {
+																		adicionar_irmao($3, $5);
+																		adicionar_irmao($5, aux);
+																	}
+																	else {
+																		adicionar_irmao($3, aux);
+																		adicionar_node(aux, $5);
+																		adicionar_irmao(aux, cria_node(node_statements, "", "Block"));
+																	}}
+		|	IF LPAR Expr RPAR StatementError ELSE StatementError	{$$ = cria_node(node_statements, "", "If");
+																	adicionar_node($$,$3);
+																	aux = cria_node(node_statements, "", "Block");
+																	if (conta_irmaos($5) == 1 && $5 != NULL) {
+																		adicionar_irmao($3, $5);
+																		if (conta_irmaos($7) == 1 && $7 != NULL) {
+																			adicionar_irmao($5, $7);
+																		}
+																		else {
+																			adicionar_irmao($5, aux);
+																			adicionar_node(aux, $7);
+																		}
+																	}
+																	else {
+																		adicionar_irmao($3, aux);
+																		adicionar_node(aux, $5);
+																		if (conta_irmaos($7) == 1 && $7 != NULL) {
+																			adicionar_irmao(aux, $7);
+																		}
+																		else {
+																			no aux2 = cria_node(node_statements, "", "Block");
+																			adicionar_irmao(aux, aux2);
+																			adicionar_node(aux2, $7);
+																		}
+																	}}
+		|	WHILE LPAR Expr RPAR StatementError						{$$ = cria_node(node_statements, "", "While");
+																	adicionar_node($$, $3);
+																	if (conta_irmaos($5) == 1 && $5 != NULL) {
+																		adicionar_irmao($3, $5);
+																	}
+																	else {
+																		aux = cria_node(node_statements, "", "Block");
+																		adicionar_irmao($3, aux);
+																		adicionar_node(aux, $5);
+																	}}
+		|	RETURN ExprReturn SEMICOLON								{$$ = cria_node(node_statements, "", "Return");
+																	adicionar_node($$, $2);}
 		|	Statement3 SEMICOLON									{$$ = $1;}
-		|	PRINT LPAR StatementPrint RPAR SEMICOLON				{;}
+		|	PRINT LPAR StatementPrint RPAR SEMICOLON				{$$ = cria_node(node_statements, "", "Print");
+																	adicionar_node($$, $3);}
 		;
 
 StatementError:	Statement											{$$ = $1;}
-			|	error SEMICOLON										{error_flag = 1;}
+			|	error SEMICOLON										{$$ = NULL; 
+																	flag_erro = 1;}
 			;
 
 Statement2:	%empty													{$$ = NULL;}
-		|	StatementError Statement2								{if ($1 != NULL){$$ = $1;}else{$$ = $2;}}
+		|	StatementError Statement2								{if ($1 != NULL) {
+																		$$ = $1;
+																		adicionar_irmao($$, $2);
+																	}
+																	else {
+																		$$ = $2;
+																	}}
 		;
 
 ExprReturn:	%empty													{$$ = NULL;}
@@ -352,56 +412,111 @@ Statement3:	%empty													{$$ = NULL;}
 		;
 
 StatementPrint:	Expr												{$$ = $1;}
-			|	STRLIT												{;}
+			|	STRLIT												{$$ = cria_node(node_terminais, $1, "StrLit");}
 			;
 
-MethodInvocation:	ID LPAR MethodInvocation2 RPAR					{;}
-				|	ID LPAR error RPAR								{$$ = NULL;}
+MethodInvocation:	ID LPAR MethodInvocation2 RPAR					{$$ = cria_node(node_operators, "", "Assign");
+																	aux = cria_node(node_id, $1, "Id");
+																	adicionar_node($$, aux);
+																	adicionar_irmao(aux, $3);}
+				|	ID LPAR error RPAR								{$$ = NULL;
+																	flag_erro = 1;}
 				;
 
 MethodInvocation2:	%empty											{$$ = NULL;}
-				|	Expr MethodInvocationExpr						{$$ = $1;}
+				|	Expr MethodInvocationExpr						{$$ = $1;
+																	adicionar_irmao($$, $2);}
 				;
 
 MethodInvocationExpr:	%empty										{$$ = NULL;}
-					|	COMMA Expr MethodInvocationExpr				{if($2!=NULL){$$=$2;}else{$$=$2;}}
+					|	COMMA Expr MethodInvocationExpr				{if($2!=NULL) {
+																		$$=$2;
+																		adicionar_irmao($$, $3);
+																	}
+																	else {
+																		$$=$2;
+																	}}
 					;
 
-Assignment:	ID ASSIGN Expr											{;}
+Assignment:	ID ASSIGN Expr											{$$ = cria_node(node_operators, "", "Assign");
+																	aux = cria_node(node_id, $1, "Id");
+																	adicionar_node($$, aux);
+																	adicionar_irmao(aux, $3);}
 		;
 
-ParseArgs:	PARSEINT LPAR ID LSQ Expr RSQ LPAR						{;}
-		|	PARSEINT LPAR error RPAR								{$$ = NULL; error_flag = 1;}
+ParseArgs:	PARSEINT LPAR ID LSQ Expr RSQ RPAR						{$$ = cria_node(node_operators, "", "ParseArgs");
+																	aux = cria_node(node_id, $3, "Id");
+																	adicionar_node($$, aux);
+																	adicionar_irmao(aux, $5);}
+		|	PARSEINT LPAR error RPAR								{$$ = NULL;
+																	flag_erro = 1;}
 		;
 
 Expr:	Assignment													{$$ = $1;}	
 	|	ExprOperations												{$$ = $1;}
 	;
 
-ExprOperations:	ExprOperations PLUS ExprOperations					{;}
-			|	ExprOperations MINUS ExprOperations					{;}
-			|	ExprOperations STAR	ExprOperations					{;}
-			|	ExprOperations DIV ExprOperations					{;}
-			|	ExprOperations MOD ExprOperations					{;}
-			|	ExprOperations AND ExprOperations					{;}
-			|	ExprOperations OR ExprOperations					{;}
-			|	ExprOperations XOR ExprOperations					{;}
-			|	ExprOperations LSHIFT ExprOperations				{;}
-			|	ExprOperations RSHIFT ExprOperations				{;}
-			|	ExprOperations EQ ExprOperations					{;}
-			|	ExprOperations GE ExprOperations					{;}
-			|	ExprOperations GT ExprOperations					{;}
-			|	ExprOperations LE ExprOperations					{;}
-			|	ExprOperations LT ExprOperations					{;}
-			|	ExprOperations NE ExprOperations					{;}
-			|	PLUS ExprOperations %prec NOT						{;}
-			|	MINUS ExprOperations %prec NOT						{;}
-			|	NOT ExprOperations									{;}
+ExprOperations:	ExprOperations PLUS ExprOperations					{$$ = cria_node(node_operators, "", "Add");
+																	adicionar_node($$, $1);
+																	adicionar_irmao($1, $3);}
+			|	ExprOperations MINUS ExprOperations					{$$ = cria_node(node_operators, "", "Sub");
+																	adicionar_node($$, $1);
+																	adicionar_irmao($1, $3);}
+			|	ExprOperations STAR	ExprOperations					{$$ = cria_node(node_operators, "", "Mul");
+																	adicionar_node($$, $1);
+																	adicionar_irmao($1, $3);}
+			|	ExprOperations DIV ExprOperations					{$$ = cria_node(node_operators, "", "Div");
+																	adicionar_node($$, $1);
+																	adicionar_irmao($1, $3);}
+			|	ExprOperations MOD ExprOperations					{$$ = cria_node(node_operators, "", "Mod");
+																	adicionar_node($$, $1);
+																	adicionar_irmao($1, $3);}
+			|	ExprOperations AND ExprOperations					{$$ = cria_node(node_operators, "", "And");
+																	adicionar_node($$, $1);
+																	adicionar_irmao($1, $3);}
+			|	ExprOperations OR ExprOperations					{$$ = cria_node(node_operators, "", "Or");
+																	adicionar_node($$, $1);
+																	adicionar_irmao($1, $3);}
+			|	ExprOperations XOR ExprOperations					{$$ = cria_node(node_operators, "", "Xor");
+																	adicionar_node($$, $1);
+																	adicionar_irmao($1, $3);}
+			|	ExprOperations LSHIFT ExprOperations				{$$ = cria_node(node_operators, "", "Lshift");
+																	adicionar_node($$, $1);
+																	adicionar_irmao($1, $3);}
+			|	ExprOperations RSHIFT ExprOperations				{$$ = cria_node(node_operators, "", "Rshift");
+																	adicionar_node($$, $1);
+																	adicionar_irmao($1, $3);}
+			|	ExprOperations EQ ExprOperations					{$$ = cria_node(node_operators, "", "Eq");
+																	adicionar_node($$, $1);
+																	adicionar_irmao($1, $3);}
+			|	ExprOperations GE ExprOperations					{$$ = cria_node(node_operators, "", "Ge");
+																	adicionar_node($$, $1);
+																	adicionar_irmao($1, $3);}
+			|	ExprOperations GT ExprOperations					{$$ = cria_node(node_operators, "", "Gt");
+																	adicionar_node($$, $1);
+																	adicionar_irmao($1, $3);}
+			|	ExprOperations LE ExprOperations					{$$ = cria_node(node_operators, "", "Le");
+																	adicionar_node($$, $1);
+																	adicionar_irmao($1, $3);}
+			|	ExprOperations LT ExprOperations					{$$ = cria_node(node_operators, "", "Lt");
+																	adicionar_node($$, $1);
+																	adicionar_irmao($1, $3);}
+			|	ExprOperations NE ExprOperations					{$$ = cria_node(node_operators, "", "Ne");
+																	adicionar_node($$, $1);
+																	adicionar_irmao($1, $3);}
+			|	PLUS ExprOperations %prec NOT						{$$ = cria_node(node_operators, "", "Plus");
+																	adicionar_node($$, $2);}
+			|	MINUS ExprOperations %prec NOT						{$$ = cria_node(node_operators, "", "Minus");
+																	adicionar_node($$, $2);}
+			|	NOT ExprOperations									{$$ = cria_node(node_operators, "", "Not");
+																	adicionar_node($$, $2);}
 			|	LPAR ExprOperations RPAR							{$$ = $2;}
-			|	LPAR error RPAR										{$$ = NULL; error_flag = 1;}
+			|	LPAR error RPAR										{$$ = NULL;
+																	flag_erro = 1;}
 			|	Expr2												{$$ = $1;}
-			|	ID													{;}
-			|	ID DOTLENGTH										{;}
+			|	ID													{$$ = cria_node(node_id, "", "Id");}
+			|	ID DOTLENGTH										{$$ = cria_node(node_operators, "", "Length");
+																	adicionar_node($$, cria_node(node_id, "", "Id"));}
 			|	ExprLit												{$$ = $1;}
 			;
 
@@ -409,12 +524,46 @@ Expr2:	MethodInvocation											{$$ = $1;}
 	|	ParseArgs													{$$ = $1;}
 	;
 
-ExprLit:	INTLIT													{;}
-		|	REALLIT													{;}
-		|	BOOLLIT													{;}
+ExprLit:	INTLIT													{$$ = cria_node(node_terminais, $1, "IntLit");}
+		|	REALLIT													{$$ = cria_node(node_terminais, $1, "RealLit");}
+		|	BOOLLIT													{$$ = cria_node(node_terminais, $1, "BollLit");}
 
 %%
 
+int main(int argc, char *argv[]) {
+	if (argc > 1) {
+		if (strcmp(argv[1], "-l") == 0) {
+			flag = 1;
+			yylex();
+		}
+		else if (strcmp(argv[1],"-t") == 0) {
+			flag = 2;
+			yyparse();
+			yylex_destroy();
+			if (!flag_erro) {
+				arvore(raiz, 0);
+			}
+		}
+		else if (strcmp(argv[1], "-e1") == 0) {
+			flag = 0;
+			yylex();
+		}
+		else if (strcmp(argv[1], "-e2") == 0) {
+			flag = 0;
+			flag_erro = 1;
+			yylex();
+			yyparse();
+		}
+	}
+	else {
+		flag = 0;
+		flag_erro = 1;
+		yyparse();
+		yylex_destroy();
+	}
+}
+
+/*
 int main(int argc, char *argv[]) {
 	if (argc > 1) {
 		if (strcmp(argv[1],"-l") == 0) {
@@ -427,7 +576,7 @@ int main(int argc, char *argv[]) {
 		}
 		else if (strcmp(argv[1],"-e2") == 0) {
 			flag = 0;
-			error_flag = 1;
+			flag_erro = 1;
 			yylex();
 		}
 		else if (strcmp(argv[1],"-t") == 0) {
@@ -440,3 +589,4 @@ int main(int argc, char *argv[]) {
 	yyparse();
 	return 0;
 }
+*/
