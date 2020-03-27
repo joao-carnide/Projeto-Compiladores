@@ -568,31 +568,3 @@ int main(int argc, char *argv[]) {
 		yylex_destroy();
 	}
 }
-
-/*
-int main(int argc, char *argv[]) {
-	if (argc > 1) {
-		if (strcmp(argv[1],"-l") == 0) {
-			flag = 1;
-			yylex();
-		}
-		else if (strcmp(argv[1],"-e1") == 0) {
-			flag = 0;
-			yylex();
-		}
-		else if (strcmp(argv[1],"-e2") == 0) {
-			flag = 0;
-			flag_erro = 1;
-			yylex();
-		}
-		else if (strcmp(argv[1],"-t") == 0) {
-			flag = 2;
-		}
-	}
-	else if (argc == 1){
-		flag = 0;
-	}
-	yyparse();
-	return 0;
-}
-*/
