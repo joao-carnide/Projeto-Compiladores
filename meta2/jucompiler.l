@@ -187,9 +187,10 @@ reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"swit
 <STRINGLIT>{strlit}						{coluna+=yyleng;}
 <STRINGLIT>\\(.?)						{printf("Line %d, col %d: invalid escape sequence (%s)\n",linha,coluna,yytext); coluna += yyleng;string = 0;}
 <STRINGLIT>\n|\r|(\r\n)					{linha++; coluna= 1; printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]);BEGIN 0;}
-<STRINGLIT>\"							{if(flag==1&&string==1)printf("STRLIT(%s)\n",strlit);coluna+=yyleng; BEGIN 0;
-										if(flag == 2){yylval.id = (char*)strdup(yytext);
-										return STRLIT;}}
+<STRINGLIT>\"							{if(flag==1 && string==1)printf("STRLIT(%s)\n",strlit);coluna+=yyleng; BEGIN 0;
+										if(flag == 2 && string==1) {
+											yylval.id = strdup(yytext);
+											return STRLIT;}}
 <STRINGLIT><<EOF>>						{printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]); coluna+=yyleng; BEGIN 0;}
 
 "//"									{BEGIN COMMENT; coluna+=yyleng;}

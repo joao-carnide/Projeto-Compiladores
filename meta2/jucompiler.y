@@ -37,7 +37,7 @@
 	extern int flag;
 
 	int yylex(void);
-    void yyerror (const char *s);
+    void yyerror(const char *s);
 	int yylex_destroy();
 
 	no cria_node(node_type type, char * valor, char * s_type) {
@@ -147,13 +147,17 @@
 	struct node * node;
 }
 
+%token AND ASSIGN STAR COMMA DIV EQ GE GT LBRACE LE LPAR LSQ LT MINUS MOD NE NOT OR PLUS RBRACE RPAR RSQ SEMICOLON ARROW LSHIFT RSHIFT XOR CLASS DOTLENGTH ELSE IF PRINT PARSEINT PUBLIC RETURN STATIC STRING VOID WHILE
+
 %token <id> ID
 %token <id> INTLIT
 %token <id> REALLIT
 %token <id> BOOLLIT
 %token <id> STRLIT
-
-%token AND ASSIGN STAR COMMA DIV EQ GE GT LBRACE LE LPAR LSQ LT MINUS MOD NE NOT OR PLUS RBRACE RPAR RSQ SEMICOLON ARROW LSHIFT RSHIFT XOR BOOL CLASS DOTLENGTH DOUBLE ELSE IF INT PRINT PARSEINT PUBLIC RETURN STATIC STRING VOID WHILE RESERVED
+%token <id> INT
+%token <id> DOUBLE
+%token <id> BOOL
+%token <id> RESERVED
 
 %type <node> Program
 %type <node> ProgramScript
@@ -170,7 +174,7 @@
 %type <node> VarDecl
 %type <node> VarDecl2
 %type <node> Statement
-%type <node> StatementError
+//%type <node> StatementError
 %type <node> Statement2
 %type <node> ExprReturn
 %type <node> Statement3
@@ -184,6 +188,7 @@
 %type <node> ExprOperations
 %type <node> Expr2
 %type <node> ExprLit
+%type <node> STRING
 
 %left COMMA
 %right ASSIGN
@@ -332,7 +337,7 @@ Statement:	LBRACE Statement2 RBRACE								{if (conta_irmaos($2) > 1) {
 																	else {
 																		$$ = $2;
 																	}}
-		|	IF LPAR Expr RPAR StatementError						{$$ = cria_node(node_statements, "", "If");
+		|	IF LPAR Expr RPAR Statement %prec ELSE					{$$ = cria_node(node_statements, "", "If");
 																	adicionar_node($$,$3);
 																	aux = cria_node(node_statements, "", "Block");
 																	if (conta_irmaos($5) == 1 && $5 != NULL) {
@@ -344,7 +349,7 @@ Statement:	LBRACE Statement2 RBRACE								{if (conta_irmaos($2) > 1) {
 																		adicionar_node(aux, $5);
 																		adicionar_irmao(aux, cria_node(node_statements, "", "Block"));
 																	}}
-		|	IF LPAR Expr RPAR StatementError ELSE StatementError	{$$ = cria_node(node_statements, "", "If");
+		|	IF LPAR Expr RPAR Statement ELSE Statement				{$$ = cria_node(node_statements, "", "If");
 																	adicionar_node($$,$3);
 																	aux = cria_node(node_statements, "", "Block");
 																	if (conta_irmaos($5) == 1 && $5 != NULL) {
@@ -369,7 +374,7 @@ Statement:	LBRACE Statement2 RBRACE								{if (conta_irmaos($2) > 1) {
 																			adicionar_node(aux2, $7);
 																		}
 																	}}
-		|	WHILE LPAR Expr RPAR StatementError						{$$ = cria_node(node_statements, "", "While");
+		|	WHILE LPAR Expr RPAR Statement							{$$ = cria_node(node_statements, "", "While");
 																	adicionar_node($$, $3);
 																	if (conta_irmaos($5) == 1 && $5 != NULL) {
 																		adicionar_irmao($3, $5);
@@ -384,15 +389,16 @@ Statement:	LBRACE Statement2 RBRACE								{if (conta_irmaos($2) > 1) {
 		|	Statement3 SEMICOLON									{$$ = $1;}
 		|	PRINT LPAR StatementPrint RPAR SEMICOLON				{$$ = cria_node(node_statements, "", "Print");
 																	adicionar_node($$, $3);}
+		|	error SEMICOLON											{$$ = NULL; flag_erro = 1;}
 		;
-
+/*
 StatementError:	Statement											{$$ = $1;}
 			|	error SEMICOLON										{$$ = NULL; 
 																	flag_erro = 1;}
 			;
-
+*/
 Statement2:	%empty													{$$ = NULL;}
-		|	StatementError Statement2								{if ($1 != NULL) {
+		|	Statement Statement2									{if ($1 != NULL) {
 																		$$ = $1;
 																		adicionar_irmao($$, $2);
 																	}
@@ -551,8 +557,8 @@ int main(int argc, char *argv[]) {
 		else if (strcmp(argv[1], "-e2") == 0) {
 			flag = 0;
 			flag_erro = 1;
-			yylex();
 			yyparse();
+			yylex();
 		}
 	}
 	else {
