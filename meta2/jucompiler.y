@@ -159,38 +159,8 @@
 %token <id> BOOL
 %token <id> RESERVED
 
-%type <node> Program
-%type <node> ProgramScript
-%type <node> MethodDecl
-%type <node> FieldDecl
-%type <node> FieldDecl2
-%type <node> Type
-%type <node> MethodHeader
-%type <node> MethodHeader2
-%type <node> FormalParams
-%type <node> FormalParams2
-%type <node> MethodBody
-%type <node> MethodBody2
-%type <node> VarDecl
-%type <node> VarDecl2
-%type <node> Statement
-//%type <node> StatementError
-%type <node> Statement2
-%type <node> ExprReturn
-%type <node> Statement3
-%type <node> StatementPrint
-%type <node> MethodInvocation
-%type <node> MethodInvocation2
-%type <node> MethodInvocationExpr
-%type <node> Assignment
-%type <node> ParseArgs
-%type <node> Expr
-%type <node> ExprOperations
-%type <node> Expr2
-%type <node> ExprLit
-%type <node> STRING
+%type <node> Program ProgramScript MethodDecl FieldDecl FieldDecl2 Type MethodHeader MethodHeader2 FormalParams FormalParams2 MethodBody MethodBody2 VarDecl VarDecl2 Statement StatementError Statement2 ExprReturn Statement3 StatementPrint MethodInvocation MethodInvocation2 MethodInvocationExpr Assignment ParseArgs Expr ExprOperations Expr2 ExprLit STRING VOID
 
-%left COMMA
 %right ASSIGN
 %left OR
 %left AND
@@ -201,11 +171,11 @@
 %left PLUS MINUS
 %left STAR DIV MOD
 %right NOT
-%left LPAR RPAR
+%right LPAR RPAR
 %nonassoc ELSE
 
-
 %%
+
 Program:	CLASS ID LBRACE ProgramScript RBRACE					{raiz = cria_node(node_raiz, "", "Program");
 																	aux = cria_node(node_id, $2, "Id");
 																	adicionar_node(raiz, aux);
@@ -337,7 +307,7 @@ Statement:	LBRACE Statement2 RBRACE								{if (conta_irmaos($2) > 1) {
 																	else {
 																		$$ = $2;
 																	}}
-		|	IF LPAR Expr RPAR Statement %prec ELSE					{$$ = cria_node(node_statements, "", "If");
+		|	IF LPAR Expr RPAR StatementError						{$$ = cria_node(node_statements, "", "If");
 																	adicionar_node($$,$3);
 																	aux = cria_node(node_statements, "", "Block");
 																	if (conta_irmaos($5) == 1 && $5 != NULL) {
@@ -349,7 +319,7 @@ Statement:	LBRACE Statement2 RBRACE								{if (conta_irmaos($2) > 1) {
 																		adicionar_node(aux, $5);
 																		adicionar_irmao(aux, cria_node(node_statements, "", "Block"));
 																	}}
-		|	IF LPAR Expr RPAR Statement ELSE Statement				{$$ = cria_node(node_statements, "", "If");
+		|	IF LPAR Expr RPAR StatementError ELSE StatementError	{$$ = cria_node(node_statements, "", "If");
 																	adicionar_node($$,$3);
 																	aux = cria_node(node_statements, "", "Block");
 																	if (conta_irmaos($5) == 1 && $5 != NULL) {
@@ -374,7 +344,7 @@ Statement:	LBRACE Statement2 RBRACE								{if (conta_irmaos($2) > 1) {
 																			adicionar_node(aux2, $7);
 																		}
 																	}}
-		|	WHILE LPAR Expr RPAR Statement							{$$ = cria_node(node_statements, "", "While");
+		|	WHILE LPAR Expr RPAR StatementError						{$$ = cria_node(node_statements, "", "While");
 																	adicionar_node($$, $3);
 																	if (conta_irmaos($5) == 1 && $5 != NULL) {
 																		adicionar_irmao($3, $5);
@@ -389,16 +359,15 @@ Statement:	LBRACE Statement2 RBRACE								{if (conta_irmaos($2) > 1) {
 		|	Statement3 SEMICOLON									{$$ = $1;}
 		|	PRINT LPAR StatementPrint RPAR SEMICOLON				{$$ = cria_node(node_statements, "", "Print");
 																	adicionar_node($$, $3);}
-		|	error SEMICOLON											{$$ = NULL; flag_erro = 1;}
 		;
-/*
+
 StatementError:	Statement											{$$ = $1;}
 			|	error SEMICOLON										{$$ = NULL; 
 																	flag_erro = 1;}
 			;
-*/
+
 Statement2:	%empty													{$$ = NULL;}
-		|	Statement Statement2									{if ($1 != NULL) {
+		|	StatementError Statement2								{if ($1 != NULL) {
 																		$$ = $1;
 																		adicionar_irmao($$, $2);
 																	}
