@@ -159,7 +159,7 @@
 %token <id> BOOL
 %token <id> RESERVED
 
-%type <node> Program ProgramScript MethodDecl FieldDecl FieldDecl2 Type MethodHeader MethodHeader2 FormalParams FormalParams2 MethodBody MethodBody2 VarDecl VarDecl2 Statement StatementError Statement2 ExprReturn Statement3 StatementPrint MethodInvocation MethodInvocation2 MethodInvocationExpr Assignment ParseArgs Expr ExprOperations Expr2 ExprLit STRING VOID
+%type <node> Program ProgramScript MethodDecl FieldDecl FieldDecl2 Type MethodHeader MethodHeader2 FormalParams FormalParams2 MethodBody MethodBody2 VarDecl VarDecl2 Statement Statement2 ExprReturn Statement3 StatementPrint MethodInvocation MethodInvocation2 MethodInvocationExpr Assignment ParseArgs Expr ExprOperations Expr2 ExprLit STRING VOID
 
 %right ASSIGN
 %left OR
@@ -171,7 +171,7 @@
 %left PLUS MINUS
 %left STAR DIV MOD
 %right NOT
-%right LPAR RPAR
+%left LPAR RPAR
 %nonassoc ELSE
 
 %%
@@ -182,7 +182,7 @@ Program:	CLASS ID LBRACE ProgramScript RBRACE					{raiz = cria_node(node_raiz, "
 																	$$ = raiz;}
 		;
 
-ProgramScript: 	%empty												{$$ = NULL;}
+ProgramScript: 	/* empty */											{$$ = NULL;}
 			|	MethodDecl ProgramScript							{$$ = $1;
 																	adicionar_irmao($$, $2);}
 			|	FieldDecl ProgramScript								{$$ = $1;
@@ -213,7 +213,7 @@ FieldDecl:	PUBLIC STATIC Type ID FieldDecl2 SEMICOLON				{$$ = cria_node(node_va
 		|	error SEMICOLON											{$$ = NULL; flag_erro = 1;}
 		;
 
-FieldDecl2:	%empty													{$$ = NULL;}
+FieldDecl2:	/* empty */												{$$ = NULL;}
 		|	COMMA ID FieldDecl2										{$$ = cria_node(node_id, $2, "Id");
 																	adicionar_irmao($$, $3);}
 		;
@@ -238,7 +238,7 @@ MethodHeader:	Type ID LPAR MethodHeader2 RPAR						{$$ = cria_node(node_metodos,
 																	adicionar_node(aux2, $4);}
 			;
 
-MethodHeader2:	%empty												{$$ = NULL;}
+MethodHeader2:	/* empty */											{$$ = NULL;}
 			|	FormalParams										{$$ = $1;}
 			;
 
@@ -253,19 +253,19 @@ FormalParams:	Type ID FormalParams2								{$$ = cria_node(node_metodos, "", "Pa
 																	adicionar_irmao(aux, cria_node(node_id, $4, "Id"));}
 			;
 
-FormalParams2:	%empty												{$$ = NULL;}
-			|	COMMA Type ID										{$$ = cria_node(node_metodos, "", "ParamDecl");
+FormalParams2:	/* empty */											{$$ = NULL;}
+			|	COMMA Type ID FormalParams2 						{$$ = cria_node(node_metodos, "", "ParamDecl");
 																	aux = cria_node(node_id, $3, "Id");
 																	adicionar_node($$, $2);
 																	adicionar_irmao($2, aux);
-																	/*adicionar_irmao($$, $4);*/}
+																	adicionar_irmao($$, $4);}
 			;
 
 MethodBody:	LBRACE MethodBody2 RBRACE								{$$ = cria_node(node_metodos, "", "MethodBody");
 																	adicionar_node($$, $2);}
 		;
 
-MethodBody2: 	%empty												{$$ = NULL;}
+MethodBody2: 	/* empty */											{$$ = NULL;}
 			|	Statement MethodBody2								{$$ = $1;
 																	adicionar_irmao($$, $2);}
 			|	VarDecl MethodBody2									{if ($1 != NULL){
@@ -294,7 +294,7 @@ VarDecl:	Type ID VarDecl2 SEMICOLON								{$$ = cria_node(node_metodos, "", "Va
 																	}}
 		;
 
-VarDecl2:	%empty													{$$ = NULL;}
+VarDecl2:	/* empty */												{$$ = NULL;}
 		|	COMMA ID VarDecl2										{$$ = cria_node(node_id, $2, "Id");
 																	adicionar_irmao($$, $3);}
 		;
@@ -307,7 +307,7 @@ Statement:	LBRACE Statement2 RBRACE								{if (conta_irmaos($2) > 1) {
 																	else {
 																		$$ = $2;
 																	}}
-		|	IF LPAR Expr RPAR StatementError						{$$ = cria_node(node_statements, "", "If");
+		|	IF LPAR Expr RPAR Statement			 					{$$ = cria_node(node_statements, "", "If");
 																	adicionar_node($$,$3);
 																	aux = cria_node(node_statements, "", "Block");
 																	if (conta_irmaos($5) == 1 && $5 != NULL) {
@@ -319,7 +319,7 @@ Statement:	LBRACE Statement2 RBRACE								{if (conta_irmaos($2) > 1) {
 																		adicionar_node(aux, $5);
 																		adicionar_irmao(aux, cria_node(node_statements, "", "Block"));
 																	}}
-		|	IF LPAR Expr RPAR StatementError ELSE StatementError	{$$ = cria_node(node_statements, "", "If");
+		|	IF LPAR Expr RPAR Statement ELSE Statement				{$$ = cria_node(node_statements, "", "If");
 																	adicionar_node($$,$3);
 																	aux = cria_node(node_statements, "", "Block");
 																	if (conta_irmaos($5) == 1 && $5 != NULL) {
@@ -344,7 +344,7 @@ Statement:	LBRACE Statement2 RBRACE								{if (conta_irmaos($2) > 1) {
 																			adicionar_node(aux2, $7);
 																		}
 																	}}
-		|	WHILE LPAR Expr RPAR StatementError						{$$ = cria_node(node_statements, "", "While");
+		|	WHILE LPAR Expr RPAR Statement							{$$ = cria_node(node_statements, "", "While");
 																	adicionar_node($$, $3);
 																	if (conta_irmaos($5) == 1 && $5 != NULL) {
 																		adicionar_irmao($3, $5);
@@ -359,15 +359,11 @@ Statement:	LBRACE Statement2 RBRACE								{if (conta_irmaos($2) > 1) {
 		|	Statement3 SEMICOLON									{$$ = $1;}
 		|	PRINT LPAR StatementPrint RPAR SEMICOLON				{$$ = cria_node(node_statements, "", "Print");
 																	adicionar_node($$, $3);}
+		|	error SEMICOLON											{$$ = NULL; flag_erro = 1;}
 		;
 
-StatementError:	Statement											{$$ = $1;}
-			|	error SEMICOLON										{$$ = NULL; 
-																	flag_erro = 1;}
-			;
-
-Statement2:	%empty													{$$ = NULL;}
-		|	StatementError Statement2								{if ($1 != NULL) {
+Statement2:	/* empty */												{$$ = NULL;}
+		|	Statement Statement2									{if ($1 != NULL) {
 																		$$ = $1;
 																		adicionar_irmao($$, $2);
 																	}
@@ -376,11 +372,11 @@ Statement2:	%empty													{$$ = NULL;}
 																	}}
 		;
 
-ExprReturn:	%empty													{$$ = NULL;}
+ExprReturn:	/* empty */												{$$ = NULL;}
 		|	Expr													{$$ = $1;}
 		;
 
-Statement3:	%empty													{$$ = NULL;}
+Statement3:	/* empty */												{$$ = NULL;}
 		|	MethodInvocation										{$$ = $1;}
 		|	Assignment												{$$ = $1;}
 		|	ParseArgs												{$$ = $1;}
@@ -398,12 +394,12 @@ MethodInvocation:	ID LPAR MethodInvocation2 RPAR					{$$ = cria_node(node_operat
 																	flag_erro = 1;}
 				;
 
-MethodInvocation2:	%empty											{$$ = NULL;}
+MethodInvocation2:	/* empty */										{$$ = NULL;}
 				|	Expr MethodInvocationExpr						{$$ = $1;
 																	adicionar_irmao($$, $2);}
 				;
 
-MethodInvocationExpr:	%empty										{$$ = NULL;}
+MethodInvocationExpr:	/* empty */									{$$ = NULL;}
 					|	COMMA Expr MethodInvocationExpr				{if($2!=NULL) {
 																		$$=$2;
 																		adicionar_irmao($$, $3);
@@ -479,9 +475,9 @@ ExprOperations:	ExprOperations PLUS ExprOperations					{$$ = cria_node(node_oper
 			|	ExprOperations NE ExprOperations					{$$ = cria_node(node_operators, "", "Ne");
 																	adicionar_node($$, $1);
 																	adicionar_irmao($1, $3);}
-			|	PLUS ExprOperations %prec NOT						{$$ = cria_node(node_operators, "", "Plus");
+			|	PLUS ExprOperations									{$$ = cria_node(node_operators, "", "Plus");
 																	adicionar_node($$, $2);}
-			|	MINUS ExprOperations %prec NOT						{$$ = cria_node(node_operators, "", "Minus");
+			|	MINUS ExprOperations								{$$ = cria_node(node_operators, "", "Minus");
 																	adicionar_node($$, $2);}
 			|	NOT ExprOperations									{$$ = cria_node(node_operators, "", "Not");
 																	adicionar_node($$, $2);}
@@ -502,6 +498,7 @@ Expr2:	MethodInvocation											{$$ = $1;}
 ExprLit:	INTLIT													{$$ = cria_node(node_terminais, $1, "IntLit");}
 		|	REALLIT													{$$ = cria_node(node_terminais, $1, "RealLit");}
 		|	BOOLLIT													{$$ = cria_node(node_terminais, $1, "BollLit");}
+		;
 
 %%
 
@@ -534,6 +531,6 @@ int main(int argc, char *argv[]) {
 		flag = 0;
 		flag_erro = 1;
 		yyparse();
-		yylex_destroy();
+		yylex();
 	}
 }
