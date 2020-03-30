@@ -12,10 +12,14 @@
 
 	int linha = 1;
 	int coluna = 1;
-	int linha_coluna[2];  //array auxiliar para linhas e colunas
+	//int linha_coluna[2];  //array auxiliar para linhas e colunas
 	int flag = 0;
-	int string = 0;  //flag para detetar string
-	char * strlit;
+	int erro = 0;
+	char guarda[256];
+	int linha_atual = 1;
+	int coluna_atual = 1;
+	//int string = 0;  //flag para detetar string
+	//char * strlit;
 %}
 
 id					"_"|"$"|("_"|"$"|[a-z]|[A-Z])([a-z]|[A-Z]|[0-9]|"$"|"_")*
@@ -183,24 +187,27 @@ reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"swit
 "\t"									{coluna+=yyleng;}
 " "										{coluna+=yyleng;}
 
-\"										{BEGIN STRINGLIT; string = 1; strlit = yytext; coluna+=yyleng; linha_coluna[0]=linha; linha_coluna[1]=coluna-1;}
-<STRINGLIT>{strlit}						{coluna+=yyleng;}
-<STRINGLIT>\\(.?)						{printf("Line %d, col %d: invalid escape sequence (%s)\n",linha,coluna,yytext); coluna += yyleng;string = 0;}
-<STRINGLIT>\n|\r|(\r\n)					{BEGIN 0; linha++; coluna= 1; printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]);}
-<STRINGLIT>\"							{BEGIN 0; if(flag==1&&string==1)printf("STRLIT(%s)\n",strlit);coluna+=yyleng;
-										yylval.id = strdup(yytext);
-										return STRLIT;}
-<STRINGLIT><<EOF>>						{BEGIN 0; printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]); linha++; coluna = 1;}
+\"										{BEGIN STRINGLIT; guarda[0]=0; strcat(guarda, yytext); linha_atual = linha; coluna_atual = coluna; coluna+=yyleng; erro = 0;}
+<STRINGLIT>{strlit}						{coluna+=yyleng; strcat(guarda, yytext);}
+<STRINGLIT>\\(.?)						{strcat(guarda, yytext);printf("Line %d, col %d: invalid escape sequence (%s)\n",linha,coluna,yytext); coluna += yyleng; erro = 1;}
+<STRINGLIT>\n|\r|(\r\n)					{BEGIN 0; guarda[0] = 0; printf("Line %d, col %d: unterminated string literal\n",linha_atual,coluna_atual); linha++; coluna = 1;}
+<STRINGLIT>\"							{BEGIN 0; strcat(guarda, yytext); if(flag == 1 && erro==0)printf("STRLIT(%s)\n",guarda);coluna+=yyleng;
+										if(!erro) {
+											yylval.id = strdup(guarda);
+											yytext = guarda;
+											return STRLIT;
+										}}
+<STRINGLIT><<EOF>>						{BEGIN 0; guarda[0] = 0; printf("Line %d, col %d: unterminated string literal\n",linha_atual,coluna_atual); linha++; coluna = 1;}
 
 "//"									{BEGIN COMMENT; coluna+=yyleng;}
 <COMMENT>\n|\r|(\r\n)					{BEGIN 0; linha++; coluna=1;}
 <COMMENT>.								{coluna+=yyleng;}
 
-"/*"									{BEGIN MLCOMMENT; linha_coluna[0]=linha;linha_coluna[1]=coluna;coluna+=yyleng;}
+"/*"									{BEGIN MLCOMMENT; linha_atual=linha;coluna_atual=coluna;coluna+=yyleng;}
 <MLCOMMENT>"*/"							{BEGIN 0;coluna+=yyleng;}
 <MLCOMMENT>\n|\r|(\r\n)					{linha++;coluna=1;}
 <MLCOMMENT>.							{coluna+=yyleng;}
-<MLCOMMENT><<EOF>>						{BEGIN 0; printf("Line %d, col %d: unterminated comment\n",linha_coluna[0],linha_coluna[1]);}
+<MLCOMMENT><<EOF>>						{BEGIN 0; printf("Line %d, col %d: unterminated comment\n",linha_atual,coluna_atual);}
 
 .										{printf("Line %d, col %d: illegal character (%s)\n", linha, coluna, yytext); coluna+=yyleng;}
 
