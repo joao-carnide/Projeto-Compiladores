@@ -76,107 +76,107 @@ reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"swit
 %%
 
 {intlit}								{if(flag == 1)printf("INTLIT(%s)\n",yytext);coluna+=yyleng;
-										if(flag == 2){yylval.id = (char*)strdup(yytext);
-										return INTLIT;}}
+										yylval.id = strdup(yytext);
+										return INTLIT;}
 
 {real}|{expint}|{expreal}				{if(flag == 1)printf("REALLIT(%s)\n",yytext);coluna+=yyleng;
-										if(flag == 2){yylval.id = (char*)strdup(yytext);
-										return REALLIT;}}
+										yylval.id = strdup(yytext);
+										return REALLIT;}
 
 {bools}									{if(flag == 1)printf("BOOLLIT(%s)\n",yytext);coluna+=yyleng;
-										if(flag == 2){yylval.id = (char*)strdup(yytext);
-										return BOOLLIT;}}
+										yylval.id = strdup(yytext);
+										return BOOLLIT;}
 {and}									{if(flag == 1)printf("AND\n");coluna+=yyleng;
-										if(flag == 2)return AND;}
+										return AND;}
 {assign}								{if(flag == 1)printf("ASSIGN\n");coluna+=yyleng;
-										if(flag == 2)return ASSIGN;}
+										return ASSIGN;}
 {star}									{if(flag == 1)printf("STAR\n");coluna+=yyleng;
-										if(flag == 2)return STAR;}
+										return STAR;}
 {comma}									{if(flag == 1)printf("COMMA\n");coluna+=yyleng;
-										if(flag == 2)return COMMA;}
+										return COMMA;}
 {div}									{if(flag == 1)printf("DIV\n");coluna+=yyleng;
-										if(flag == 2)return DIV;}
+										return DIV;}
 {equals}								{if(flag == 1)printf("EQ\n");coluna+=yyleng;
-										if(flag == 2)return EQ;}
+										return EQ;}
 {greatereq}								{if(flag == 1)printf("GE\n");coluna+=yyleng;
-										if(flag == 2)return GE;}
+										return GE;}
 {greater}								{if(flag == 1)printf("GT\n");coluna+=yyleng;
-										if(flag == 2)return GT;}
+										return GT;}
 {leftbrace}								{if(flag == 1)printf("LBRACE\n");coluna+=yyleng;
-										if(flag == 2)return LBRACE;}
+										return LBRACE;}
 {lesseq}								{if(flag == 1)printf("LE\n");coluna+=yyleng;
-										if(flag == 2)return LE;}
+										return LE;}
 {leftpar}								{if(flag == 1)printf("LPAR\n");coluna+=yyleng;
-										if(flag == 2)return LPAR;}
+										return LPAR;}
 {leftsqpar}								{if(flag == 1)printf("LSQ\n");coluna+=yyleng;
-										if(flag == 2)return LSQ;}
+										return LSQ;}
 {less}									{if(flag == 1)printf("LT\n");coluna+=yyleng;
-										if(flag == 2)return LT;}
+										return LT;}
 {minus}									{if(flag == 1)printf("MINUS\n");coluna+=yyleng;
-										if(flag == 2)return MINUS;}
+										return MINUS;}
 {mod}									{if(flag == 1)printf("MOD\n");coluna+=yyleng;
-										if(flag == 2)return MOD;}
+										return MOD;}
 {notequal}								{if(flag == 1)printf("NE\n");coluna+=yyleng;
-										if(flag == 2)return NE;}
+										return NE;}
 {not}									{if(flag == 1)printf("NOT\n");coluna+=yyleng;
-										if(flag == 2)return NOT;}
+										return NOT;}
 {or}									{if(flag == 1)printf("OR\n");coluna+=yyleng;
-										if(flag == 2)return OR;}
+										return OR;}
 {plus}									{if(flag == 1)printf("PLUS\n");coluna+=yyleng;
-										if(flag == 2)return PLUS;}
+										return PLUS;}
 {rightbrace}							{if(flag == 1)printf("RBRACE\n");coluna+=yyleng;
-										if(flag == 2)return RBRACE;}
+										return RBRACE;}
 {rightpar}								{if(flag == 1)printf("RPAR\n");coluna+=yyleng;
-										if(flag == 2)return RPAR;}
+										return RPAR;}
 {rightsqpar}							{if(flag == 1)printf("RSQ\n");coluna+=yyleng;
-										if(flag == 2)return RSQ;}
+										return RSQ;}
 {semicolon}								{if(flag == 1)printf("SEMICOLON\n");coluna+=yyleng;
-										if(flag == 2)return SEMICOLON;}
+										return SEMICOLON;}
 {arrow}									{if(flag == 1)printf("ARROW\n");coluna+=yyleng;
-										if(flag == 2)return ARROW;}
+										return ARROW;}
 {leftshift}								{if(flag == 1)printf("LSHIFT\n");coluna+=yyleng;
-										if(flag == 2)return LSHIFT;}
+										return LSHIFT;}
 {rightshift}							{if(flag == 1)printf("RSHIFT\n");coluna+=yyleng;
-										if(flag == 2)return RSHIFT;}
+										return RSHIFT;}
 {xor}									{if(flag == 1)printf("XOR\n");coluna+=yyleng;
-										if(flag == 2)return XOR;}
+										return XOR;}
 {bool}									{if(flag == 1)printf("BOOL\n");coluna+=yyleng;
-										if(flag == 2)return BOOL;}
+										return BOOL;}
 {class}									{if(flag == 1)printf("CLASS\n");coluna+=yyleng;
-										if(flag == 2)return CLASS;}
+										return CLASS;}
 {dotlength}								{if(flag == 1)printf("DOTLENGTH\n");coluna+=yyleng;
-										if(flag == 2)return DOTLENGTH;}
+										return DOTLENGTH;}
 {double}								{if(flag == 1)printf("DOUBLE\n");coluna+=yyleng;
-										if(flag == 2)return DOUBLE;}
+										return DOUBLE;}
 {else}									{if(flag == 1)printf("ELSE\n");coluna+=yyleng;
-										if(flag == 2)return ELSE;}
+										return ELSE;}
 {if}									{if(flag == 1)printf("IF\n");coluna+=yyleng;
-										if(flag == 2)return IF;}
+										return IF;}
 {int}									{if(flag == 1)printf("INT\n");coluna+=yyleng;
-										if(flag == 2)return INT;}
+										return INT;}
 {print}									{if(flag == 1)printf("PRINT\n");coluna+=yyleng;
-										if(flag == 2)return PRINT;}
+										return PRINT;}
 {parseint}								{if(flag == 1)printf("PARSEINT\n");coluna+=yyleng;
-										if(flag == 2)return PARSEINT;}
+										return PARSEINT;}
 {public}								{if(flag == 1)printf("PUBLIC\n");coluna+=yyleng;
-										if(flag == 2)return PUBLIC;}
+										return PUBLIC;}
 {return}								{if(flag == 1)printf("RETURN\n");coluna+=yyleng;
-										if(flag == 2)return RETURN;}
+										return RETURN;}
 {static}								{if(flag == 1)printf("STATIC\n");coluna+=yyleng;
-										if(flag == 2)return STATIC;}
+										return STATIC;}
 {string}								{if(flag == 1)printf("STRING\n");coluna+=yyleng;
-										if(flag == 2)return STRING;}
+										return STRING;}
 {void}									{if(flag == 1)printf("VOID\n");coluna+=yyleng;
-										if(flag == 2)return VOID;}
+										return VOID;}
 {while}									{if(flag == 1)printf("WHILE\n");coluna+=yyleng;
-										if(flag == 2)return WHILE;}
+										return WHILE;}
 
 {reserved}								{if(flag == 1)printf("RESERVED(%s)\n",yytext);coluna+=yyleng;
-										if(flag == 2)return RESERVED;}
+										return RESERVED;}
 
 {id}									{if(flag == 1)printf("ID(%s)\n",yytext);coluna+=yyleng;
-										if(flag == 2){yylval.id = (char*)strdup(yytext);
-										return ID;}}
+										yylval.id = strdup(yytext);
+										return ID;}
 
 "\f"									{coluna+=yyleng;}
 \n|\r|(\r\n)							{linha++; coluna = 1;}
@@ -187,10 +187,9 @@ reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"swit
 <STRINGLIT>{strlit}						{coluna+=yyleng;}
 <STRINGLIT>\\(.?)						{printf("Line %d, col %d: invalid escape sequence (%s)\n",linha,coluna,yytext); coluna += yyleng;string = 0;}
 <STRINGLIT>\n|\r|(\r\n)					{linha++; coluna= 1; printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]);BEGIN 0;}
-<STRINGLIT>\"							{if(flag==1 && string==1)printf("STRLIT(%s)\n",strlit);coluna+=yyleng; BEGIN 0;
-										if(flag == 2 && string==1) {
-											yylval.id = strdup(yytext);
-											return STRLIT;}}
+<STRINGLIT>\"							{if(flag==1&&string==1)printf("STRLIT(%s)\n",strlit);coluna+=yyleng; BEGIN 0;
+										yylval.id = strdup(yytext);
+										return STRLIT;}
 <STRINGLIT><<EOF>>						{printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]); coluna+=yyleng; BEGIN 0;}
 
 "//"									{BEGIN COMMENT; coluna+=yyleng;}
