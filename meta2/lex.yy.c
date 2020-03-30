@@ -1339,7 +1339,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case YY_STATE_EOF(STRINGLIT):
 #line 193 "jucompiler.l"
-{printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]); coluna+=yyleng; BEGIN 0;}
+{printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]); linha++; coluna = 1; BEGIN 0;}
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
@@ -1380,7 +1380,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case YY_STATE_EOF(MLCOMMENT):
 #line 203 "jucompiler.l"
-{printf("Line %d, col %d: unterminated comment\n",linha_coluna[0],linha_coluna[1]); coluna+=yyleng; BEGIN 0;}
+{printf("Line %d, col %d: unterminated comment\n",linha_coluna[0],linha_coluna[1]); BEGIN 0;}
 	YY_BREAK
 case 64:
 YY_RULE_SETUP

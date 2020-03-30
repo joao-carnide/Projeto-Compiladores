@@ -190,7 +190,7 @@ reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"swit
 <STRINGLIT>\"							{if(flag==1&&string==1)printf("STRLIT(%s)\n",strlit);coluna+=yyleng; BEGIN 0;
 										yylval.id = strdup(yytext);
 										return STRLIT;}
-<STRINGLIT><<EOF>>						{printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]); coluna+=yyleng; BEGIN 0;}
+<STRINGLIT><<EOF>>						{printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]); linha++; coluna = 1; BEGIN 0;}
 
 "//"									{BEGIN COMMENT; coluna+=yyleng;}
 <COMMENT>\n|\r|(\r\n)					{BEGIN 0; linha++; coluna=1;}
@@ -200,7 +200,7 @@ reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"swit
 <MLCOMMENT>"*/"							{BEGIN 0;coluna+=yyleng;}
 <MLCOMMENT>\n|\r|(\r\n)					{linha++;coluna=1;}
 <MLCOMMENT>.							{coluna+=yyleng;}
-<MLCOMMENT><<EOF>>						{printf("Line %d, col %d: unterminated comment\n",linha_coluna[0],linha_coluna[1]); coluna+=yyleng; BEGIN 0;}
+<MLCOMMENT><<EOF>>						{printf("Line %d, col %d: unterminated comment\n",linha_coluna[0],linha_coluna[1]); BEGIN 0;}
 
 .										{printf("Line %d, col %d: illegal character (%s)\n", linha, coluna, yytext); coluna+=yyleng;}
 
