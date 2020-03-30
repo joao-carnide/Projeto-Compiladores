@@ -1328,18 +1328,18 @@ case 55:
 /* rule 55 can match eol */
 YY_RULE_SETUP
 #line 189 "jucompiler.l"
-{linha++; coluna= 1; printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]);BEGIN 0;}
+{BEGIN 0; linha++; coluna= 1; printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]);}
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
 #line 190 "jucompiler.l"
-{if(flag==1&&string==1)printf("STRLIT(%s)\n",strlit);coluna+=yyleng; BEGIN 0;
+{BEGIN 0; if(flag==1&&string==1)printf("STRLIT(%s)\n",strlit);coluna+=yyleng;
 										yylval.id = strdup(yytext);
 										return STRLIT;}
 	YY_BREAK
 case YY_STATE_EOF(STRINGLIT):
 #line 193 "jucompiler.l"
-{printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]); linha++; coluna = 1; BEGIN 0;}
+{BEGIN 0; printf("Line %d, col %d: unterminated string literal\n",linha_coluna[0],linha_coluna[1]); linha++; coluna = 1;}
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
@@ -1380,7 +1380,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case YY_STATE_EOF(MLCOMMENT):
 #line 203 "jucompiler.l"
-{printf("Line %d, col %d: unterminated comment\n",linha_coluna[0],linha_coluna[1]); BEGIN 0;}
+{BEGIN 0; printf("Line %d, col %d: unterminated comment\n",linha_coluna[0],linha_coluna[1]);}
 	YY_BREAK
 case 64:
 YY_RULE_SETUP

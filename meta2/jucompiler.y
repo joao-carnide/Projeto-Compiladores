@@ -159,7 +159,7 @@
 %token <id> BOOL
 %token <id> RESERVED
 
-%type <node> Program ProgramScript MethodDecl FieldDecl FieldDecl2 Type MethodHeader MethodHeader2 FormalParams FormalParams2 MethodBody MethodBody2 VarDecl VarDecl2 Statement Statement2 ExprReturn Statement3 StatementPrint MethodInvocation MethodInvocation2 MethodInvocationExpr Assignment ParseArgs Expr Expr2 ExprLit STRING VOID
+%type <node> Program ProgramScript MethodDecl FieldDecl FieldDecl2 Type MethodHeader MethodHeader2 FormalParams FormalParams2 MethodBody MethodBody2 VarDecl VarDecl2 Statement Statement2 ExprReturn Statement3 StatementPrint MethodInvocation MethodInvocation2 MethodInvocationExpr Assignment ParseArgs Expr Expr2 ExprLit VOID
 
 %right ASSIGN
 %left OR
@@ -308,7 +308,7 @@ Statement:	LBRACE Statement2 RBRACE								{if (conta_irmaos($2) > 1) {
 																	else {
 																		$$ = $2;
 																	}}
-		|	IF LPAR Expr RPAR Statement			 					{$$ = cria_node(node_statements, "", "If");
+		|	IF LPAR Expr RPAR Statement 			 				{$$ = cria_node(node_statements, "", "If");
 																	adicionar_node($$,$3);
 																	aux = cria_node(node_statements, "", "Block");
 																	if (conta_irmaos($5) == 1 && $5 != NULL) {
