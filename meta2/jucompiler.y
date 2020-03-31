@@ -38,7 +38,6 @@
 
 	int yylex(void);
     void yyerror(const char *s);
-	int yylex_destroy();
 
 	no cria_node(node_type type, char * valor, char * s_type) {
 		no novo = malloc(sizeof(node));
@@ -171,9 +170,9 @@
 %left PLUS MINUS
 %left STAR DIV MOD
 %right NOT
-%left LPAR RPAR
+%left LPAR RPAR LSQ RSQ
 
-%nonassoc ELSE
+%right ELSE
 
 %%
 
@@ -268,15 +267,15 @@ MethodBody:	LBRACE MethodBody2 RBRACE								{$$ = cria_node(node_metodos, "", "
 		;
 
 MethodBody2: 	/* empty */											{$$ = NULL;}
-			|	Statement MethodBody2								{$$ = $1;
-																	adicionar_irmao($$, $2);}
-			|	VarDecl MethodBody2									{if ($1 != NULL){
+			|	Statement MethodBody2								{if ($1 != NULL){
 																		$$ = $1;
 																		adicionar_irmao($$, $2);
 																		}
 																	else {
 																		$$ = $2;
 																	}}
+			|	VarDecl MethodBody2									{$$ = $1;
+																	adicionar_irmao($$, $2);}
 			;
 
 VarDecl:	Type ID VarDecl2 SEMICOLON								{$$ = cria_node(node_metodos, "", "VarDecl");
@@ -309,7 +308,7 @@ Statement:	LBRACE Statement2 RBRACE								{if (conta_irmaos($2) > 1) {
 																	else {
 																		$$ = $2;
 																	}}
-		|	IF LPAR Expr RPAR Statement 			 				{$$ = cria_node(node_statements, "", "If");
+		|	IF LPAR Expr RPAR Statement %prec ELSE					{$$ = cria_node(node_statements, "", "If");
 																	adicionar_node($$,$3);
 																	aux = cria_node(node_statements, "", "Block");
 																	if (conta_irmaos($5) == 1 && $5 != NULL) {
@@ -477,9 +476,9 @@ ExprOperations:	ExprOperations PLUS ExprOperations					{$$ = cria_node(node_oper
 			|	ExprOperations NE ExprOperations					{$$ = cria_node(node_operators, "", "Ne");
 																	adicionar_node($$, $1);
 																	adicionar_irmao($1, $3);}
-			|	PLUS ExprOperations									{$$ = cria_node(node_operators, "", "Plus");
+			|	PLUS ExprOperations	%prec NOT						{$$ = cria_node(node_operators, "", "Plus");
 																	adicionar_node($$, $2);}
-			|	MINUS ExprOperations								{$$ = cria_node(node_operators, "", "Minus");
+			|	MINUS ExprOperations %prec NOT						{$$ = cria_node(node_operators, "", "Minus");
 																	adicionar_node($$, $2);}
 			|	NOT ExprOperations									{$$ = cria_node(node_operators, "", "Not");
 																	adicionar_node($$, $2);}
@@ -513,7 +512,6 @@ int main(int argc, char *argv[]) {
 		else if (strcmp(argv[1],"-t") == 0) {
 			flag = 2;
 			yyparse();
-			yylex_destroy();
 			if (!flag_erro) {
 				arvore(raiz, 0);
 			}

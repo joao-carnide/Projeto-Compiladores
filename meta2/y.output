@@ -1372,10 +1372,6 @@ State 101
    73               | ExprOperations . NE ExprOperations
    75               | MINUS ExprOperations .
 
-    STAR  shift, and go to state 107
-    DIV   shift, and go to state 108
-    MOD   shift, and go to state 115
-
     $default  reduce using rule 75 (ExprOperations)
 
 
@@ -1421,10 +1417,6 @@ State 103
    72               | ExprOperations . LT ExprOperations
    73               | ExprOperations . NE ExprOperations
    74               | PLUS ExprOperations .
-
-    STAR  shift, and go to state 107
-    DIV   shift, and go to state 108
-    MOD   shift, and go to state 115
 
     $default  reduce using rule 74 (ExprOperations)
 
