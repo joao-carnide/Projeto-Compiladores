@@ -180,6 +180,7 @@
 Program:	CLASS ID LBRACE ProgramScript RBRACE					{raiz = cria_node(node_raiz, "", "Program");
 																	aux = cria_node(node_id, $2, "Id");
 																	adicionar_node(raiz, aux);
+																	adicionar_irmao(aux, $4);
 																	$$ = raiz;}
 		;
 
