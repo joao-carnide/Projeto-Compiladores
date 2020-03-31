@@ -159,7 +159,7 @@
 %token <id> BOOL
 %token <id> RESERVED
 
-%type <node> Program ProgramScript MethodDecl FieldDecl FieldDecl2 Type MethodHeader MethodHeader2 FormalParams FormalParams2 MethodBody MethodBody2 VarDecl VarDecl2 Statement Statement2 ExprReturn Statement3 StatementPrint MethodInvocation MethodInvocation2 MethodInvocationExpr Assignment ParseArgs Expr Expr2 ExprLit VOID
+%type <node> Program ProgramScript MethodDecl FieldDecl FieldDecl2 Type MethodHeader MethodHeader2 FormalParams FormalParams2 MethodBody MethodBody2 VarDecl VarDecl2 Statement Statement2 ExprReturn Statement3 StatementPrint MethodInvocation MethodInvocation2 MethodInvocationExpr Assignment ParseArgs Expr ExprOperations Expr2 ExprLit VOID
 
 %right ASSIGN
 %left OR
@@ -171,7 +171,7 @@
 %left PLUS MINUS
 %left STAR DIV MOD
 %right NOT
-%left LPAR RPAR LSQ RSQ
+%left LPAR RPAR
 
 %nonassoc ELSE
 
@@ -425,68 +425,71 @@ ParseArgs:	PARSEINT LPAR ID LSQ Expr RSQ RPAR						{$$ = cria_node(node_operator
 		;
 
 Expr:	Assignment													{$$ = $1;}
-	|	Expr PLUS Expr												{$$ = cria_node(node_operators, "", "Add");
+	|	ExprOperations												{$$ = $1;}
+	;
+
+ExprOperations:	ExprOperations PLUS ExprOperations					{$$ = cria_node(node_operators, "", "Add");
 																	adicionar_node($$, $1);
 																	adicionar_irmao($1, $3);}
-	|	Expr MINUS Expr												{$$ = cria_node(node_operators, "", "Sub");
+			|	ExprOperations MINUS ExprOperations					{$$ = cria_node(node_operators, "", "Sub");
 																	adicionar_node($$, $1);
 																	adicionar_irmao($1, $3);}
-	|	Expr STAR Expr												{$$ = cria_node(node_operators, "", "Mul");
+			|	ExprOperations STAR ExprOperations					{$$ = cria_node(node_operators, "", "Mul");
 																	adicionar_node($$, $1);
 																	adicionar_irmao($1, $3);}
-	|	Expr DIV Expr												{$$ = cria_node(node_operators, "", "Div");
+			|	ExprOperations DIV ExprOperations					{$$ = cria_node(node_operators, "", "Div");
 																	adicionar_node($$, $1);
 																	adicionar_irmao($1, $3);}
-	|	Expr MOD Expr												{$$ = cria_node(node_operators, "", "Mod");
+			|	ExprOperations MOD ExprOperations					{$$ = cria_node(node_operators, "", "Mod");
 																	adicionar_node($$, $1);
 																	adicionar_irmao($1, $3);}
-	|	Expr AND Expr												{$$ = cria_node(node_operators, "", "And");
+			|	ExprOperations AND ExprOperations					{$$ = cria_node(node_operators, "", "And");
 																	adicionar_node($$, $1);
 																	adicionar_irmao($1, $3);}
-	|	Expr OR Expr												{$$ = cria_node(node_operators, "", "Or");
+			|	ExprOperations OR ExprOperations					{$$ = cria_node(node_operators, "", "Or");
 																	adicionar_node($$, $1);
 																	adicionar_irmao($1, $3);}
-	|	Expr XOR Expr												{$$ = cria_node(node_operators, "", "Xor");
+			|	ExprOperations XOR ExprOperations					{$$ = cria_node(node_operators, "", "Xor");
 																	adicionar_node($$, $1);
 																	adicionar_irmao($1, $3);}
-	|	Expr LSHIFT Expr											{$$ = cria_node(node_operators, "", "Lshift");
+			|	ExprOperations LSHIFT ExprOperations				{$$ = cria_node(node_operators, "", "Lshift");
 																	adicionar_node($$, $1);
 																	adicionar_irmao($1, $3);}
-	|	Expr RSHIFT Expr											{$$ = cria_node(node_operators, "", "Rshift");
+			|	ExprOperations RSHIFT ExprOperations				{$$ = cria_node(node_operators, "", "Rshift");
 																	adicionar_node($$, $1);
 																	adicionar_irmao($1, $3);}
-	|	Expr EQ Expr												{$$ = cria_node(node_operators, "", "Eq");
+			|	ExprOperations EQ ExprOperations					{$$ = cria_node(node_operators, "", "Eq");
 																	adicionar_node($$, $1);
 																	adicionar_irmao($1, $3);}
-	|	Expr GE Expr												{$$ = cria_node(node_operators, "", "Ge");
+			|	ExprOperations GE ExprOperations					{$$ = cria_node(node_operators, "", "Ge");
 																	adicionar_node($$, $1);
 																	adicionar_irmao($1, $3);}
-	|	Expr GT Expr												{$$ = cria_node(node_operators, "", "Gt");
+			|	ExprOperations GT ExprOperations					{$$ = cria_node(node_operators, "", "Gt");
 																	adicionar_node($$, $1);
 																	adicionar_irmao($1, $3);}
-	|	Expr LE Expr												{$$ = cria_node(node_operators, "", "Le");
+			|	ExprOperations LE ExprOperations					{$$ = cria_node(node_operators, "", "Le");
 																	adicionar_node($$, $1);
 																	adicionar_irmao($1, $3);}
-	|	Expr LT Expr												{$$ = cria_node(node_operators, "", "Lt");
+			|	ExprOperations LT ExprOperations					{$$ = cria_node(node_operators, "", "Lt");
 																	adicionar_node($$, $1);
 																	adicionar_irmao($1, $3);}
-	|	Expr NE Expr												{$$ = cria_node(node_operators, "", "Ne");
+			|	ExprOperations NE ExprOperations					{$$ = cria_node(node_operators, "", "Ne");
 																	adicionar_node($$, $1);
 																	adicionar_irmao($1, $3);}
-	|	PLUS Expr													{$$ = cria_node(node_operators, "", "Plus");
+			|	PLUS ExprOperations									{$$ = cria_node(node_operators, "", "Plus");
 																	adicionar_node($$, $2);}
-	|	MINUS Expr													{$$ = cria_node(node_operators, "", "Minus");
+			|	MINUS ExprOperations								{$$ = cria_node(node_operators, "", "Minus");
 																	adicionar_node($$, $2);}
-	|	NOT Expr													{$$ = cria_node(node_operators, "", "Not");
+			|	NOT ExprOperations									{$$ = cria_node(node_operators, "", "Not");
 																	adicionar_node($$, $2);}
-	|	LPAR Expr RPAR												{$$ = $2;}
-	|	LPAR error RPAR												{$$ = NULL;
+			|	LPAR Expr RPAR										{$$ = $2;}
+			|	LPAR error RPAR										{$$ = NULL;
 																	flag_erro = 1;}
-	|	Expr2														{$$ = $1;}
-	|	ID															{$$ = cria_node(node_id, "", "Id");}
-	|	ID DOTLENGTH												{$$ = cria_node(node_operators, "", "Length");
+			|	Expr2												{$$ = $1;}
+			|	ID													{$$ = cria_node(node_id, "", "Id");}
+			|	ID DOTLENGTH										{$$ = cria_node(node_operators, "", "Length");
 																	adicionar_node($$, cria_node(node_id, "", "Id"));}
-	|	ExprLit														{$$ = $1;}
+			|	ExprLit												{$$ = $1;}
 	;
 
 Expr2:	MethodInvocation											{$$ = $1;}

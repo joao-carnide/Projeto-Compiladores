@@ -12,14 +12,11 @@
 
 	int linha = 1;
 	int coluna = 1;
-	//int linha_coluna[2];  //array auxiliar para linhas e colunas
 	int flag = 0;
 	int erro = 0;
 	char guarda[256];
 	int linha_atual = 1;
 	int coluna_atual = 1;
-	//int string = 0;  //flag para detetar string
-	//char * strlit;
 %}
 
 id					"_"|"$"|("_"|"$"|[a-z]|[A-Z])([a-z]|[A-Z]|[0-9]|"$"|"_")*
