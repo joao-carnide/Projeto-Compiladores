@@ -1646,7 +1646,7 @@ yyreduce:
 #line 195 "jucompiler.y" /* yacc.c:1646  */
     {(yyval.node) = cria_node(node_metodos, "", "MethodDecl");
 																	adicionar_node((yyval.node), (yyvsp[-1].node));
-																	adicionar_irmao((yyval.node), (yyvsp[0].node));}
+																	adicionar_irmao((yyvsp[-1].node), (yyvsp[0].node));}
 #line 1651 "y.tab.c" /* yacc.c:1646  */
     break;
 
@@ -2263,7 +2263,7 @@ yyreduce:
 
   case 81:
 #line 490 "jucompiler.y" /* yacc.c:1646  */
-    {(yyval.node) = cria_node(node_id, "", "Id");}
+    {(yyval.node) = cria_node(node_id, (yyvsp[0].id), "Id");}
 #line 2268 "y.tab.c" /* yacc.c:1646  */
     break;
 
@@ -2294,7 +2294,7 @@ yyreduce:
 
   case 86:
 #line 500 "jucompiler.y" /* yacc.c:1646  */
-    {(yyval.node) = cria_node(node_terminais, (yyvsp[0].id), "IntLit");}
+    {(yyval.node) = cria_node(node_terminais, (yyvsp[0].id), "DecLit");}
 #line 2299 "y.tab.c" /* yacc.c:1646  */
     break;
 

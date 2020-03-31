@@ -194,7 +194,7 @@ ProgramScript: 	/* empty */											{$$ = NULL;}
 
 MethodDecl:	PUBLIC STATIC MethodHeader MethodBody					{$$ = cria_node(node_metodos, "", "MethodDecl");
 																	adicionar_node($$, $3);
-																	adicionar_irmao($$, $4);}
+																	adicionar_irmao($3, $4);}
 		;
 
 FieldDecl:	PUBLIC STATIC Type ID FieldDecl2 SEMICOLON				{$$ = cria_node(node_var, "", "FieldDecl");
@@ -487,7 +487,7 @@ ExprOperations:	ExprOperations PLUS ExprOperations					{$$ = cria_node(node_oper
 			|	LPAR error RPAR										{$$ = NULL;
 																	flag_erro = 1;}
 			|	Expr2												{$$ = $1;}
-			|	ID													{$$ = cria_node(node_id, "", "Id");}
+			|	ID													{$$ = cria_node(node_id, $1, "Id");}
 			|	ID DOTLENGTH										{$$ = cria_node(node_operators, "", "Length");
 																	adicionar_node($$, cria_node(node_id, "", "Id"));}
 			|	ExprLit												{$$ = $1;}
@@ -497,7 +497,7 @@ Expr2:	MethodInvocation											{$$ = $1;}
 	|	ParseArgs													{$$ = $1;}
 	;
 
-ExprLit:	INTLIT													{$$ = cria_node(node_terminais, $1, "IntLit");}
+ExprLit:	INTLIT													{$$ = cria_node(node_terminais, $1, "DecLit");}
 		|	REALLIT													{$$ = cria_node(node_terminais, $1, "RealLit");}
 		|	BOOLLIT													{$$ = cria_node(node_terminais, $1, "BollLit");}
 		;
