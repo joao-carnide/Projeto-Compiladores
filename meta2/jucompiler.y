@@ -53,14 +53,6 @@
 		return novo;
 	}
 
-	void atribuir_tipo(no novo, char * type) {
-		no aux = novo->irmao;
-		while (aux != NULL) {
-			aux = aux->irmao;
-		}
-		strcpy(aux->filho->s_type, type);
-	}
-
 	void adicionar_node(no pai, no novo) {
 		if (novo == NULL) {
 			return ;
@@ -84,17 +76,6 @@
 			node_b->pai = node_a->pai;
 			node_b->pai->num_node++;
 		}
-	}
-
-	int conta_filhos(no raiz){
-		int conta = 0;
-		no aux;
-		aux = raiz;
-		while (aux != NULL) {
-			aux = aux->filho;
-			conta++;
-		}
-		return conta;
 	}
 
 	int conta_irmaos(no raiz) {
