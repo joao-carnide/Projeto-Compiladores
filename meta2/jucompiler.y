@@ -180,7 +180,10 @@ Program:	CLASS ID LBRACE ProgramScript RBRACE					{raiz = cria_node(node_raiz, "
 																	aux = cria_node(node_id, $2, "Id");
 																	adicionar_node(raiz, aux);
 																	adicionar_irmao(aux, $4);
-																	$$ = raiz;}
+																	$$ = raiz;
+																	if (flag == 2 && flag_erro == 0) {
+																		arvore($$, 0);
+																	}}
 		;
 
 ProgramScript: 	/* empty */											{$$ = NULL;}
@@ -488,7 +491,7 @@ ExprOperations:	ExprOperations PLUS ExprOperations					{$$ = cria_node(node_oper
 			|	Expr2												{$$ = $1;}
 			|	ID													{$$ = cria_node(node_id, $1, "Id");}
 			|	ID DOTLENGTH										{$$ = cria_node(node_operators, "", "Length");
-																	adicionar_node($$, cria_node(node_id, "", "Id"));}
+																	adicionar_node($$, cria_node(node_id, $1, "Id"));}
 			|	ExprLit												{$$ = $1;}
 	;
 
@@ -498,39 +501,7 @@ Expr2:	MethodInvocation											{$$ = $1;}
 
 ExprLit:	INTLIT													{$$ = cria_node(node_terminais, $1, "DecLit");}
 		|	REALLIT													{$$ = cria_node(node_terminais, $1, "RealLit");}
-		|	BOOLLIT													{$$ = cria_node(node_terminais, $1, "BollLit");}
+		|	BOOLLIT													{$$ = cria_node(node_terminais, $1, "BoolLit");}
 		;
 
 %%
-
-int main(int argc, char *argv[]) {
-	if (argc > 1) {
-		if (strcmp(argv[1], "-l") == 0) {
-			flag = 1;
-			yylex();
-		}
-		else if (strcmp(argv[1],"-t") == 0) {
-			flag = 2;
-			yyparse();
-			if (!flag_erro) {
-				arvore(raiz, 0);
-			}
-		}
-		else if (strcmp(argv[1], "-e1") == 0) {
-			flag = 0;
-			yylex();
-		}
-		else if (strcmp(argv[1], "-e2") == 0) {
-			flag = 0;
-			flag_erro = 1;
-			yyparse();
-			yylex();
-		}
-	}
-	else {
-		flag = 0;
-		flag_erro = 1;
-		yyparse();
-		yylex();
-	}
-}

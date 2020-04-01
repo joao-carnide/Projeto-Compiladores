@@ -14,6 +14,7 @@
 	int coluna = 1;
 	int flag = 0;
 	int erro = 0;
+	extern int flag_erro;
 	char guarda[256];
 	int linha_atual = 1;
 	int coluna_atual = 1;
@@ -77,107 +78,115 @@ reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"swit
 %%
 
 {intlit}								{if(flag == 1)printf("INTLIT(%s)\n",yytext);coluna+=yyleng;
-										yylval.id = strdup(yytext);
-										return INTLIT;}
+										if(flag != 1) {
+											yylval.id = strdup(yytext);
+											return INTLIT;
+										}}
 
 {real}|{expint}|{expreal}				{if(flag == 1)printf("REALLIT(%s)\n",yytext);coluna+=yyleng;
-										yylval.id = strdup(yytext);
-										return REALLIT;}
+										if(flag != 1) {
+											yylval.id = strdup(yytext);
+											return REALLIT;
+										}}
 
 {bools}									{if(flag == 1)printf("BOOLLIT(%s)\n",yytext);coluna+=yyleng;
-										yylval.id = strdup(yytext);
-										return BOOLLIT;}
+										if(flag != 1) {
+											yylval.id = strdup(yytext);
+											return BOOLLIT;
+										}}
 {and}									{if(flag == 1)printf("AND\n");coluna+=yyleng;
-										return AND;}
+										if(flag != 1)return AND;}
 {assign}								{if(flag == 1)printf("ASSIGN\n");coluna+=yyleng;
-										return ASSIGN;}
+										if(flag != 1)return ASSIGN;}
 {star}									{if(flag == 1)printf("STAR\n");coluna+=yyleng;
-										return STAR;}
+										if(flag != 1)return STAR;}
 {comma}									{if(flag == 1)printf("COMMA\n");coluna+=yyleng;
-										return COMMA;}
+										if(flag != 1)return COMMA;}
 {div}									{if(flag == 1)printf("DIV\n");coluna+=yyleng;
-										return DIV;}
+										if(flag != 1)return DIV;}
 {equals}								{if(flag == 1)printf("EQ\n");coluna+=yyleng;
-										return EQ;}
+										if(flag != 1)return EQ;}
 {greatereq}								{if(flag == 1)printf("GE\n");coluna+=yyleng;
-										return GE;}
+										if(flag != 1)return GE;}
 {greater}								{if(flag == 1)printf("GT\n");coluna+=yyleng;
-										return GT;}
+										if(flag != 1)return GT;}
 {leftbrace}								{if(flag == 1)printf("LBRACE\n");coluna+=yyleng;
-										return LBRACE;}
+										if(flag != 1)return LBRACE;}
 {lesseq}								{if(flag == 1)printf("LE\n");coluna+=yyleng;
-										return LE;}
+										if(flag != 1)return LE;}
 {leftpar}								{if(flag == 1)printf("LPAR\n");coluna+=yyleng;
-										return LPAR;}
+										if(flag != 1)return LPAR;}
 {leftsqpar}								{if(flag == 1)printf("LSQ\n");coluna+=yyleng;
-										return LSQ;}
+										if(flag != 1)return LSQ;}
 {less}									{if(flag == 1)printf("LT\n");coluna+=yyleng;
-										return LT;}
+										if(flag != 1)return LT;}
 {minus}									{if(flag == 1)printf("MINUS\n");coluna+=yyleng;
-										return MINUS;}
+										if(flag != 1)return MINUS;}
 {mod}									{if(flag == 1)printf("MOD\n");coluna+=yyleng;
-										return MOD;}
+										if(flag != 1)return MOD;}
 {notequal}								{if(flag == 1)printf("NE\n");coluna+=yyleng;
-										return NE;}
+										if(flag != 1)return NE;}
 {not}									{if(flag == 1)printf("NOT\n");coluna+=yyleng;
-										return NOT;}
+										if(flag != 1)return NOT;}
 {or}									{if(flag == 1)printf("OR\n");coluna+=yyleng;
-										return OR;}
+										if(flag != 1)return OR;}
 {plus}									{if(flag == 1)printf("PLUS\n");coluna+=yyleng;
-										return PLUS;}
+										if(flag != 1)return PLUS;}
 {rightbrace}							{if(flag == 1)printf("RBRACE\n");coluna+=yyleng;
-										return RBRACE;}
+										if(flag != 1)return RBRACE;}
 {rightpar}								{if(flag == 1)printf("RPAR\n");coluna+=yyleng;
-										return RPAR;}
+										if(flag != 1)return RPAR;}
 {rightsqpar}							{if(flag == 1)printf("RSQ\n");coluna+=yyleng;
-										return RSQ;}
+										if(flag != 1)return RSQ;}
 {semicolon}								{if(flag == 1)printf("SEMICOLON\n");coluna+=yyleng;
-										return SEMICOLON;}
+										if(flag != 1)return SEMICOLON;}
 {arrow}									{if(flag == 1)printf("ARROW\n");coluna+=yyleng;
-										return ARROW;}
+										if(flag != 1)return ARROW;}
 {leftshift}								{if(flag == 1)printf("LSHIFT\n");coluna+=yyleng;
-										return LSHIFT;}
+										if(flag != 1)return LSHIFT;}
 {rightshift}							{if(flag == 1)printf("RSHIFT\n");coluna+=yyleng;
-										return RSHIFT;}
+										if(flag != 1)return RSHIFT;}
 {xor}									{if(flag == 1)printf("XOR\n");coluna+=yyleng;
-										return XOR;}
+										if(flag != 1)return XOR;}
 {bool}									{if(flag == 1)printf("BOOL\n");coluna+=yyleng;
-										return BOOL;}
+										if(flag != 1)return BOOL;}
 {class}									{if(flag == 1)printf("CLASS\n");coluna+=yyleng;
-										return CLASS;}
+										if(flag != 1)return CLASS;}
 {dotlength}								{if(flag == 1)printf("DOTLENGTH\n");coluna+=yyleng;
-										return DOTLENGTH;}
+										if(flag != 1)return DOTLENGTH;}
 {double}								{if(flag == 1)printf("DOUBLE\n");coluna+=yyleng;
-										return DOUBLE;}
+										if(flag != 1)return DOUBLE;}
 {else}									{if(flag == 1)printf("ELSE\n");coluna+=yyleng;
-										return ELSE;}
+										if(flag != 1)return ELSE;}
 {if}									{if(flag == 1)printf("IF\n");coluna+=yyleng;
-										return IF;}
+										if(flag != 1)return IF;}
 {int}									{if(flag == 1)printf("INT\n");coluna+=yyleng;
-										return INT;}
+										if(flag != 1)return INT;}
 {print}									{if(flag == 1)printf("PRINT\n");coluna+=yyleng;
-										return PRINT;}
+										if(flag != 1)return PRINT;}
 {parseint}								{if(flag == 1)printf("PARSEINT\n");coluna+=yyleng;
-										return PARSEINT;}
+										if(flag != 1)return PARSEINT;}
 {public}								{if(flag == 1)printf("PUBLIC\n");coluna+=yyleng;
-										return PUBLIC;}
+										if(flag != 1)return PUBLIC;}
 {return}								{if(flag == 1)printf("RETURN\n");coluna+=yyleng;
-										return RETURN;}
+										if(flag != 1)return RETURN;}
 {static}								{if(flag == 1)printf("STATIC\n");coluna+=yyleng;
-										return STATIC;}
+										if(flag != 1)return STATIC;}
 {string}								{if(flag == 1)printf("STRING\n");coluna+=yyleng;
-										return STRING;}
+										if(flag != 1)return STRING;}
 {void}									{if(flag == 1)printf("VOID\n");coluna+=yyleng;
-										return VOID;}
+										if(flag != 1)return VOID;}
 {while}									{if(flag == 1)printf("WHILE\n");coluna+=yyleng;
-										return WHILE;}
+										if(flag != 1)return WHILE;}
 
 {reserved}								{if(flag == 1)printf("RESERVED(%s)\n",yytext);coluna+=yyleng;
-										return RESERVED;}
+										if(flag != 1)return RESERVED;}
 
 {id}									{if(flag == 1)printf("ID(%s)\n",yytext);coluna+=yyleng;
-										yylval.id = strdup(yytext);
-										return ID;}
+										if(flag != 1) {
+											yylval.id = strdup(yytext);
+											return ID;
+										}}
 
 "\f"									{coluna+=yyleng;}
 \n|\r|(\r\n)							{linha++; coluna = 1;}
@@ -189,7 +198,7 @@ reserved			"++"|"--"|"null"|"Integer"|"System"|"abstract"|"continue"|"new"|"swit
 <STRINGLIT>\\(.?)						{strcat(guarda, yytext);printf("Line %d, col %d: invalid escape sequence (%s)\n",linha,coluna,yytext); coluna += yyleng; erro = 1;}
 <STRINGLIT>\n|\r|(\r\n)					{BEGIN 0; guarda[0] = 0; printf("Line %d, col %d: unterminated string literal\n",linha_atual,coluna_atual); linha++; coluna = 1;}
 <STRINGLIT>\"							{BEGIN 0; strcat(guarda, yytext); if(flag == 1 && erro==0)printf("STRLIT(%s)\n",guarda);coluna+=yyleng;
-										if(!erro) {
+										if(flag != 1 && erro == 0) {
 											yylval.id = strdup(guarda);
 											yytext = guarda;
 											return STRLIT;
@@ -216,4 +225,36 @@ int yywrap() {
 
 void yyerror(const char *s) { 
      printf ("Line %d, col %d: %s: %s\n", linha, (int)(coluna-strlen(yytext)), s, yytext);
+}
+
+
+int main(int argc, char *argv[]) {
+	if (argc > 1) {
+		if (strcmp(argv[1],"-l") == 0) {
+			flag = 1;
+			yylex();
+		}
+		else if (strcmp(argv[1],"-t") == 0) {
+			flag = 2;
+			yyparse();
+		}
+		else if (strcmp(argv[1], "-e1") == 0) {
+			flag = 0;
+			while (yylex() != 0) {
+				;
+			}
+		}
+		else if (strcmp(argv[1], "-e2") == 0) {
+			flag = 0;
+			flag_erro = 1;
+			yyparse();
+			yylex();
+		}
+	}
+	else {
+		flag = 0;
+		flag_erro = 1;
+		yyparse();
+		yylex();
+	}
 }
