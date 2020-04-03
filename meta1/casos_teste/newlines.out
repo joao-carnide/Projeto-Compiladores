@@ -93,3 +93,7 @@ Line 57, col 1: illegal character (\)
 Line 59, col 2: invalid escape sequence (\î)
 Line 59, col 1: unterminated string literal
 ID(n)
+Line 61, col 3: invalid escape sequence (\)
+Line 62, col 2: invalid escape sequence (\)
+Line 62, col 1: unterminated string literal
+Line 63, col 1: unterminated string literal

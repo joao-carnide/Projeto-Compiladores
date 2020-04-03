@@ -84,15 +84,15 @@ extern int yydebug;
     STRING = 294,
     VOID = 295,
     WHILE = 296,
-    ID = 297,
-    INTLIT = 298,
-    REALLIT = 299,
-    BOOLLIT = 300,
-    STRLIT = 301,
-    INT = 302,
-    DOUBLE = 303,
-    BOOL = 304,
-    RESERVED = 305
+    INT = 297,
+    DOUBLE = 298,
+    BOOL = 299,
+    RESERVED = 300,
+    ID = 301,
+    INTLIT = 302,
+    REALLIT = 303,
+    BOOLLIT = 304,
+    STRLIT = 305
   };
 #endif
 /* Tokens.  */
@@ -135,22 +135,22 @@ extern int yydebug;
 #define STRING 294
 #define VOID 295
 #define WHILE 296
-#define ID 297
-#define INTLIT 298
-#define REALLIT 299
-#define BOOLLIT 300
-#define STRLIT 301
-#define INT 302
-#define DOUBLE 303
-#define BOOL 304
-#define RESERVED 305
+#define INT 297
+#define DOUBLE 298
+#define BOOL 299
+#define RESERVED 300
+#define ID 301
+#define INTLIT 302
+#define REALLIT 303
+#define BOOLLIT 304
+#define STRLIT 305
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 144 "jucompiler.y" /* yacc.c:1909  */
+#line 125 "jucompiler.y" /* yacc.c:1909  */
 
 	char * id;
 	struct node * node;

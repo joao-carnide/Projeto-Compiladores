@@ -167,15 +167,15 @@ STATIC (293) 6 7
 STRING (294) 19
 VOID (295) 15
 WHILE (296) 32
-ID (297) 1 7 10 14 15 18 19 21 26 28 47 48 53 54 80 81
-INTLIT (298) 85
-REALLIT (299) 86
-BOOLLIT (300) 87
-STRLIT (301) 46
-INT (302) 12
-DOUBLE (303) 13
-BOOL (304) 11
-RESERVED (305)
+INT (297) 12
+DOUBLE (298) 13
+BOOL (299) 11
+RESERVED (300)
+ID (301) 1 7 10 14 15 18 19 21 26 28 47 48 53 54 80 81
+INTLIT (302) 85
+REALLIT (303) 86
+BOOLLIT (304) 87
+STRLIT (305) 46
 
 
 Nonterminals, with rules where they appear
@@ -486,10 +486,10 @@ State 26
     PARSEINT  shift, and go to state 36
     RETURN    shift, and go to state 37
     WHILE     shift, and go to state 38
-    ID        shift, and go to state 39
     INT       shift, and go to state 19
     DOUBLE    shift, and go to state 20
     BOOL      shift, and go to state 21
+    ID        shift, and go to state 39
 
     RBRACE     reduce using rule 23 (MethodBody2)
     SEMICOLON  reduce using rule 41 (Statement3)
@@ -679,10 +679,10 @@ State 42
     PARSEINT  shift, and go to state 36
     RETURN    shift, and go to state 37
     WHILE     shift, and go to state 38
-    ID        shift, and go to state 39
     INT       shift, and go to state 19
     DOUBLE    shift, and go to state 20
     BOOL      shift, and go to state 21
+    ID        shift, and go to state 39
 
     RBRACE     reduce using rule 23 (MethodBody2)
     SEMICOLON  reduce using rule 41 (Statement3)
@@ -708,10 +708,10 @@ State 43
     PARSEINT  shift, and go to state 36
     RETURN    shift, and go to state 37
     WHILE     shift, and go to state 38
-    ID        shift, and go to state 39
     INT       shift, and go to state 19
     DOUBLE    shift, and go to state 20
     BOOL      shift, and go to state 21
+    ID        shift, and go to state 39
 
     RBRACE     reduce using rule 23 (MethodBody2)
     SEMICOLON  reduce using rule 41 (Statement3)
