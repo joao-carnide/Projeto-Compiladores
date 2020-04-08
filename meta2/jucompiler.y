@@ -456,7 +456,7 @@ ExprOperations:	ExprOperations PLUS ExprOperations					{$$ = cria_node(node_oper
 			|	ExprOperations NE ExprOperations					{$$ = cria_node(node_operators, "", "Ne");
 																	adicionar_node($$, $1);
 																	adicionar_irmao($1, $3);}
-			|	PLUS ExprOperations	%prec NOT						{$$ = cria_node(node_operators, "", "Plus");
+			|	PLUS ExprOperations %prec NOT						{$$ = cria_node(node_operators, "", "Plus");
 																	adicionar_node($$, $2);}
 			|	MINUS ExprOperations %prec NOT						{$$ = cria_node(node_operators, "", "Minus");
 																	adicionar_node($$, $2);}
