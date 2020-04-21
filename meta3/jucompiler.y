@@ -10,6 +10,8 @@
 	#include <stdarg.h>
 	
 	#include "ast.h"
+	#include "semantics.h"
+	#include "symbol_table.h"
 
 	int conta;
 	no raiz;
