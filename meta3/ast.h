@@ -1,9 +1,12 @@
+#ifndef AST_H_INCLUDED
+#define AST_H_INCLUDED
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
 typedef enum {
-	node_raiz,
+	node_raiz, 
 	node_var, 
 	node_metodos, 
 	node_statements, 
@@ -31,3 +34,5 @@ void adicionar_node(no pai, no novo);
 void adicionar_irmao(no node_a, no node_b);
 int conta_irmaos(no raiz);
 void arvore(no raiz, int pontos);
+
+#endif

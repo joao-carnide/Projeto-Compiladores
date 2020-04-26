@@ -2422,35 +2422,3 @@ void yyerror(const char *s) {
      printf ("Line %d, col %d: %s: %s\n", linha, (int)(coluna-strlen(yytext)), s, yytext);
 }
 
-
-int main(int argc, char *argv[]) {
-	if (argc > 1) {
-		if (strcmp(argv[1],"-l") == 0) {
-			flag = 1;
-			yylex();
-		}
-		else if (strcmp(argv[1],"-t") == 0) {
-			flag = 2;
-			yyparse();
-		}
-		else if (strcmp(argv[1], "-e1") == 0) {
-			flag = 0;
-			while (yylex() != 0) {
-				;
-			}
-		}
-		else if (strcmp(argv[1], "-e2") == 0) {
-			flag = 0;
-			flag_erro = 1;
-			yyparse();
-			yylex();
-		}
-	}
-	else {
-		flag = 0;
-		flag_erro = 1;
-		yyparse();
-		yylex();
-	}
-}
-
