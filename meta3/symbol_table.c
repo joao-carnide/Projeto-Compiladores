@@ -83,18 +83,51 @@ table procura_tabela(char * nome) {
     }
     return NULL;
 }
-/*
-void init_method(char * nome, char * c_nome, char ** array_params, char * s_type) {
 
+void init_method(char * nome, char * c_nome, char ** array_params, char * s_type) {
+    table n_node = calloc(1, sizeof(tab));
+    n_node->type = (char*)calloc((strlen("Method")+1), sizeof(char));
+    strcpy(n_node->type, "Method");
+    n_node->nome = nome;
+    n_node->c_nome = c_nome;
+    n_node->array_params = array_params;
+    table head = tabela_simbolos;
+    if (head == NULL) {
+        tabela_simbolos = n_node;
+    }
+    else {
+        while (head->next) {
+            head = head->next;
+        }
+        head->next = n_node;
+    }
+    insere_elemento("return", s_type, NULL, NULL, head->next);
 }
+
+void insere_elemento(char * valor, char * s_type, char * param_types, char * param, table tabela_t) {
+    node_table n_node = calloc(1, sizeof(no_tab));
+    n_node->valor = valor;
+    n_node->s_type = s_type;
+    n_node->next = NULL;
+    if (param_types) {
+        n_node->param_types = param_types;
+    }
+    else {
+        n_node->param_types = "";
+    }
+    if (param) {
+        n_node->param = param;
+    }
+    else {
+        n_node->param = "";
+    }
+    tabela_t->tabela = n_node;
+}
+/*
 
 table check_call(char * id, char ** params, int p) {
 
     return NULL;
-}
-
-void insere_elemento(char * valor, char * s_type, char * param_types, char * param, table tabela) {
-
 }
 
 char * procura_tabela_char(char * nome, char * nome_tab) {

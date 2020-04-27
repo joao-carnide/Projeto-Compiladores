@@ -5,6 +5,8 @@
 #include "symbol_table.h"
 #include "semantics.h"
 
+#define MAX_ARGS 50
+
 void check_program(no raiz) {
     if (raiz == NULL) {
         return;
@@ -16,9 +18,9 @@ void check_program(no raiz) {
     else if (strcmp(raiz->s_type, "FieldDecl") == 0) {
         check_field_decl(raiz);
     }
-    /*else if (strcmp(raiz->s_type, "MethodDecl") == 0) {
+    else if (strcmp(raiz->s_type, "MethodDecl") == 0) {
         check_method_decl(raiz->filho);
-    }*/
+    }
     no aux_filho = raiz->filho;
     while (aux_filho != NULL) {
         check_program(aux_filho);
@@ -61,12 +63,86 @@ char * check_s_type(char * raiz) {
     }
     return s_type;
 }
-/*
-void check_ast(no raiz) {
-
-}
 
 char * check_method_decl(no raiz) {
+    char * s_type = check_s_type(raiz->filho->s_type);
+    char * valor = (char*)strdup(raiz->filho->irmao->valor);
+    char * params = check_method_params(raiz->filho->irmao->irmao);
+    char ** array_params = check_array_method_params(raiz->filho->irmao->irmao);
+    char * n_string;
+
+    if ((n_string = malloc(strlen(valor)+strlen(params)+1)) != NULL) {
+        n_string[0] = '\0';
+        strcat(n_string, valor);
+        strcat(n_string, params);
+    }
+    insere_elem(valor, s_type, params, NULL, "Class");
+    init_method(n_string, valor, array_params, s_type);
+    adiciona_method_params(raiz->filho->irmao->irmao, n_string);
+    return n_string;
+}
+
+char * check_method_params(no raiz) {
+    char params[500] = "(";
+    no aux = NULL;
+    if (raiz->filho) {
+        aux = raiz->filho;
+    }
+    while (aux) {
+        if (strcmp(aux->filho->s_type, "StringArray") == 0) {
+            strcat(params, "String[]");
+        }
+        else if (strcmp(aux->filho->s_type, "Int") == 0) {
+            strcat(params, "int");
+        }
+        else if (strcmp(aux->filho->s_type, "Double") == 0) {
+            strcat(params, "double");
+        }
+        else if (strcmp(aux->filho->s_type, "Bool") == 0) {
+            strcat(params, "boolean");
+        }
+        if (aux->irmao) {
+            strcat(params, ",");    // adicionar , caso mais que um parametro
+        }
+        aux = aux->irmao;
+    }
+    strcat(params, ")");
+    return strdup(params);
+}
+
+char ** check_array_method_params(no raiz) {
+    char ** params = (char**)malloc(MAX_ARGS * sizeof(char*));
+    no aux = NULL;
+    int i = 1;
+    if (raiz->filho->irmao) {
+        aux = raiz->filho->irmao;
+    }
+    while (aux != NULL) {
+        if (aux->type_tab != NULL) {
+            params[i] = strdup(&aux->type_tab[3]);
+            i++;
+        }
+        aux = aux->irmao;
+    }
+    char string[10];
+    sprintf(string, "%d", i-1);
+    params[0] = strdup(string);
+    return params;
+}
+
+void adiciona_method_params(no raiz, char * tabela) {
+    no head = NULL;
+    if (raiz->filho) {
+        head = raiz->filho;
+    }
+    while (head) {
+        char * s_type = check_s_type(head->filho->s_type);
+        insere_elem(head->filho->irmao->valor, s_type, NULL, "param", tabela);
+        head = head->irmao;
+    }
+}
+/*
+void check_ast(no raiz) {
 
 }
 
@@ -74,19 +150,7 @@ void check_method_body(no raiz, char * tabela) {
 
 }
 
-char * check_method_params(no raiz) {
-
-}
-
-char ** check_array_method_params(no raiz) {
-
-}
-
 char ** check_calls_method_params(no raiz) {
 
-}
-
-void adiciona_method_params(no raiz, char * tabela) {
-    
 }
 */

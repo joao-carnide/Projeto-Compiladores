@@ -1,0 +1,51 @@
+===== Class Java Symbol Table =====
+a	()	int
+
+===== Method a() Symbol Table =====
+return		int
+a		int
+b		int
+c		int
+
+Program
+..Id(Java)
+..MethodDecl
+....MethodHeader
+......Int
+......Id(a)
+......MethodParams
+....MethodBody
+......VarDecl
+........Int
+........Id(a)
+......Assign - int
+........Id(a) - int
+........Add - double
+..........Id(b) - undef
+..........BoolLit(true) - boolean
+......Assign - int
+........Id(a) - int
+........Add - double
+..........Id(b) - undef
+..........RealLit(1.0_43443) - double
+......Assign - int
+........Id(a) - int
+........Add - double
+..........Id(b) - undef
+..........DecLit(1) - int
+......Assign - int
+........Id(a) - int
+........Add - undef
+..........Id(b) - undef
+..........Id(c) - undef
+......VarDecl
+........Int
+........Id(b)
+......VarDecl
+........Int
+........Id(c)
+......Assign - int
+........Id(a) - int
+........Add - int
+..........Id(b) - int
+..........Id(c) - int

@@ -24,6 +24,8 @@ typedef struct node {
 	no pai;
 	no filho;
 	no irmao;
+
+	char * type_tab;
 } node;
 
 int yylex(void);
