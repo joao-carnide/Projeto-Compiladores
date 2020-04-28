@@ -108,7 +108,7 @@ void arvore_anotada(no raiz, int pontos) {
 	aux = raiz->filho;
 	while (aux != NULL) {
 		no aux_free = aux;
-		arvore(aux, pontos+1);
+		arvore_anotada(aux, pontos+1);
 		aux = aux->irmao;
 		free(aux_free->valor);
 		free(aux_free->s_type);
