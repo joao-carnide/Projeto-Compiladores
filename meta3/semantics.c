@@ -149,12 +149,65 @@ void adiciona_method_params(no raiz, char * tabela) {
         head = head->irmao;
     }
 }
+
+void check_method_body(no raiz, char * tabela_t) {
+    if (raiz == NULL) {
+        return ;
+    }
+    if (strcmp(raiz->s_type, "VarDecl") == 0) {
+        char * s_type = check_s_type(raiz->filho->s_type);
+        insere_elem(raiz->filho->irmao->valor, s_type, NULL, NULL, tabela_t);
+    }
+    else if (strcmp(raiz->s_type, "Id") == 0) {
+        if (raiz->pai != NULL) {
+            if (strcmp(raiz->pai->s_type, "VarDecl") != 0) {
+                char * type_simbolo = procura_tabela_char(raiz->valor, tabela_t);
+                raiz->type_tab = type_simbolo;
+            }
+        }
+        else {
+            char * type_simbolo = procura_tabela_char(raiz->valor, tabela_t);
+            raiz->type_tab = type_simbolo;
+        }
+    }
+    else if (strcmp(raiz->s_type, "BoolLit") == 0 || strcmp(raiz->s_type, "And") == 0 || strcmp(raiz->s_type, "Or") == 0 || strcmp(raiz->s_type, "Eq") == 0 || strcmp(raiz->s_type, "Gt") == 0 || strcmp(raiz->s_type, "Geq") == 0 || strcmp(raiz->s_type, "Lt") == 0 || strcmp(raiz->s_type, "Leq") == 0 || strcmp(raiz->s_type, "Not") == 0 || strcmp(raiz->s_type, "Neq") == 0) {
+        char * anota = (char*)strdup(" - boolean");
+        raiz->type_tab = anota;
+    }
+    else if (strcmp(raiz->s_type, "DecLit") == 0 || strcmp(raiz->s_type, "ParseArgs") == 0 || strcmp(raiz->s_type, "Length") == 0) {
+        char * anota = (char*)strdup(" - int");
+        raiz->type_tab = anota;
+    }
+    else if (strcmp(raiz->s_type, "RealLit") == 0) {
+        char * anota = (char*)strdup(" - double");
+        raiz->type_tab = anota;
+    }
+    else if (strcmp(raiz->s_type, "StrLit") == 0) {
+        char * anota = (char*)strdup(" - String");
+        raiz->type_tab = anota;
+    }
+    no aux = raiz->filho;
+    while (aux != NULL) {
+        check_method_body(aux, tabela_t);
+        aux = aux->irmao;
+    }
+    if (strcmp(raiz->s_type, "Assign") == 0 || strcmp(raiz->s_type, "Plus") == 0 || strcmp(raiz->s_type, "Minus") == 0) {
+        char * anota = (char*)strdup(raiz->filho->type_tab);
+        raiz->type_tab = anota;
+    }
+    else if (strcmp(raiz->s_type, "Add") == 0 || strcmp(raiz->s_type, "Sub") == 0 || strcmp(raiz->s_type, "Mul") == 0 || strcmp(raiz->s_type, "Div") == 0 || strcmp(raiz->s_type, "Mod") == 0 || strcmp(raiz->s_type, "Lshift") == 0 || strcmp(raiz->s_type, "Rshift") == 0) {
+        char * anota;
+        if (strcmp(raiz->filho->type_tab, raiz->filho->irmao->type_tab) == 0) {
+            anota = (char*)strdup(raiz->filho->type_tab);
+        }
+        else {
+            anota = (char*)strdup(" - double");
+        }
+    }
+    // calls
+}
 /*
 void check_ast(no raiz) {
-
-}
-
-void check_method_body(no raiz, char * tabela) {
 
 }
 

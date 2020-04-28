@@ -28,6 +28,6 @@ table procura_tabela(char * nome);
 void insere_elemento(char * valor, char * s_type, char * param_types, char * param, table tabela);
 void insere_elem(char * valor, char * s_type, char * param_types, char * param, char * tabela);
 void print_tabela();
-//char * procura_tabela_char(char * nome, char * nome_tab);
+char * procura_tabela_char(char * nome, char * nome_tab);
 
 #endif

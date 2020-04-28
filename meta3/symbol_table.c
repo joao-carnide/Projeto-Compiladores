@@ -123,14 +123,32 @@ void insere_elemento(char * valor, char * s_type, char * param_types, char * par
     }
     tabela_t->tabela = n_node;
 }
-/*
 
+char * procura_tabela_char(char * nome, char * nome_tab) {
+    table aux = NULL;
+    node_table aux_node = NULL;
+    char string[500] = " - ";
+    aux = procura_tabela(nome_tab);
+    if (aux) {
+        for (aux_node = aux->tabela; aux_node; aux_node = aux_node->next) {
+            if (strcmp(aux_node->valor, nome) == 0) {
+                strcat(string, aux_node->s_type);
+                return strdup(string);
+            }
+        }
+    }
+    aux = tabela_simbolos;
+    for (aux_node = aux->tabela; aux_node; aux_node = aux_node->next) {
+        if (strcmp(aux_node->valor, nome) == 0 && strcmp(aux_node->param_types, "") == 0) {
+            strcat(string, aux_node->s_type);
+            return strdup(string);
+        }
+    }
+    return strdup("- undef");
+}
+/*
 table check_call(char * id, char ** params, int p) {
 
     return NULL;
-}
-
-char * procura_tabela_char(char * nome, char * nome_tab) {
-    
 }
 */
