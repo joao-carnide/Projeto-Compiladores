@@ -12,6 +12,7 @@ no cria_node(node_type type, char * valor, char * s_type) {
 	novo->pai = NULL;
 	novo->filho = NULL;
 	novo->irmao = NULL;
+	novo->type_tab = "";
 	return novo;
 }
 
@@ -50,7 +51,7 @@ int conta_irmaos(no raiz) {
 	}
 	return conta;
 }
-
+// arvore para a flag -t
 void arvore(no raiz, int pontos) {
 	if (raiz == NULL) {
 		return ;
@@ -70,6 +71,38 @@ void arvore(no raiz, int pontos) {
 		}
 		else {
 			printf("%s\n", raiz->s_type);
+		}
+	}
+	aux = raiz->filho;
+	while (aux != NULL) {
+		no aux_free = aux;
+		arvore(aux, pontos+1);
+		aux = aux->irmao;
+		free(aux_free->valor);
+		free(aux_free->s_type);
+		free(aux_free);
+	}
+}
+//arvore anotada para flag -s
+void arvore_anotada(no raiz, int pontos) {
+	if (raiz == NULL) {
+		return ;
+	}
+	int i = 0;
+	no aux;
+	if (raiz->type == node_raiz) {
+		printf("%s\n", raiz->s_type);
+	}
+	else {
+		while (i < pontos) {
+			printf("..");
+			i++;
+		}
+		if (strcmp(raiz->valor,"") != 0) {
+			printf("%s(%s)%s\n", raiz->s_type, raiz->valor, raiz->type_tab);
+		}
+		else {
+			printf("%s%s\n", raiz->s_type, raiz->type_tab);
 		}
 	}
 	aux = raiz->filho;

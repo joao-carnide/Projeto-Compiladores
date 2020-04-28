@@ -146,9 +146,38 @@ char * procura_tabela_char(char * nome, char * nome_tab) {
     }
     return strdup("- undef");
 }
-/*
-table check_call(char * id, char ** params, int p) {
 
+table check_call(char * id, char ** params, int p) {
+    table head = tabela_simbolos->next;
+    while (head != NULL) {
+        if (strcmp(head->c_nome, id) == 0) {
+            if (head->array_params != NULL && params != NULL) {
+                if (strcmp(head->array_params[0], params[0]) == 0) {
+                    int i;
+                    int j = atoi(params[0]);
+                    int tab = 0;
+                    for (i = 1; i <= j; i++) {
+                        if (p == 1) {
+                            if (strcmp(head->array_params[i], params[i]) != 0 && !(strcmp(head->array_params[i], "double") == 0 && strcmp(params[i], "int") == 0)) {
+                                tab = 1;
+                            }
+                        }
+                        else {
+                            if (strcmp(head->array_params[i], params[i]) != 0) {
+                                tab = 1;
+                            }
+                        }
+                    }
+                    if (tab == 0) {
+                        return head;
+                    }
+                }
+            }
+        }
+        head = head->next;
+    }
+    if (p == 0) {
+        return check_call(id, params, 1);
+    }
     return NULL;
 }
-*/

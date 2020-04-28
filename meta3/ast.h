@@ -36,5 +36,6 @@ void adicionar_node(no pai, no novo);
 void adicionar_irmao(no node_a, no node_b);
 int conta_irmaos(no raiz);
 void arvore(no raiz, int pontos);
+void arvore_anotada(no raiz, int pontos);
 
 #endif

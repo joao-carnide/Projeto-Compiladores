@@ -59,6 +59,12 @@ Program:	CLASS ID LBRACE ProgramScript RBRACE					{raiz = cria_node(node_raiz, "
 																	$$ = raiz;
 																	if (flag == 2 && flag_erro == 0) {
 																		arvore($$, 0);
+																	}
+																	if (flag == 3 && flag_erro == 0) {
+																		check_program($$);
+																		check_ast($$);
+																		print_tabela();
+																		arvore_anotada($$, 0);
 																	}}
 		;
 
@@ -408,11 +414,6 @@ int main(int argc, char *argv[]) {
 		else if (strcmp(argv[1], "-s") == 0) {
 			flag = 3;
 			yyparse();
-			check_program(raiz);
-			if (flag_erro == 0) {
-				print_tabela();
-			}
-			arvore(raiz,0);
 		}
 	}
 	else {

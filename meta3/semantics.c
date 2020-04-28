@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 #include "symbol_table.h"
 #include "semantics.h"
@@ -170,7 +169,7 @@ void check_method_body(no raiz, char * tabela_t) {
             raiz->type_tab = type_simbolo;
         }
     }
-    else if (strcmp(raiz->s_type, "BoolLit") == 0 || strcmp(raiz->s_type, "And") == 0 || strcmp(raiz->s_type, "Or") == 0 || strcmp(raiz->s_type, "Eq") == 0 || strcmp(raiz->s_type, "Gt") == 0 || strcmp(raiz->s_type, "Geq") == 0 || strcmp(raiz->s_type, "Lt") == 0 || strcmp(raiz->s_type, "Leq") == 0 || strcmp(raiz->s_type, "Not") == 0 || strcmp(raiz->s_type, "Neq") == 0) {
+    else if (strcmp(raiz->s_type, "BoolLit") == 0 || strcmp(raiz->s_type, "And") == 0 || strcmp(raiz->s_type, "Or") == 0 || strcmp(raiz->s_type, "Xor") || strcmp(raiz->s_type, "Eq") == 0 || strcmp(raiz->s_type, "Gt") == 0 || strcmp(raiz->s_type, "Geq") == 0 || strcmp(raiz->s_type, "Lt") == 0 || strcmp(raiz->s_type, "Leq") == 0 || strcmp(raiz->s_type, "Not") == 0 || strcmp(raiz->s_type, "Ne") == 0) {
         char * anota = (char*)strdup(" - boolean");
         raiz->type_tab = anota;
     }
@@ -203,15 +202,78 @@ void check_method_body(no raiz, char * tabela_t) {
         else {
             anota = (char*)strdup(" - double");
         }
+        raiz->type_tab = anota;
     }
-    // calls
-}
-/*
-void check_ast(no raiz) {
-
+    else if (strcmp(raiz->s_type, "Call") == 0) {
+        char ** params = check_calls_method_params(raiz);
+        table anota = check_call(raiz->filho->valor, params, 0);
+        if (anota != NULL) {
+            char * n_string;
+            if ((n_string = malloc(strlen(" - ")+strlen(anota->tabela->s_type)+1)) != NULL) {
+                n_string[0] = '\0';
+                strcat(n_string, " - ");
+                strcat(n_string, anota->tabela->s_type);
+            }
+            raiz->type_tab = n_string;
+            int i = strlen(anota->c_nome);
+            char * n_string2;
+            if ((n_string2 = malloc(strlen(" - ")+strlen(&anota->nome[i])+1)) != NULL) {
+                n_string2[0] = '\0';
+                strcat(n_string2, " - ");
+                strcat(n_string2, &anota->nome[i]);
+            }
+            raiz->filho->type_tab = n_string2;
+        }
+        else {
+            char * n_string;
+            if ((n_string = malloc(strlen(" - undef")+1)) != NULL) {
+                n_string[0] = '\0';
+                strcat(n_string, " - undef");
+            }
+            raiz->type_tab = n_string;
+            raiz->filho->type_tab = n_string;
+        }
+    }
 }
 
 char ** check_calls_method_params(no raiz) {
-
+    char ** params = (char**)malloc(50*sizeof(char*));
+    no aux = NULL;
+    int i = 1;
+    if (raiz->filho->irmao) {
+        aux = raiz->filho->irmao;
+    }
+    while (aux != NULL) {
+        if (aux->type_tab != NULL) {
+            params[i] = strdup(&aux->type_tab[3]);
+            i++;
+        }
+        aux = aux->irmao;
+    }
+    char string[10];
+    sprintf(string, "%d", i-1);
+    params[0] = strdup(string);
+    return params;
 }
-*/
+
+void check_ast(no raiz) {
+    if (raiz == NULL) {
+        return ;
+    }
+    if (strcmp(raiz->s_type, "MethodDecl") == 0) {
+        char * params = check_method_params(raiz->filho->filho->irmao->irmao);
+        char * valor = (char*)strdup(raiz->filho->filho->irmao->valor);
+        char * n_string;
+        if ((n_string = malloc(strlen(valor)+strlen(params)+1)) != NULL) {
+            n_string[0] = '\0';
+            strcat(n_string, valor);
+            strcat(n_string, params);
+        }
+        check_method_body(raiz->filho->irmao, n_string);
+    }
+    no aux = raiz->filho;
+    while (aux != NULL) {
+        check_ast(aux);
+        aux = aux->irmao;
+    }
+}
