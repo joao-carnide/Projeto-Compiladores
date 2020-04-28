@@ -1,11 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "symbol_table.h"
 #include "semantics.h"
-
-#define MAX_ARGS 50
 
 void check_program(no raiz) {
     if (raiz == NULL) {
@@ -111,17 +110,26 @@ char * check_method_params(no raiz) {
 }
 
 char ** check_array_method_params(no raiz) {
-    char ** params = (char**)malloc(MAX_ARGS * sizeof(char*));
+    char ** params = (char**)malloc(50 * sizeof(char*));
     no aux = NULL;
     int i = 1;
-    if (raiz->filho->irmao) {
-        aux = raiz->filho->irmao;
+    if (raiz->filho) {
+        aux = raiz->filho;
     }
-    while (aux != NULL) {
-        if (aux->type_tab != NULL) {
-            params[i] = strdup(&aux->type_tab[3]);
-            i++;
+    while (aux) {
+        if (strcmp(aux->filho->s_type, "StringArray") == 0) {
+            params[i] = strdup("String[]");
         }
+        else if (strcmp(aux->filho->s_type, "Int") == 0) {
+            params[i] = strdup("int");
+        }
+        else if (strcmp(aux->filho->s_type, "Double") == 0) {
+            params[i] = strdup("double");
+        }
+        else if (strcmp(aux->filho->s_type, "Bool") == 0) {
+            params[i] = strdup("boolean");
+        }
+        i++;
         aux = aux->irmao;
     }
     char string[10];
