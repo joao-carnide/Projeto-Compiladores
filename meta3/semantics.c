@@ -169,10 +169,6 @@ void check_method_body(no raiz, char * tabela_t) {
             raiz->type_tab = type_simbolo;
         }
     }
-    if (strcmp(raiz->s_type, "BoolLit") == 0 || strcmp(raiz->s_type, "And") == 0 || strcmp(raiz->s_type, "Or") == 0 || strcmp(raiz->s_type, "Xor") || strcmp(raiz->s_type, "Eq") == 0 || strcmp(raiz->s_type, "Gt") == 0 || strcmp(raiz->s_type, "Geq") == 0 || strcmp(raiz->s_type, "Lt") == 0 || strcmp(raiz->s_type, "Leq") == 0 || strcmp(raiz->s_type, "Not") == 0 || strcmp(raiz->s_type, "Ne") == 0) {
-        char * anota = (char*)strdup(" - boolean");
-        raiz->type_tab = anota;
-    }
     if (strcmp(raiz->s_type, "DecLit") == 0 || strcmp(raiz->s_type, "ParseArgs") == 0 || strcmp(raiz->s_type, "Length") == 0) {
         char * anota = (char*)strdup(" - int");
         raiz->type_tab = anota;
@@ -183,6 +179,10 @@ void check_method_body(no raiz, char * tabela_t) {
     }
     if (strcmp(raiz->s_type, "StrLit") == 0) {
         char * anota = (char*)strdup(" - String");
+        raiz->type_tab = anota;
+    }
+    if (strcmp(raiz->s_type, "Eq") == 0 || strcmp(raiz->s_type, "Ne") == 0 || strcmp(raiz->s_type, "Gt") == 0 || strcmp(raiz->s_type, "Ge") == 0 || strcmp(raiz->s_type, "Lt") == 0 || strcmp(raiz->s_type, "Le") == 0 || strcmp(raiz->s_type, "And") == 0 || strcmp(raiz->s_type, "Or") == 0 || strcmp(raiz->s_type, "Xor") == 0 || strcmp(raiz->s_type, "Not") == 0 || strcmp(raiz->s_type, "BoolLit") == 0) {
+        char * anota = (char*)strdup(" - boolean");
         raiz->type_tab = anota;
     }
     no aux = raiz->filho;

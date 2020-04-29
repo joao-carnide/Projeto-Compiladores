@@ -46,7 +46,7 @@ void insere_elem(char * valor, char * s_type, char * param_types, char * param, 
     else {
         n_node->param_types = "";
     }
-    if(param) {
+    if (param) {
         n_node->param = param;
     }
     else {
