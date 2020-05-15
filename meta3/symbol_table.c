@@ -68,9 +68,7 @@ void insere_elem(char * valor, char * s_type, char * param_types, char * param, 
             head = head->next;
         }
         head->next = n_node;
-    }
-    
-    
+    } 
 }
 
 table procura_tabela(char * nome) {

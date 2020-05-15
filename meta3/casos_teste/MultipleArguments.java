@@ -1,5 +1,6 @@
 class Factorial {
-    public static int factorial(int n) {
+    public static int factorial(int n,int x,double y) {
+     
         if (n == 0)
             return 1;
         return n * factorial(n-1);
@@ -9,5 +10,9 @@ class Factorial {
         int argument;
         argument = Integer.parseInt(args[0]);
         System.out.print(factorial(argument));
+    }
+
+    public static void noArguments(){
+        
     }
 }
