@@ -24,8 +24,7 @@ typedef struct node {
 	no pai;
 	no filho;
 	no irmao;
-
-	char * type_tab;
+	char * type_tab;  // identificar tipo através da tabela de simbolos
 } node;
 
 int yylex(void);
