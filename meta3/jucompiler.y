@@ -415,6 +415,9 @@ int main(int argc, char *argv[]) {
 			flag = 3;
 			yyparse();
 		}
+		else if (strcmp(argv[1], "e3") == 0) {
+			// flag para erros semanticos
+		}
 	}
 	else {
 		flag = 0;
