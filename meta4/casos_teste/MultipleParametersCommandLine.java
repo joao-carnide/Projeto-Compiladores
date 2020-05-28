@@ -1,6 +1,6 @@
 class Main {
-	//Insert '7' and '8' as params
-    public static int main(String[] args) {
+	//Insert '1' and '2' as params
+    public static void main(String[] args) {
         int arg1; 
         arg1 = Integer.parseInt(args[0]);
         int arg2;
@@ -9,6 +9,6 @@ class Main {
         System.out.print(arg1);
         System.out.print("\n");
         System.out.print(arg2);
-
+		System.out.print("\n");
     }
 }

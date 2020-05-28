@@ -29,5 +29,6 @@ class Main {
         bool();
         integer();
         real();
+		System.out.print("\n");
     }
 }

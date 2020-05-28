@@ -7,5 +7,6 @@ class Main {
         j = i + j;
         j = i / j;
         System.out.print(j);
+		System.out.print("\n");
     }
 }

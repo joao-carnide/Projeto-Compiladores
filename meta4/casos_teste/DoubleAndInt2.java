@@ -7,6 +7,7 @@ class Main {
        	if(i+1==j){
        		System.out.print(j);
        	}
+		System.out.print("\n");
       
     }
 }

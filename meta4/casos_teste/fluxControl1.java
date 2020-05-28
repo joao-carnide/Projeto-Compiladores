@@ -31,6 +31,7 @@ class fluxControl1 {
 		System.out.print(aux);
 		System.out.print("\n");
 		System.out.print(aux1);
+		System.out.print("\n");
 		
     }
 }

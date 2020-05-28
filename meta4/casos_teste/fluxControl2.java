@@ -20,7 +20,8 @@ class fluxControl2 {
 		}
 		return input;
     }
-    public static void main(String[] args) {
+    
+	public static void main(String[] args) {
         
         int input;
 		int aux, aux1;
@@ -34,6 +35,7 @@ class fluxControl2 {
 		System.out.print(aux);
 		System.out.print("\n");
 		System.out.print(aux1);
-		
+		System.out.print("\n");
     }
+	
 }
