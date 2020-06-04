@@ -1,6 +1,5 @@
 %{
 	/*
-		Gonçalo Manuel Oliveira e Sousa			2016244072
 		João Filipe Carnide de Jesus Nunes		2017247442
 	*/
 	
